@@ -250,6 +250,37 @@ function rP(x,y,rw,rh,cr){cr=Math.min(cr,rw/2,rh/2);return`M${x+cr},${y}L${x+rw-
 function si(a,b){try{return flubber.interpolate(a,b,{maxSegmentLength:10})}catch(e){return t=>t<.5?a:b}}
 function getCur(el){return d3.select(el).attr("d")}
 
+// ═══════════════════════════════════════════════════════════════════════════
+// STATE ENGINE: bulletproof transition system — no leftover artifacts ever
+// ═══════════════════════════════════════════════════════════════════════════
+
+// Timer tracking: every setTimeout is tracked and killed on state change
+const _tmrs=[];
+function stT(fn,ms){const id=setTimeout(fn,ms);_tmrs.push(id);return id}
+
+// NUCLEAR RESET: interrupt ALL running transitions, kill all timers, wipe ephemeral elements
+function resetAll(){
+  // 1. Kill every pending setTimeout
+  _tmrs.forEach(clearTimeout);_tmrs.length=0;
+  // 2. Interrupt all D3 transitions on every element
+  svg.interrupt();
+  ourPaths.interrupt();
+  lblG.selectAll("*").interrupt();
+  annotG.selectAll("*").interrupt();
+  fxG.selectAll("*").interrupt();
+  axXG.interrupt();axXG.selectAll("*").interrupt();
+  axYG.interrupt();axYG.selectAll("*").interrupt();
+  gridG.interrupt();gridG.selectAll("*").interrupt();
+  bgG.selectAll(".bgc").interrupt();
+  // 3. Wipe ephemeral layers instantly (no transition, no delay)
+  const tmr=fxG.datum();if(tmr&&typeof tmr.stop==='function')tmr.stop();
+  fxG.selectAll("*").remove();
+  annotG.selectAll("*").remove();
+  lblG.selectAll("text[class*='cl-pop']").remove();
+  // 4. Reset path defaults
+  ourPaths.attr("stroke","#faf7f2").attr("stroke-width",1);
+}
+
 function showAxes(type,dur=700){
   const t=d3.transition().duration(dur).ease(d3.easeCubicInOut);
   if(type==="scatter"){
@@ -264,20 +295,16 @@ function showAxes(type,dur=700){
   }
 }
 function hideAxes(dur=600){const t=d3.transition().duration(dur).ease(d3.easeCubicInOut);axXG.transition(t).attr("opacity",0);axYG.transition(t).attr("opacity",0);gridG.transition(t).attr("opacity",0)}
-function clearFx(dur=400){const timer=fxG.datum();if(timer&&typeof timer.stop==='function')timer.stop();fxG.selectAll("*").transition().duration(dur).attr("opacity",0).remove()}
-function clearAnnot(dur=400){annotG.selectAll("*").transition().duration(dur).attr("opacity",0).remove()}
 
 // Smart label placement: tries 4 directions to avoid colliding with circles
 function smartLabelPos(circles){
-  // circles: [{x,y,r,name}]
-  // Returns map name→{lx,ly,anchor}
   const result={};
   circles.forEach(c=>{
     const candidates=[
-      {lx:c.x,       ly:c.y-c.r-7,  anchor:"middle"},   // top
-      {lx:c.x+c.r+7, ly:c.y+4,      anchor:"start"},    // right
-      {lx:c.x-c.r-7, ly:c.y+4,      anchor:"end"},      // left
-      {lx:c.x,       ly:c.y+c.r+14, anchor:"middle"},   // bottom
+      {lx:c.x,       ly:c.y-c.r-7,  anchor:"middle"},
+      {lx:c.x+c.r+7, ly:c.y+4,      anchor:"start"},
+      {lx:c.x-c.r-7, ly:c.y+4,      anchor:"end"},
+      {lx:c.x,       ly:c.y+c.r+14, anchor:"middle"},
     ];
     let best=candidates[0];
     for(const cand of candidates){
@@ -293,21 +320,15 @@ function smartLabelPos(circles){
   return result;
 }
 
-// Helper: transition a path element to target path string
-// easeCubicOut = starts fast (rushes past "jeton" rectangular phase), lands smoothly
+// Morph path with easeCubicOut (fast start → no "jeton" rectangle phase visible)
 function morphTo(el,target,dur,delay,ease){
   const cur=getCur(el);
   d3.select(el).transition().duration(dur).ease(ease||d3.easeCubicOut).delay(delay||0)
     .attrTween("d",()=>si(cur,target));
   return d3.select(el);
 }
-// Cleanup extra bubble population labels (cl-pop-*) left by s7
-function clearPopLabels(dur=300){
-  lblG.selectAll("text[class*='cl-pop']").transition().duration(dur).attr("opacity",0).remove();
-}
 
 function addAnnotBox(x,y,lines,color){
-  // lines: [{text,size,weight,fill}]
   const pad=12,lh=18;
   const bg=annotG.append("rect").attr("x",x-pad).attr("y",y-lh).attr("width",0).attr("height",lh*(lines.length)+pad*1.2)
     .attr("rx",8).attr("fill","rgba(250,247,242,0.78)").attr("stroke",color||"rgba(192,104,48,0.3)").attr("stroke-width",1).attr("opacity",0);
@@ -318,31 +339,26 @@ function addAnnotBox(x,y,lines,color){
     .transition().delay(700+i*120).duration(500).attr("opacity",l.opacity||0.8)});
 }
 
-// Fade-crossfade for map states: fade out → snap path → fade in (no flubber blob)
-function fadeToMap(paths,getTarget,fill,delay){
-  paths.each(function(d,i){
+// Fade-snap for map states: instant path swap → fade in (NO chained .on("end") callbacks)
+function fadeToMap(paths,getTarget,fill){
+  paths.each(function(d){
     const tgt=getTarget(d);if(!tgt)return;
-    const el=this,fi=typeof fill==="function"?fill(d):fill;
-    d3.select(el).transition().duration(180).delay(i*18+(delay||0))
-      .attr("opacity",0)
-      .on("end",function(){
-        d3.select(this).attr("d",tgt).attr("fill",fi)
-          .transition().duration(380).attr("opacity",.85);
-      });
+    const fi=typeof fill==="function"?fill(d):fill;
+    d3.select(this).attr("d",tgt).attr("fill",fi).attr("opacity",0)
+      .transition().duration(500).attr("opacity",.85);
   });
 }
 
 function s0(){
-  setView(0);
+  resetAll();setView(0);
   document.getElementById("title").textContent="GDP per Capita — World View, 2025";
   document.getElementById("subtitle").textContent="Nominal USD · IMF October 2025 projections";
-  hideAxes();clearFx();clearAnnot();clearPopLabels();
+  hideAxes();
   bgG.selectAll(".bgc").transition().duration(700).attr("opacity",.55);
   fadeToMap(ourPaths,d=>mapPS[d.id],d=>RC[d.region]);
   ourPaths.attr("stroke","#faf7f2").attr("stroke-width",.8);
   lblG.selectAll(".cl").transition().duration(500).attr("opacity",0).attr("font-size","0px");
-  // Annotation: GDP range
-  setTimeout(()=>{
+  stT(()=>{
     addAnnotBox(w-195, 28, [
       {text:"GDP gap: 53×",size:"11px",weight:"700",fill:"var(--accent)",serif:true},
       {text:"USA: $85,373 per person",size:"9.5px",fill:"var(--text)"},
@@ -351,14 +367,13 @@ function s0(){
   },800);
 }
 function s1(){
-  setView(1);
+  resetAll();setView(1);
   document.getElementById("title").textContent="15 Countries, 4.8 Billion People";
   document.getElementById("subtitle").textContent="60% of humanity — the full economic spectrum";
-  hideAxes();clearFx();clearAnnot();clearPopLabels();
+  hideAxes();
   bgG.selectAll(".bgc").transition().duration(600).attr("opacity",.1);
   fadeToMap(ourPaths,d=>mapPS[d.id],d=>RC[d.region]);
   ourPaths.attr("stroke","#faf7f2").attr("stroke-width",2);
-  // Smart map labels: show only for countries large enough to read without overlap
   lblG.selectAll(".cl").each(function(d){
     const f=allFeatures.find(f=>f.id===d.id);if(!f)return;
     const b=pathGen.bounds(f);
@@ -366,7 +381,6 @@ function s1(){
     const minDim=Math.min(bw,bh);
     const c=pathGen.centroid(f);
     if(minDim<22||!isFinite(c[0])){
-      // Too small or no centroid (Indonesia scatter etc.) — hide label
       d3.select(this).transition().duration(500).attr("opacity",0).attr("font-size","0px");
     } else {
       const fs=minDim>80?"11px":minDim>40?"9px":"8px";
@@ -377,8 +391,7 @@ function s1(){
         .attr("fill","#fff").attr("opacity",.9).text(d.name);
     }
   });
-  // Annotation: coverage stats
-  setTimeout(()=>{
+  stT(()=>{
     addAnnotBox(12, 28, [
       {text:"15 nations · 60% of humanity",size:"11px",weight:"700",fill:"var(--accent)",serif:true},
       {text:"4.8 billion people represented",size:"9.5px",fill:"var(--text)"},
@@ -387,18 +400,17 @@ function s1(){
   },600);
 }
 function s2(){
-  setView(2);
+  resetAll();setView(2);
   document.getElementById("title").textContent="From Borders to Bubbles";
   document.getElementById("subtitle").textContent="Geographic shapes morph into population-sized circles";
-  hideAxes();clearFx();clearAnnot();clearPopLabels();
+  hideAxes();
   bgG.selectAll(".bgc").transition().duration(500).attr("opacity",.04);
   ourPaths.each(function(d,i){const r=rSc(d.pop);const col=i%5,row=Math.floor(i/5);
     const px=80+col*((w-140)/4),py=70+row*((h-100)/2);
     morphTo(this,cP(px,py,r),1200,i*50).attr("fill",RC[d.region]).attr("stroke","#faf7f2").attr("stroke-width",1.5).attr("opacity",.85)});
   lblG.selectAll(".cl").each(function(d,i){const r=rSc(d.pop);const col=i%5,row=Math.floor(i/5);
     d3.select(this).transition().duration(1200).delay(i*50+400).attr("x",80+col*((w-140)/4)).attr("y",70+row*((h-100)/2)+r+16).attr("font-size","8px").attr("font-weight","500").attr("opacity",.7)});
-  // Annotation: legend
-  setTimeout(()=>{
+  stT(()=>{
     annotG.append("text").attr("x",w-8).attr("y",h-36).attr("text-anchor","end").attr("font-family","DM Sans")
       .attr("font-size","9px").attr("fill","var(--muted)").attr("opacity",0).text("● size = population")
       .transition().delay(800).duration(600).attr("opacity",0.6);
@@ -408,14 +420,13 @@ function s2(){
   },400);
 }
 function s3(){
-  setView(3);
+  resetAll();setView(3);
   document.getElementById("title").textContent="The Preston Curve, 2025";
   document.getElementById("subtitle").textContent="GDP per capita vs life expectancy at birth";
-  showAxes("scatter");clearFx();clearAnnot();clearPopLabels();
+  showAxes("scatter");
   bgG.selectAll(".bgc").transition().duration(400).attr("opacity",0);
   ourPaths.each(function(d,i){const r=rSc(d.pop);
     morphTo(this,cP(xLin(d.gdp),yLin(d.life),r),900,i*30).attr("fill",RC[d.region]).attr("stroke","#faf7f2").attr("stroke-width",1.5).attr("opacity",.85)});
-  // Smart label placement — avoid overlapping bubbles, Flourish-style tight labels
   const scCircles=DATA.map(d=>({name:d.name,x:xLin(d.gdp),y:yLin(d.life),r:rSc(d.pop)}));
   const scPos=smartLabelPos(scCircles);
   lblG.selectAll(".cl").each(function(d,i){
@@ -424,18 +435,15 @@ function s3(){
       .attr("x",p.lx).attr("y",p.ly).attr("text-anchor",p.anchor)
       .attr("dominant-baseline","auto")
       .attr("font-size","8px").attr("font-weight","600")
-      .attr("fill",RC[d.region])  // color matches dot, Flourish-style
+      .attr("fill",RC[d.region])
       .attr("opacity",.9).text(d.name)});
-  // Annotation: curve insight
-  setTimeout(()=>{
-    // Steep zone annotation (low income)
+  stT(()=>{
     annotG.append("path").attr("d",`M${xLin(2000)},${yLin(55)} Q${xLin(11000)},${yLin(62)} ${xLin(20000)},${yLin(76)}`)
       .attr("fill","none").attr("stroke","rgba(192,104,48,0.35)").attr("stroke-width",1.5).attr("stroke-dasharray","4 3").attr("opacity",0)
       .transition().delay(900).duration(700).attr("opacity",1);
     annotG.append("text").attr("x",xLin(3500)).attr("y",yLin(61)).attr("text-anchor","start").attr("font-family","DM Sans")
       .attr("font-size","9px").attr("font-weight","600").attr("fill","var(--accent)").attr("opacity",0)
       .text("$2k→$20k = +10 yrs").transition().delay(1100).duration(500).attr("opacity",0.8);
-    // Flat zone annotation
     annotG.append("text").attr("x",xLin(52000)).attr("y",yLin(80.5)).attr("text-anchor","middle").attr("font-family","DM Sans")
       .attr("font-size","9px").attr("font-weight","600").attr("fill","var(--muted)").attr("opacity",0)
       .text("$40k→$85k = +2 yrs").transition().delay(1300).duration(500).attr("opacity",0.7);
@@ -445,13 +453,12 @@ function s3(){
   },600);
 }
 function s4(){
-  setView(4);clearPopLabels();
+  resetAll();setView(4);
   document.getElementById("title").textContent="America's Paradox";
   document.getElementById("subtitle").textContent="Richest nation, but shorter lives than much poorer countries";
-  showAxes("scatter");clearAnnot(0);
+  showAxes("scatter");
   ourPaths.each(function(d){const isUSA=d.name==="USA";
     d3.select(this).transition().duration(600).attr("opacity",isUSA?1:.18).attr("stroke",isUSA?"#b84040":"#faf7f2").attr("stroke-width",isUSA?3:1)});
-  // Re-apply smart scatter positions before fading
   const scCircles4=DATA.map(d=>({name:d.name,x:xLin(d.gdp),y:yLin(d.life),r:rSc(d.pop)}));
   const scPos4=smartLabelPos(scCircles4);
   lblG.selectAll(".cl").each(function(d){
@@ -459,7 +466,6 @@ function s4(){
     d3.select(this).attr("x",p.lx).attr("y",p.ly).attr("text-anchor",p.anchor)
       .attr("fill",d.name==="USA"?"#b84040":RC[d.region])
       .transition().duration(600).attr("opacity",d.name==="USA"?1:.08)});
-  clearFx(0);
   const usa=DATA[0],ux=xLin(usa.gdp),uy=yLin(usa.life),ur=rSc(usa.pop);
   function pulse(){fxG.append("circle").attr("cx",ux).attr("cy",uy).attr("r",ur).attr("fill","none").attr("stroke","#b84040").attr("stroke-width",2).attr("opacity",.6)
     .transition().duration(1500).ease(d3.easeCubicOut).attr("r",ur+35).attr("opacity",0).remove()}
@@ -470,17 +476,16 @@ function s4(){
   annotG.append("text").attr("x",xLin(jpn.gdp)+12).attr("y",yLin(jpn.life)-rSc(jpn.pop)-10).attr("text-anchor","start").attr("font-family","DM Sans").attr("font-size","9px").attr("fill","#5d8fa8").attr("font-weight","600").attr("opacity",0).text("Japan: $34k → 84.8 yr").transition().delay(1000).duration(600).attr("opacity",.7);
 }
 function s5(){
-  setView(5);
+  resetAll();setView(5);
   document.getElementById("title").textContent="The Income Ladder";
   document.getElementById("subtitle").textContent="Circles morph to bars — GDP per capita sorted";
-  clearFx();clearAnnot();clearPopLabels();showAxes("bar",900);bgG.selectAll(".bgc").transition().duration(300).attr("opacity",0);
+  showAxes("bar",900);bgG.selectAll(".bgc").transition().duration(300).attr("opacity",0);
   ourPaths.each(function(d,i){const bx=xBand(d.name);if(bx===undefined)return;
     morphTo(this,rP(bx,yBar(d.gdp),xBand.bandwidth(),h-yBar(d.gdp),4),1100,i*45).attr("fill",RC[d.region]).attr("stroke","none").attr("opacity",.85)});
   lblG.selectAll(".cl").each(function(d){const bx=xBand(d.name);if(bx===undefined)return;
     d3.select(this).transition().duration(900).delay(600).attr("x",bx+xBand.bandwidth()/2).attr("y",yBar(d.gdp)-9).attr("font-size","9px").attr("font-weight","600").attr("opacity",.85)
       .text(`$${d.gdp>=10000?Math.round(d.gdp/1000)+'k':d.gdp.toLocaleString()}`)});
-  // Annotation: gap arrow
-  setTimeout(()=>{
+  stT(()=>{
     const usaBx=xBand("USA"), nigBx=xBand("Nigeria");
     if(usaBx!==undefined && nigBx!==undefined){
       annotG.append("line").attr("x1",usaBx+xBand.bandwidth()/2).attr("y1",yBar(85373)-28)
@@ -495,17 +500,16 @@ function s5(){
   },800);
 }
 function s6(){
-  setView(6);
+  resetAll();setView(6);
   document.getElementById("title").textContent="The Global Income Staircase";
   document.getElementById("subtitle").textContent="From $85k (USA) to $1.6k (Nigeria) — a 53× gap";
-  clearFx();clearAnnot();clearPopLabels();showAxes("bar",600);
+  showAxes("bar",600);
   ourPaths.each(function(d,i){const bx=xBand(d.name);if(bx===undefined)return;
     morphTo(this,rP(bx,yBar(d.gdp),xBand.bandwidth(),h-yBar(d.gdp),4),800,i*25).attr("opacity",.88)});
   lblG.selectAll(".cl").each(function(d){const bx=xBand(d.name);if(bx===undefined)return;
     d3.select(this).transition().duration(800).delay(300).attr("x",bx+xBand.bandwidth()/2).attr("y",yBar(d.gdp)-9)
       .text(`$${d.gdp>=10000?Math.round(d.gdp/1000)+'k':d.gdp.toLocaleString()}`)});
-  // Region bracket annotations
-  setTimeout(()=>{
+  stT(()=>{
     const regions=[
       {label:"Europe",countries:["USA","Germany","UK","France","Italy"],color:"#5d8fa8"},
       {label:"Asia",countries:["Japan","S. Korea","China","Indonesia","India"],color:"#d4956a"},
@@ -527,10 +531,10 @@ function s6(){
   },500);
 }
 function s7(){
-  setView(7);
+  resetAll();setView(7);
   document.getElementById("title").textContent="Population Changes Everything";
   document.getElementById("subtitle").textContent="Circle size = population · India & China dwarf the rest";
-  hideAxes();clearFx();clearAnnot();
+  hideAxes();
   ourPaths.each(function(d,i){const n=packN[d.name];if(!n)return;
     morphTo(this,cP(n.x,n.y,n.r),1200,i*50,d3.easeElasticOut.amplitude(1).period(.5)).attr("fill",RC[d.region]).attr("stroke","#faf7f2").attr("stroke-width",1.5).attr("opacity",.85)});
   // Flourish-style bubble labels: inside=white centered, small=outside colored, tiny=hidden
@@ -578,7 +582,7 @@ function s7(){
     }
   });
   // Annotation: India+China share
-  setTimeout(()=>{
+  stT(()=>{
     const indChina=DATA.filter(d=>d.name==="India"||d.name==="China").reduce((s,d)=>s+d.pop,0);
     const pct=Math.round(indChina/totalPop*100);
     annotG.append("text").attr("x",12).attr("y",22).attr("text-anchor","start").attr("font-family","Source Serif 4")
@@ -590,10 +594,10 @@ function s7(){
   },800);
 }
 function s8(){
-  setView(8);clearPopLabels();
+  resetAll();setView(8);
   document.getElementById("title").textContent="The World in a Ring";
   document.getElementById("subtitle").textContent="Share of population · Total: "+totalPop.toLocaleString()+"M";
-  hideAxes();clearFx();clearAnnot(0);
+  hideAxes();
   // Arc paths with center baked into coordinates — NO translate
   ourPaths.each(function(d,i){const sl=donutSlices[i];
     const tgt=arcPathAt(donutInner,donutR,sl.startAngle,sl.endAngle,sl.padAngle,cx,cy);
@@ -607,10 +611,10 @@ function s8(){
   annotG.append("text").attr("x",cx).attr("y",cy+16).attr("text-anchor","middle").attr("font-family","DM Sans").attr("font-size","11px").attr("fill","var(--muted)").attr("opacity",0).text("people").transition().delay(1000).duration(600).attr("opacity",.6);
 }
 function s9(){
-  setView(9);clearPopLabels();
+  resetAll();setView(9);
   document.getElementById("title").textContent="Four Worlds Within One";
   document.getElementById("subtitle").textContent="Each region's population — Asia dominates with 3.3 billion";
-  hideAxes();clearFx();clearAnnot(0);
+  hideAxes();
   const regPies={};
   regOrder.forEach((reg,ri)=>{
     const countries=DATA.filter(d=>d.region===reg);
@@ -634,7 +638,7 @@ function initScrolly(){
   const steps=document.querySelectorAll(".step");
   const obs=new IntersectionObserver(entries=>{entries.forEach(entry=>{if(!entry.isIntersecting)return;
     const idx=+entry.target.dataset.step;if(idx===cur)return;
-    clearFx(0);cur=idx;steps.forEach(s=>s.classList.remove("is-active"));entry.target.classList.add("is-active");fns[idx]()});
+    cur=idx;steps.forEach(s=>s.classList.remove("is-active"));entry.target.classList.add("is-active");fns[idx]()});
   },{rootMargin:"-50% 0px -50% 0px"});
   steps.forEach(s=>obs.observe(s));
   const scrolly=document.getElementById("scrolly");
