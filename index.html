@@ -36,8 +36,8 @@ html{scroll-behavior:smooth}body{font-family:'DM Sans',sans-serif;background:var
 .scrolly__steps{position:relative;z-index:2;width:380px;margin-left:auto;margin-right:2.5rem;margin-top:-100vh;pointer-events:none}
 .step{min-height:100vh;display:flex;align-items:center;padding:3rem 0;pointer-events:auto}
 .step:first-child{padding-top:48vh}.step:last-child{margin-bottom:55vh}
-.sc{background:rgba(250,247,242,.22);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-radius:16px;padding:1.6rem 2rem;border:1px solid rgba(234,229,223,.35);border-left:3px solid transparent;transition:all .6s cubic-bezier(.23,1,.32,1);opacity:.08;transform:translateY(18px);max-width:370px;box-shadow:0 2px 20px rgba(42,35,32,.04)}
-.step.is-active .sc{opacity:1;transform:translateY(0);border-left-color:var(--accent);background:rgba(250,247,242,.48);box-shadow:0 8px 36px rgba(42,35,32,.08)}
+.sc{background:rgba(255,255,255,.78);border-radius:12px;padding:1.6rem 2rem;border:1px solid rgba(220,214,206,.7);border-left:3px solid transparent;transition:all .55s cubic-bezier(.23,1,.32,1);opacity:.06;transform:translateY(14px);max-width:370px;box-shadow:0 2px 14px rgba(42,35,32,.06)}
+.step.is-active .sc{opacity:1;transform:translateY(0);border-left-color:var(--accent);background:rgba(255,255,255,.88);box-shadow:0 4px 22px rgba(42,35,32,.09)}
 .badge{display:inline-block;font-size:.58rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;padding:.14rem .5rem;border-radius:20px;margin-bottom:.55rem}
 .b-map{background:#fde8d8;color:#c06830}.b-morph{background:linear-gradient(90deg,#fde8d8,#d6e8f0);color:#7a5a40}.b-scatter{background:#e8ddf5;color:#7a5a90}.b-bar{background:#d6e8f0;color:#3d7a94}.b-pop{background:#e3f0e3;color:#3d7a4a}.b-reveal{background:#fce4e4;color:#b84040}
 .sc h3{font-family:'Source Serif 4',serif;font-size:1.02rem;font-weight:600;margin-bottom:.35rem;line-height:1.3}
@@ -221,6 +221,32 @@ function hideAxes(dur=600){const t=d3.transition().duration(dur).ease(d3.easeCub
 function clearFx(dur=400){const timer=fxG.datum();if(timer&&typeof timer.stop==='function')timer.stop();fxG.selectAll("*").transition().duration(dur).attr("opacity",0).remove()}
 function clearAnnot(dur=400){annotG.selectAll("*").transition().duration(dur).attr("opacity",0).remove()}
 
+// Smart label placement: tries 4 directions to avoid colliding with circles
+function smartLabelPos(circles){
+  // circles: [{x,y,r,name}]
+  // Returns map name→{lx,ly,anchor}
+  const result={};
+  circles.forEach(c=>{
+    const candidates=[
+      {lx:c.x,       ly:c.y-c.r-7,  anchor:"middle"},   // top
+      {lx:c.x+c.r+7, ly:c.y+4,      anchor:"start"},    // right
+      {lx:c.x-c.r-7, ly:c.y+4,      anchor:"end"},      // left
+      {lx:c.x,       ly:c.y+c.r+14, anchor:"middle"},   // bottom
+    ];
+    let best=candidates[0];
+    for(const cand of candidates){
+      const collides=circles.some(o=>{
+        if(o.name===c.name)return false;
+        const dx=cand.lx-o.x,dy=cand.ly-o.y;
+        return Math.sqrt(dx*dx+dy*dy)<o.r+9;
+      });
+      if(!collides){best=cand;break;}
+    }
+    result[c.name]={lx:best.lx,ly:best.ly,anchor:best.anchor};
+  });
+  return result;
+}
+
 // Helper: transition a path element to target path string
 function morphTo(el,target,dur,delay,ease){
   const cur=getCur(el);
@@ -299,8 +325,14 @@ function s3(){
   showAxes("scatter");clearFx();clearAnnot();bgG.selectAll(".bgc").transition().duration(400).attr("opacity",0);
   ourPaths.each(function(d,i){const r=rSc(d.pop);
     morphTo(this,cP(xLin(d.gdp),yLin(d.life),r),900,i*30).attr("fill",RC[d.region]).attr("stroke","#faf7f2").attr("stroke-width",1.5).attr("opacity",.85)});
-  lblG.selectAll(".cl").each(function(d,i){const r=rSc(d.pop);
-    d3.select(this).transition().duration(900).delay(i*30+300).attr("x",xLin(d.gdp)).attr("y",yLin(d.life)-r-7).attr("font-size","8.5px").attr("font-weight","600").attr("opacity",.8).text(d.name)});
+  // Smart label placement — avoid overlapping bubbles
+  const scCircles=DATA.map(d=>({name:d.name,x:xLin(d.gdp),y:yLin(d.life),r:rSc(d.pop)}));
+  const scPos=smartLabelPos(scCircles);
+  lblG.selectAll(".cl").each(function(d,i){
+    const p=scPos[d.name]||{lx:xLin(d.gdp),ly:yLin(d.life)-rSc(d.pop)-7,anchor:"middle"};
+    d3.select(this).transition().duration(900).delay(i*30+300)
+      .attr("x",p.lx).attr("y",p.ly).attr("text-anchor",p.anchor)
+      .attr("font-size","8.5px").attr("font-weight","600").attr("opacity",.85).text(d.name)});
   // Annotation: curve insight
   setTimeout(()=>{
     // Steep zone annotation (low income)
@@ -325,7 +357,13 @@ function s4(){
   showAxes("scatter");clearAnnot(0);
   ourPaths.each(function(d){const isUSA=d.name==="USA";
     d3.select(this).transition().duration(600).attr("opacity",isUSA?1:.18).attr("stroke",isUSA?"#b84040":"#faf7f2").attr("stroke-width",isUSA?3:1)});
-  lblG.selectAll(".cl").each(function(d){d3.select(this).transition().duration(600).attr("opacity",d.name==="USA"?1:.1)});
+  // Re-apply smart scatter positions before fading
+  const scCircles4=DATA.map(d=>({name:d.name,x:xLin(d.gdp),y:yLin(d.life),r:rSc(d.pop)}));
+  const scPos4=smartLabelPos(scCircles4);
+  lblG.selectAll(".cl").each(function(d){
+    const p=scPos4[d.name]||{lx:xLin(d.gdp),ly:yLin(d.life)-rSc(d.pop)-7,anchor:"middle"};
+    d3.select(this).attr("x",p.lx).attr("y",p.ly).attr("text-anchor",p.anchor)
+      .transition().duration(600).attr("opacity",d.name==="USA"?1:.08)});
   clearFx(0);
   const usa=DATA[0],ux=xLin(usa.gdp),uy=yLin(usa.life),ur=rSc(usa.pop);
   function pulse(){fxG.append("circle").attr("cx",ux).attr("cy",uy).attr("r",ur).attr("fill","none").attr("stroke","#b84040").attr("stroke-width",2).attr("opacity",.6)
@@ -397,10 +435,33 @@ function s7(){
   hideAxes();clearFx();clearAnnot();
   ourPaths.each(function(d,i){const n=packN[d.name];if(!n)return;
     morphTo(this,cP(n.x,n.y,n.r),1200,i*50,d3.easeElasticOut.amplitude(1).period(.5)).attr("fill",RC[d.region]).attr("stroke","#faf7f2").attr("stroke-width",1.5).attr("opacity",.85)});
-  lblG.selectAll(".cl").each(function(d,i){const n=packN[d.name];if(!n)return;const inside=n.r>25;
-    d3.select(this).transition().duration(1000).delay(i*50+500).attr("x",n.x).attr("y",inside?n.y+4:n.y-n.r-8)
-      .attr("font-size",inside?"11px":"7.5px").attr("font-weight","600").attr("fill",inside?"#fff":RC[d.region]).attr("opacity",.9)
-      .text(d.name+(inside?` ${d.pop}M`:''))});
+  // Smart label placement for bubbles
+  const bCircles=DATA.map(d=>{const n=packN[d.name]||{x:0,y:0,r:0};return{name:d.name,x:n.x,y:n.y,r:n.r}});
+  const bPos=smartLabelPos(bCircles);
+  lblG.selectAll(".cl").each(function(d,i){
+    const n=packN[d.name];if(!n)return;
+    const inside=n.r>28;
+    if(inside){
+      // Large bubble: label inside, white text, pop count
+      d3.select(this).transition().duration(1000).delay(i*50+500)
+        .attr("x",n.x).attr("y",n.y+4).attr("text-anchor","middle")
+        .attr("font-size",n.r>60?"12px":"10px").attr("font-weight","700")
+        .attr("fill","#fff").attr("opacity",.95).text(`${d.name} ${d.pop}M`);
+    }else{
+      // Small bubble: smart outside placement, color-matched
+      const p=bPos[d.name]||{lx:n.x,ly:n.y-n.r-8,anchor:"middle"};
+      d3.select(this).transition().duration(1000).delay(i*50+500)
+        .attr("x",p.lx).attr("y",p.ly).attr("text-anchor",p.anchor)
+        .attr("font-size","8px").attr("font-weight","600")
+        .attr("fill",RC[d.region]).attr("opacity",.9).text(d.name);
+      // Leader line from label to bubble edge
+      annotG.append("line")
+        .attr("x1",n.x).attr("y1",n.y-(n.r+1))
+        .attr("x2",p.lx).attr("y2",p.ly+3)
+        .attr("stroke",RC[d.region]).attr("stroke-width",.7).attr("opacity",0)
+        .transition().delay(i*50+700).duration(400).attr("opacity",.35);
+    }
+  });
   // Annotation: India+China share
   setTimeout(()=>{
     const indChina=DATA.filter(d=>d.name==="India"||d.name==="China").reduce((s,d)=>s+d.pop,0);
