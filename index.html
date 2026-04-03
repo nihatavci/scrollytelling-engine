@@ -52,7 +52,26 @@ html{scroll-behavior:smooth}body{font-family:'DM Sans',sans-serif;background:var
 .axis text{font-family:'DM Sans',sans-serif;font-size:11px;fill:var(--muted)}
 .axis line,.axis path{stroke:#ddd8d0}.grid line{stroke:#e6e1da;stroke-dasharray:2 3;stroke-opacity:.6}.grid path{stroke:none}
 
-@media(max-width:900px){.scrolly__graphic{padding:.75rem 1rem;height:55vh}.scrolly__steps{width:100%;margin:0;margin-top:0;padding:0 1rem;pointer-events:auto}.step:first-child{padding-top:2rem}.step{min-height:60vh;padding:1.5rem 0}.sc{max-width:100%}.viz-header,#viz,.viz-source{max-width:100%}.viz-title{font-size:1.2rem}}
+/* ── Mobile: Flourish-style full-screen chart + card at bottom ── */
+@media(max-width:768px){
+  .scrolly__graphic{height:100vh;padding:.5rem .75rem .75rem;justify-content:flex-start}
+  .viz-header{margin-bottom:.2rem}
+  .viz-title{font-size:1rem;line-height:1.2}
+  .viz-sub{font-size:.7rem}
+  .viz-legend{gap:.6rem;margin-top:.2rem}
+  .lg{font-size:.66rem}
+  .viz-source{font-size:.56rem}
+  #viz,#viz svg{display:block;width:100%}
+  /* Steps overlay from bottom, not below */
+  .scrolly__steps{width:100%;margin-left:0;margin-right:0;margin-top:-100vh;padding:0;pointer-events:none}
+  .step{min-height:100vh;padding:0;align-items:flex-end;padding-bottom:1.8rem}
+  .step:first-child{padding-top:0;min-height:100vh}
+  .step:last-child{margin-bottom:40vh}
+  /* Card: slim, full-width, sits at bottom */
+  .sc{max-width:calc(100% - 2rem);margin:0 1rem;padding:.9rem 1.1rem;border-radius:10px;pointer-events:auto}
+  .sc h3{font-size:.92rem;margin-bottom:.1rem}
+  .badge{font-size:.52rem;margin-bottom:.35rem}
+}
 </style>
 </head>
 <body>
@@ -117,8 +136,28 @@ const sorted=[...DATA].sort((a,b)=>b.gdp-a.gdp);
 const totalPop=DATA.reduce((s,d)=>s+d.pop,0);
 
 const M={top:16,right:24,bottom:52,left:60},W=900,H=500,w=W-M.left-M.right,h=H-M.top-M.bottom;
-const svg=d3.select("#viz").append("svg").attr("viewBox",`0 0 ${W} ${H}`);
+const svg=d3.select("#viz").append("svg").attr("viewBox",`0 0 ${W} ${H}`).attr("preserveAspectRatio","xMidYMid meet");
 const g=svg.append("g").attr("transform",`translate(${M.left},${M.top})`);
+
+// ── Mobile smart zoom: per-state viewBox ──────────────────────────────────
+// On mobile each state zooms into the relevant region so content fills screen
+const FULL=`0 0 ${W} ${H}`;
+const MOBILE_VIEWS=[
+  FULL,             // s0: world map — full
+  FULL,             // s1: highlight — full
+  "60 15 790 470",  // s2: circles — slight crop margins
+  FULL,             // s3: scatter — need axes full
+  "255 5 650 340",  // s4: USA paradox — zoom to high-income cluster
+  FULL,             // s5: bars — need full width
+  FULL,             // s6: sorted bars — full
+  "20 10 870 490",  // s7: bubbles — slight crop
+  "185 25 540 455", // s8: donut — zoom to ring
+  "55 20 800 470",  // s9: split donuts — slight zoom
+];
+function setView(idx,dur=650){
+  const vb=window.innerWidth<=768?MOBILE_VIEWS[idx]:FULL;
+  svg.transition().duration(dur).ease(d3.easeCubicInOut).attr("viewBox",vb);
+}
 const bgG=g.append("g"),gridG=g.append("g"),axXG=g.append("g").attr("transform",`translate(0,${h})`),axYG=g.append("g");
 const fxG=g.append("g"),dataG=g.append("g"),lblG=g.append("g"),annotG=g.append("g");
 
@@ -268,6 +307,7 @@ function addAnnotBox(x,y,lines,color){
 }
 
 function s0(){
+  setView(0);
   document.getElementById("title").textContent="GDP per Capita — World View, 2025";
   document.getElementById("subtitle").textContent="Nominal USD · IMF October 2025 projections";
   hideAxes();clearFx();clearAnnot();bgG.selectAll(".bgc").transition().duration(700).attr("opacity",.55);
@@ -284,6 +324,7 @@ function s0(){
   },800);
 }
 function s1(){
+  setView(1);
   document.getElementById("title").textContent="15 Countries, 4.8 Billion People";
   document.getElementById("subtitle").textContent="60% of humanity — the full economic spectrum";
   hideAxes();clearFx();clearAnnot();bgG.selectAll(".bgc").transition().duration(600).attr("opacity",.1);
@@ -301,6 +342,7 @@ function s1(){
   },600);
 }
 function s2(){
+  setView(2);
   document.getElementById("title").textContent="From Borders to Bubbles";
   document.getElementById("subtitle").textContent="Geographic shapes morph into population-sized circles";
   hideAxes();clearFx();clearAnnot();bgG.selectAll(".bgc").transition().duration(500).attr("opacity",.04);
@@ -320,6 +362,7 @@ function s2(){
   },400);
 }
 function s3(){
+  setView(3);
   document.getElementById("title").textContent="The Preston Curve, 2025";
   document.getElementById("subtitle").textContent="GDP per capita vs life expectancy at birth";
   showAxes("scatter");clearFx();clearAnnot();bgG.selectAll(".bgc").transition().duration(400).attr("opacity",0);
@@ -352,6 +395,7 @@ function s3(){
   },600);
 }
 function s4(){
+  setView(4);
   document.getElementById("title").textContent="America's Paradox";
   document.getElementById("subtitle").textContent="Richest nation, but shorter lives than much poorer countries";
   showAxes("scatter");clearAnnot(0);
@@ -375,6 +419,7 @@ function s4(){
   annotG.append("text").attr("x",xLin(jpn.gdp)+12).attr("y",yLin(jpn.life)-rSc(jpn.pop)-10).attr("text-anchor","start").attr("font-family","DM Sans").attr("font-size","9px").attr("fill","#5d8fa8").attr("font-weight","600").attr("opacity",0).text("Japan: $34k → 84.8 yr").transition().delay(1000).duration(600).attr("opacity",.7);
 }
 function s5(){
+  setView(5);
   document.getElementById("title").textContent="The Income Ladder";
   document.getElementById("subtitle").textContent="Circles morph to bars — GDP per capita sorted";
   clearFx();clearAnnot();showAxes("bar",900);bgG.selectAll(".bgc").transition().duration(300).attr("opacity",0);
@@ -399,6 +444,7 @@ function s5(){
   },800);
 }
 function s6(){
+  setView(6);
   document.getElementById("title").textContent="The Global Income Staircase";
   document.getElementById("subtitle").textContent="From $85k (USA) to $1.6k (Nigeria) — a 53× gap";
   clearFx();clearAnnot();showAxes("bar",600);
@@ -430,6 +476,7 @@ function s6(){
   },500);
 }
 function s7(){
+  setView(7);
   document.getElementById("title").textContent="Population Changes Everything";
   document.getElementById("subtitle").textContent="Circle size = population · India & China dwarf the rest";
   hideAxes();clearFx();clearAnnot();
@@ -475,6 +522,7 @@ function s7(){
   },800);
 }
 function s8(){
+  setView(8);
   document.getElementById("title").textContent="The World in a Ring";
   document.getElementById("subtitle").textContent="Share of population · Total: "+totalPop.toLocaleString()+"M";
   hideAxes();clearFx();clearAnnot(0);
@@ -491,6 +539,7 @@ function s8(){
   annotG.append("text").attr("x",cx).attr("y",cy+16).attr("text-anchor","middle").attr("font-family","DM Sans").attr("font-size","11px").attr("fill","var(--muted)").attr("opacity",0).text("people").transition().delay(1000).duration(600).attr("opacity",.6);
 }
 function s9(){
+  setView(9);
   document.getElementById("title").textContent="Four Worlds Within One";
   document.getElementById("subtitle").textContent="Each region's population — Asia dominates with 3.3 billion";
   hideAxes();clearFx();clearAnnot(0);
