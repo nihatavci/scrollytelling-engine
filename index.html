@@ -294,11 +294,16 @@ function smartLabelPos(circles){
 }
 
 // Helper: transition a path element to target path string
+// easeCubicOut = starts fast (rushes past "jeton" rectangular phase), lands smoothly
 function morphTo(el,target,dur,delay,ease){
   const cur=getCur(el);
-  d3.select(el).transition().duration(dur).ease(ease||d3.easeCubicInOut).delay(delay||0)
+  d3.select(el).transition().duration(dur).ease(ease||d3.easeCubicOut).delay(delay||0)
     .attrTween("d",()=>si(cur,target));
   return d3.select(el);
+}
+// Cleanup extra bubble population labels (cl-pop-*) left by s7
+function clearPopLabels(dur=300){
+  lblG.selectAll("text[class*='cl-pop']").transition().duration(dur).attr("opacity",0).remove();
 }
 
 function addAnnotBox(x,y,lines,color){
@@ -331,7 +336,8 @@ function s0(){
   setView(0);
   document.getElementById("title").textContent="GDP per Capita — World View, 2025";
   document.getElementById("subtitle").textContent="Nominal USD · IMF October 2025 projections";
-  hideAxes();clearFx();clearAnnot();bgG.selectAll(".bgc").transition().duration(700).attr("opacity",.55);
+  hideAxes();clearFx();clearAnnot();clearPopLabels();
+  bgG.selectAll(".bgc").transition().duration(700).attr("opacity",.55);
   fadeToMap(ourPaths,d=>mapPS[d.id],d=>RC[d.region]);
   ourPaths.attr("stroke","#faf7f2").attr("stroke-width",.8);
   lblG.selectAll(".cl").transition().duration(500).attr("opacity",0).attr("font-size","0px");
@@ -348,11 +354,29 @@ function s1(){
   setView(1);
   document.getElementById("title").textContent="15 Countries, 4.8 Billion People";
   document.getElementById("subtitle").textContent="60% of humanity — the full economic spectrum";
-  hideAxes();clearFx();clearAnnot();bgG.selectAll(".bgc").transition().duration(600).attr("opacity",.1);
+  hideAxes();clearFx();clearAnnot();clearPopLabels();
+  bgG.selectAll(".bgc").transition().duration(600).attr("opacity",.1);
   fadeToMap(ourPaths,d=>mapPS[d.id],d=>RC[d.region]);
   ourPaths.attr("stroke","#faf7f2").attr("stroke-width",2);
-  lblG.selectAll(".cl").each(function(d){const f=allFeatures.find(f=>f.id===d.id);if(!f)return;const c=pathGen.centroid(f);
-    d3.select(this).transition().duration(800).attr("x",c[0]).attr("y",c[1]-14).attr("font-size","9px").attr("font-weight","600").attr("opacity",.85)});
+  // Smart map labels: show only for countries large enough to read without overlap
+  lblG.selectAll(".cl").each(function(d){
+    const f=allFeatures.find(f=>f.id===d.id);if(!f)return;
+    const b=pathGen.bounds(f);
+    const bw=b[1][0]-b[0][0], bh=b[1][1]-b[0][1];
+    const minDim=Math.min(bw,bh);
+    const c=pathGen.centroid(f);
+    if(minDim<22||!isFinite(c[0])){
+      // Too small or no centroid (Indonesia scatter etc.) — hide label
+      d3.select(this).transition().duration(500).attr("opacity",0).attr("font-size","0px");
+    } else {
+      const fs=minDim>80?"11px":minDim>40?"9px":"8px";
+      d3.select(this).transition().duration(800)
+        .attr("x",c[0]).attr("y",c[1]+3)
+        .attr("text-anchor","middle").attr("dominant-baseline","middle")
+        .attr("font-size",fs).attr("font-weight","700")
+        .attr("fill","#fff").attr("opacity",.9).text(d.name);
+    }
+  });
   // Annotation: coverage stats
   setTimeout(()=>{
     addAnnotBox(12, 28, [
@@ -366,7 +390,8 @@ function s2(){
   setView(2);
   document.getElementById("title").textContent="From Borders to Bubbles";
   document.getElementById("subtitle").textContent="Geographic shapes morph into population-sized circles";
-  hideAxes();clearFx();clearAnnot();bgG.selectAll(".bgc").transition().duration(500).attr("opacity",.04);
+  hideAxes();clearFx();clearAnnot();clearPopLabels();
+  bgG.selectAll(".bgc").transition().duration(500).attr("opacity",.04);
   ourPaths.each(function(d,i){const r=rSc(d.pop);const col=i%5,row=Math.floor(i/5);
     const px=80+col*((w-140)/4),py=70+row*((h-100)/2);
     morphTo(this,cP(px,py,r),1200,i*50).attr("fill",RC[d.region]).attr("stroke","#faf7f2").attr("stroke-width",1.5).attr("opacity",.85)});
@@ -386,7 +411,8 @@ function s3(){
   setView(3);
   document.getElementById("title").textContent="The Preston Curve, 2025";
   document.getElementById("subtitle").textContent="GDP per capita vs life expectancy at birth";
-  showAxes("scatter");clearFx();clearAnnot();bgG.selectAll(".bgc").transition().duration(400).attr("opacity",0);
+  showAxes("scatter");clearFx();clearAnnot();clearPopLabels();
+  bgG.selectAll(".bgc").transition().duration(400).attr("opacity",0);
   ourPaths.each(function(d,i){const r=rSc(d.pop);
     morphTo(this,cP(xLin(d.gdp),yLin(d.life),r),900,i*30).attr("fill",RC[d.region]).attr("stroke","#faf7f2").attr("stroke-width",1.5).attr("opacity",.85)});
   // Smart label placement — avoid overlapping bubbles, Flourish-style tight labels
@@ -419,7 +445,7 @@ function s3(){
   },600);
 }
 function s4(){
-  setView(4);
+  setView(4);clearPopLabels();
   document.getElementById("title").textContent="America's Paradox";
   document.getElementById("subtitle").textContent="Richest nation, but shorter lives than much poorer countries";
   showAxes("scatter");clearAnnot(0);
@@ -447,7 +473,7 @@ function s5(){
   setView(5);
   document.getElementById("title").textContent="The Income Ladder";
   document.getElementById("subtitle").textContent="Circles morph to bars — GDP per capita sorted";
-  clearFx();clearAnnot();showAxes("bar",900);bgG.selectAll(".bgc").transition().duration(300).attr("opacity",0);
+  clearFx();clearAnnot();clearPopLabels();showAxes("bar",900);bgG.selectAll(".bgc").transition().duration(300).attr("opacity",0);
   ourPaths.each(function(d,i){const bx=xBand(d.name);if(bx===undefined)return;
     morphTo(this,rP(bx,yBar(d.gdp),xBand.bandwidth(),h-yBar(d.gdp),4),1100,i*45).attr("fill",RC[d.region]).attr("stroke","none").attr("opacity",.85)});
   lblG.selectAll(".cl").each(function(d){const bx=xBand(d.name);if(bx===undefined)return;
@@ -472,7 +498,7 @@ function s6(){
   setView(6);
   document.getElementById("title").textContent="The Global Income Staircase";
   document.getElementById("subtitle").textContent="From $85k (USA) to $1.6k (Nigeria) — a 53× gap";
-  clearFx();clearAnnot();showAxes("bar",600);
+  clearFx();clearAnnot();clearPopLabels();showAxes("bar",600);
   ourPaths.each(function(d,i){const bx=xBand(d.name);if(bx===undefined)return;
     morphTo(this,rP(bx,yBar(d.gdp),xBand.bandwidth(),h-yBar(d.gdp),4),800,i*25).attr("opacity",.88)});
   lblG.selectAll(".cl").each(function(d){const bx=xBand(d.name);if(bx===undefined)return;
@@ -564,7 +590,7 @@ function s7(){
   },800);
 }
 function s8(){
-  setView(8);
+  setView(8);clearPopLabels();
   document.getElementById("title").textContent="The World in a Ring";
   document.getElementById("subtitle").textContent="Share of population · Total: "+totalPop.toLocaleString()+"M";
   hideAxes();clearFx();clearAnnot(0);
@@ -581,7 +607,7 @@ function s8(){
   annotG.append("text").attr("x",cx).attr("y",cy+16).attr("text-anchor","middle").attr("font-family","DM Sans").attr("font-size","11px").attr("fill","var(--muted)").attr("opacity",0).text("people").transition().delay(1000).duration(600).attr("opacity",.6);
 }
 function s9(){
-  setView(9);
+  setView(9);clearPopLabels();
   document.getElementById("title").textContent="Four Worlds Within One";
   document.getElementById("subtitle").textContent="Each region's population — Asia dominates with 3.3 billion";
   hideAxes();clearFx();clearAnnot(0);
