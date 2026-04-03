@@ -36,13 +36,12 @@ html{scroll-behavior:smooth}body{font-family:'DM Sans',sans-serif;background:var
 .scrolly__steps{position:relative;z-index:2;width:380px;margin-left:auto;margin-right:2.5rem;margin-top:-100vh;pointer-events:none}
 .step{min-height:100vh;display:flex;align-items:center;padding:3rem 0;pointer-events:auto}
 .step:first-child{padding-top:48vh}.step:last-child{margin-bottom:55vh}
-.sc{background:rgba(255,255,255,.78);border-radius:12px;padding:1.6rem 2rem;border:1px solid rgba(220,214,206,.7);border-left:3px solid transparent;transition:all .55s cubic-bezier(.23,1,.32,1);opacity:.06;transform:translateY(14px);max-width:370px;box-shadow:0 2px 14px rgba(42,35,32,.06)}
-.step.is-active .sc{opacity:1;transform:translateY(0);border-left-color:var(--accent);background:rgba(255,255,255,.88);box-shadow:0 4px 22px rgba(42,35,32,.09)}
-.badge{display:inline-block;font-size:.58rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;padding:.14rem .5rem;border-radius:20px;margin-bottom:.55rem}
+/* ── Card: Flourish-style — clean white, centered, no border accent ── */
+.sc{background:rgba(255,255,255,.91);border-radius:16px;padding:1.05rem 1.5rem 1.15rem;border:none;transition:all .5s cubic-bezier(.23,1,.32,1);opacity:.06;transform:translateY(12px);max-width:360px;box-shadow:0 4px 28px rgba(0,0,0,.10);text-align:center}
+.step.is-active .sc{opacity:1;transform:translateY(0);background:rgba(255,255,255,.94);box-shadow:0 6px 32px rgba(0,0,0,.12)}
+.badge{display:inline-block;font-size:.52rem;font-weight:600;letter-spacing:.07em;text-transform:uppercase;padding:.1rem .45rem;border-radius:20px;margin-bottom:.4rem;opacity:.75}
 .b-map{background:#fde8d8;color:#c06830}.b-morph{background:linear-gradient(90deg,#fde8d8,#d6e8f0);color:#7a5a40}.b-scatter{background:#e8ddf5;color:#7a5a90}.b-bar{background:#d6e8f0;color:#3d7a94}.b-pop{background:#e3f0e3;color:#3d7a4a}.b-reveal{background:#fce4e4;color:#b84040}
-.sc h3{font-family:'Source Serif 4',serif;font-size:1.02rem;font-weight:600;margin-bottom:.35rem;line-height:1.3}
-.sc p{font-size:.83rem;color:var(--muted);line-height:1.65}
-.sc em{color:var(--accent);font-style:normal;font-weight:500}
+.sc h3{font-family:'DM Sans',sans-serif;font-size:1rem;font-weight:400;line-height:1.5;color:var(--text);margin:0}
 
 .outro{text-align:center;padding:6rem 2rem 8rem;max-width:580px;margin:0 auto}
 .outro h2{font-family:'Source Serif 4',serif;font-size:1.6rem;font-weight:700;margin-bottom:.55rem}
@@ -72,10 +71,10 @@ html{scroll-behavior:smooth}body{font-family:'DM Sans',sans-serif;background:var
   .step:first-child{min-height:100vh}
   .step:last-child{margin-bottom:50vh}
 
-  /* Card: sits at bottom of viewport, semi-transparent */
-  .sc{max-width:calc(100% - 2rem);width:calc(100% - 2rem);margin:0 1rem;padding:.85rem 1.1rem;border-radius:10px;pointer-events:auto}
-  .sc h3{font-size:.88rem;margin-bottom:.1rem}
-  .badge{font-size:.5rem;margin-bottom:.3rem}
+  /* Card: sits at bottom of viewport, clean Flourish style */
+  .sc{max-width:calc(100% - 2rem);width:calc(100% - 2rem);margin:0 1rem;padding:.85rem 1.2rem 1rem;border-radius:14px;pointer-events:auto}
+  .sc h3{font-size:.88rem}
+  .badge{font-size:.48rem}
 }
 </style>
 </head>
@@ -390,14 +389,17 @@ function s3(){
   showAxes("scatter");clearFx();clearAnnot();bgG.selectAll(".bgc").transition().duration(400).attr("opacity",0);
   ourPaths.each(function(d,i){const r=rSc(d.pop);
     morphTo(this,cP(xLin(d.gdp),yLin(d.life),r),900,i*30).attr("fill",RC[d.region]).attr("stroke","#faf7f2").attr("stroke-width",1.5).attr("opacity",.85)});
-  // Smart label placement — avoid overlapping bubbles
+  // Smart label placement — avoid overlapping bubbles, Flourish-style tight labels
   const scCircles=DATA.map(d=>({name:d.name,x:xLin(d.gdp),y:yLin(d.life),r:rSc(d.pop)}));
   const scPos=smartLabelPos(scCircles);
   lblG.selectAll(".cl").each(function(d,i){
-    const p=scPos[d.name]||{lx:xLin(d.gdp),ly:yLin(d.life)-rSc(d.pop)-7,anchor:"middle"};
+    const p=scPos[d.name]||{lx:xLin(d.gdp),ly:yLin(d.life)-rSc(d.pop)-6,anchor:"middle"};
     d3.select(this).transition().duration(900).delay(i*30+300)
       .attr("x",p.lx).attr("y",p.ly).attr("text-anchor",p.anchor)
-      .attr("font-size","8.5px").attr("font-weight","600").attr("opacity",.85).text(d.name)});
+      .attr("dominant-baseline","auto")
+      .attr("font-size","8px").attr("font-weight","600")
+      .attr("fill",RC[d.region])  // color matches dot, Flourish-style
+      .attr("opacity",.9).text(d.name)});
   // Annotation: curve insight
   setTimeout(()=>{
     // Steep zone annotation (low income)
@@ -427,8 +429,9 @@ function s4(){
   const scCircles4=DATA.map(d=>({name:d.name,x:xLin(d.gdp),y:yLin(d.life),r:rSc(d.pop)}));
   const scPos4=smartLabelPos(scCircles4);
   lblG.selectAll(".cl").each(function(d){
-    const p=scPos4[d.name]||{lx:xLin(d.gdp),ly:yLin(d.life)-rSc(d.pop)-7,anchor:"middle"};
+    const p=scPos4[d.name]||{lx:xLin(d.gdp),ly:yLin(d.life)-rSc(d.pop)-6,anchor:"middle"};
     d3.select(this).attr("x",p.lx).attr("y",p.ly).attr("text-anchor",p.anchor)
+      .attr("fill",d.name==="USA"?"#b84040":RC[d.region])
       .transition().duration(600).attr("opacity",d.name==="USA"?1:.08)});
   clearFx(0);
   const usa=DATA[0],ux=xLin(usa.gdp),uy=yLin(usa.life),ur=rSc(usa.pop);
@@ -504,31 +507,48 @@ function s7(){
   hideAxes();clearFx();clearAnnot();
   ourPaths.each(function(d,i){const n=packN[d.name];if(!n)return;
     morphTo(this,cP(n.x,n.y,n.r),1200,i*50,d3.easeElasticOut.amplitude(1).period(.5)).attr("fill",RC[d.region]).attr("stroke","#faf7f2").attr("stroke-width",1.5).attr("opacity",.85)});
-  // Smart label placement for bubbles
+  // Flourish-style bubble labels: inside=white centered, small=outside colored, tiny=hidden
   const bCircles=DATA.map(d=>{const n=packN[d.name]||{x:0,y:0,r:0};return{name:d.name,x:n.x,y:n.y,r:n.r}});
   const bPos=smartLabelPos(bCircles);
   lblG.selectAll(".cl").each(function(d,i){
     const n=packN[d.name];if(!n)return;
-    const inside=n.r>28;
-    if(inside){
-      // Large bubble: label inside, white text, pop count
-      d3.select(this).transition().duration(1000).delay(i*50+500)
-        .attr("x",n.x).attr("y",n.y+4).attr("text-anchor","middle")
-        .attr("font-size",n.r>60?"12px":"10px").attr("font-weight","700")
-        .attr("fill","#fff").attr("opacity",.95).text(`${d.name} ${d.pop}M`);
-    }else{
-      // Small bubble: smart outside placement, color-matched
-      const p=bPos[d.name]||{lx:n.x,ly:n.y-n.r-8,anchor:"middle"};
-      d3.select(this).transition().duration(1000).delay(i*50+500)
-        .attr("x",p.lx).attr("y",p.ly).attr("text-anchor",p.anchor)
-        .attr("font-size","8px").attr("font-weight","600")
-        .attr("fill",RC[d.region]).attr("opacity",.9).text(d.name);
-      // Leader line from label to bubble edge
-      annotG.append("line")
-        .attr("x1",n.x).attr("y1",n.y-(n.r+1))
-        .attr("x2",p.lx).attr("y2",p.ly+3)
-        .attr("stroke",RC[d.region]).attr("stroke-width",.7).attr("opacity",0)
-        .transition().delay(i*50+700).duration(400).attr("opacity",.35);
+    const sel=d3.select(this).transition().duration(900).delay(i*50+500);
+    if(n.r>=30){
+      // Large: label + population inside, always white
+      const fs=n.r>90?"14px":n.r>55?"12px":n.r>38?"10px":"9px";
+      const twoLine=n.r>55;
+      sel.attr("x",n.x).attr("y",twoLine?n.y-6:n.y+4)
+        .attr("text-anchor","middle").attr("dominant-baseline","middle")
+        .attr("font-size",fs).attr("font-weight","700")
+        .attr("fill","rgba(255,255,255,0.95)").attr("opacity",1)
+        .text(twoLine?`${d.name}`:`${d.name} ${d.pop}M`);
+      if(twoLine){
+        // second line for very large bubbles
+        const sub=lblG.selectAll(`.cl-pop-${d.id}`).data([d]);
+        sub.enter().append("text").attr("class",`cl-pop-${d.id}`)
+          .attr("text-anchor","middle").attr("font-family","DM Sans")
+          .attr("x",n.x).attr("y",n.y+12).attr("opacity",0)
+          .transition().delay(i*50+700).duration(900)
+          .attr("font-size",n.r>90?"11px":"9px").attr("fill","rgba(255,255,255,0.75)").attr("font-weight","400")
+          .attr("opacity",.8).text(`${d.pop}M`);
+      }
+    } else if(n.r>=16){
+      // Medium: name only inside, white
+      sel.attr("x",n.x).attr("y",n.y+3.5)
+        .attr("text-anchor","middle").attr("dominant-baseline","middle")
+        .attr("font-size","8px").attr("font-weight","700")
+        .attr("fill","rgba(255,255,255,0.92)").attr("opacity",1)
+        .text(d.name);
+    } else if(n.r>=10){
+      // Small: name outside, smart pos, region color
+      const p=bPos[d.name]||{lx:n.x,ly:n.y-n.r-7,anchor:"middle"};
+      sel.attr("x",p.lx).attr("y",p.ly).attr("text-anchor",p.anchor)
+        .attr("dominant-baseline","auto")
+        .attr("font-size","7.5px").attr("font-weight","600")
+        .attr("fill",RC[d.region]).attr("opacity",.85).text(d.name);
+    } else {
+      // Too small: hide
+      sel.attr("opacity",0).attr("font-size","0px");
     }
   });
   // Annotation: India+China share
