@@ -22,7 +22,7 @@
 
 <!-- General meta -->
 <meta name="description" content="Preston Eğrisi üzerinden zenginlik ve yaşam süresi ilişkisini keşfeden interaktif veri görselleştirmesi. D3.js ile scrollytelling.">
-<meta name="author" content="INFLOW Network">
+<meta name="author" content="Scrolli Labs">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
 <script src="https://unpkg.com/topojson-client@3"></script>
 <script src="https://unpkg.com/flubber@0.4.2/build/flubber.min.js"></script>
@@ -34,7 +34,7 @@ html{scroll-behavior:smooth}body{font-family:'DM Sans',sans-serif;background:var
 .progress{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,#c06830,#5d8fa8);z-index:999;transition:width .2s;border-radius:0 2px 2px 0}
 
 /* ── Hero ── */
-.hero{height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2rem 2rem 4rem;position:relative;z-index:3;background:var(--bg)}
+.hero{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:1.5rem 2rem 2rem;position:relative;z-index:3;background:var(--bg)}
 .hero h1{font-family:'Source Serif 4',serif;font-size:clamp(2.2rem,5.5vw,3.8rem);font-weight:700;letter-spacing:-.025em;line-height:1.1;margin-bottom:.8rem;max-width:650px}
 .hero h1 span{color:var(--accent)}
 .hero p{font-size:1.05rem;color:var(--muted);max-width:520px;line-height:1.65}
@@ -90,8 +90,32 @@ html{scroll-behavior:smooth}body{font-family:'DM Sans',sans-serif;background:var
 .outro .final-line{font-size:1.25rem;font-weight:600;color:var(--accent);font-style:italic;margin-top:2rem;line-height:1.6}
 .outro .source-block{margin-top:3rem;padding-top:2rem;border-top:1px solid #e6e1da;font-family:'DM Sans',sans-serif;font-size:.78rem;color:var(--muted);line-height:1.6}
 
+/* ── Cinematic Intro ── */
+.cin-intro{position:relative;width:100%;height:100vh;overflow:hidden;background:#1a1a2e;display:flex;align-items:center;justify-content:center;z-index:10}
+.cin-brand{position:absolute;top:2.5rem;left:50%;transform:translateX(-50%);font-family:'DM Sans',sans-serif;font-size:.72rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:rgba(250,247,242,0.4);opacity:0;animation:cinFadeIn .8s .3s forwards}
+.cin-canvas-wrap{position:absolute;inset:0;z-index:0}
+.cin-canvas-wrap canvas{width:100%;height:100%;display:block}
+.cin-text-layer{position:relative;z-index:2;text-align:center;pointer-events:none}
+.cin-line{font-family:'Source Serif 4',serif;color:#faf7f2;opacity:0;transform:translateY(28px);position:absolute;left:50%;width:max-content;max-width:85vw}
+.cin-l1,.cin-l2{font-size:clamp(1.1rem,2.8vw,1.6rem);font-weight:400;color:rgba(250,247,242,0.7)}
+.cin-l3{font-size:clamp(1.2rem,3vw,1.8rem);font-weight:600;color:#faf7f2}
+.cin-l3 em{font-style:normal;color:#e8a45a;text-decoration:underline;text-decoration-color:rgba(232,164,90,0.4);text-underline-offset:3px}
+.cin-l4{font-size:clamp(1.05rem,2.6vw,1.5rem);font-weight:400;color:rgba(250,247,242,0.65)}
+.cin-l5{font-size:clamp(1.3rem,3.2vw,2rem);font-weight:600;color:#faf7f2;line-height:1.4}
+.cin-l6{font-size:clamp(1.5rem,4vw,2.4rem);font-weight:700;color:#e8a45a;letter-spacing:-.02em}
+.cin-title-layer{position:absolute;z-index:3;text-align:center;opacity:0;transform:scale(0.92);pointer-events:none}
+.cin-main-title{font-family:'Source Serif 4',serif;font-size:clamp(2.4rem,6.5vw,4.2rem);font-weight:700;color:#faf7f2;line-height:1.08;letter-spacing:-.03em;margin-bottom:.6rem}
+.cin-main-title span{color:#e8a45a}
+.cin-sub{font-family:'DM Sans',sans-serif;font-size:clamp(.85rem,1.8vw,1.1rem);color:rgba(250,247,242,0.55);font-weight:400}
+.cin-scroll-cue{position:absolute;bottom:2.5rem;left:50%;transform:translateX(-50%);z-index:4;color:rgba(250,247,242,0.5);font-family:'DM Sans',sans-serif;font-size:.78rem;display:flex;flex-direction:column;align-items:center;gap:.4rem;opacity:0;animation:bob 2s ease-in-out infinite}
+.cin-scroll-cue .arr{width:16px;height:16px;border-right:2px solid #e8a45a;border-bottom:2px solid #e8a45a;transform:rotate(45deg)}
+@keyframes cinFadeIn{to{opacity:1}}
+
 /* ── Mobile ── */
 @media(max-width:768px){
+  .cin-main-title{font-size:clamp(1.8rem,8vw,2.8rem)}
+  .cin-line{max-width:90vw}
+  .cin-brand{font-size:.6rem;top:1.5rem}
   .editorial{padding:2.5rem 1.25rem}
   .editorial p{font-size:1.02rem;line-height:1.75}
   .editorial h2{font-size:1.4rem}
@@ -120,12 +144,31 @@ html{scroll-behavior:smooth}body{font-family:'DM Sans',sans-serif;background:var
 <body>
 <div class="progress" id="prog"></div>
 
-<!-- ════════════════════ HERO ════════════════════ -->
-<section class="hero">
-  <h1>Para <span>Yıl Satın Alabilir mi?</span></h1>
-  <p>1975'te ekonomist Samuel Preston çarpıcı bir eğri keşfetti: zengin ülkeler daha uzun yaşıyor. Ama ilişki göründüğü kadar basit değil. Verinin dönüşümünü izlemek için kaydırın.</p>
+<!-- ════════════════════ CINEMATIC INTRO ════════════════════ -->
+<section class="cin-intro" id="cin-intro">
+  <div class="cin-brand">Scrolli Labs sunar</div>
+  <div class="cin-canvas-wrap"><canvas id="cin-canvas"></canvas></div>
+  <div class="cin-text-layer">
+    <div class="cin-line cin-l1">Japonya: kişi başı $34.000</div>
+    <div class="cin-line cin-l2">ABD: kişi başı $85.000</div>
+    <div class="cin-line cin-l3">Ama Japonya'da insanlar <em>5 yıl daha uzun</em> yaşıyor.</div>
+    <div class="cin-line cin-l4">Nijerya'da bir çocuk, Norveçli bir çocuğun yarısı kadar yaşıyor.</div>
+    <div class="cin-line cin-l5">53 kat daha zengin bir ülke,<br>daha uzun ömür garanti etmiyor.</div>
+    <div class="cin-line cin-l6">Peki ömrü gerçekten ne uzatıyor?</div>
+  </div>
+  <div class="cin-title-layer">
+    <h1 class="cin-main-title">Para <span>Yıl Satın<br>Alabilir mi?</span></h1>
+    <p class="cin-sub">Preston Eğrisi'nin 50 yıllık hikâyesi</p>
+  </div>
+  <div class="cin-scroll-cue" id="cin-cue">
+    <span>Kaydırarak başlayın</span>
+    <div class="arr"></div>
+  </div>
+</section>
+
+<!-- ════════════════════ HERO (post-intro) ════════════════════ -->
+<section class="hero" id="hero-section" style="padding-top:2rem">
   <div class="credit">Veri: IMF World Economic Outlook Ekim 2025 · UN World Population Prospects 2024 · World Bank</div>
-  <div class="cue"><span>Kaydırarak başlayın</span><div class="arr"></div></div>
 </section>
 
 <!-- ════════════════════ EDITORIAL: INTRO ════════════════════ -->
@@ -155,12 +198,12 @@ html{scroll-behavior:smooth}body{font-family:'DM Sans',sans-serif;background:var
     <text x="390" y="21" text-anchor="middle" font-family="DM Sans" font-size="9" font-weight="600" fill="#5d8fa8">Düz bölge</text>
     <text x="390" y="32" text-anchor="middle" font-family="DM Sans" font-size="8" fill="#8c8078">Azalan getiri</text>
     <!-- Country dots -->
-    <circle cx="85" cy="205" r="5" fill="#7db5c8" opacity="0.8"/><text x="85" y="196" text-anchor="middle" font-family="DM Sans" font-size="8" font-weight="600" fill="#7db5c8">Nigeria</text>
-    <circle cx="145" cy="160" r="5" fill="#d4956a" opacity="0.8"/><text x="145" y="151" text-anchor="middle" font-family="DM Sans" font-size="8" font-weight="600" fill="#d4956a">India</text>
-    <circle cx="215" cy="98" r="5" fill="#d4956a" opacity="0.8"/><text x="215" y="89" text-anchor="middle" font-family="DM Sans" font-size="8" font-weight="600" fill="#d4956a">China</text>
-    <circle cx="350" cy="52" r="5" fill="#5d8fa8" opacity="0.8"/><text x="350" y="66" text-anchor="middle" font-family="DM Sans" font-size="8" font-weight="600" fill="#5d8fa8">Germany</text>
-    <circle cx="425" cy="68" r="6" fill="#c06830" opacity="0.8"/><text x="425" y="84" text-anchor="middle" font-family="DM Sans" font-size="9" font-weight="700" fill="#c06830">USA</text>
-    <circle cx="290" cy="48" r="5" fill="#d4956a" opacity="0.8"/><text x="268" y="52" text-anchor="end" font-family="DM Sans" font-size="8" font-weight="600" fill="#d4956a">Japan</text>
+    <circle cx="85" cy="205" r="5" fill="#7db5c8" opacity="0.8"/><text x="85" y="196" text-anchor="middle" font-family="DM Sans" font-size="8" font-weight="600" fill="#7db5c8">Nijerya</text>
+    <circle cx="145" cy="160" r="5" fill="#d4956a" opacity="0.8"/><text x="145" y="151" text-anchor="middle" font-family="DM Sans" font-size="8" font-weight="600" fill="#d4956a">Hindistan</text>
+    <circle cx="215" cy="98" r="5" fill="#d4956a" opacity="0.8"/><text x="215" y="89" text-anchor="middle" font-family="DM Sans" font-size="8" font-weight="600" fill="#d4956a">Çin</text>
+    <circle cx="350" cy="52" r="5" fill="#5d8fa8" opacity="0.8"/><text x="350" y="66" text-anchor="middle" font-family="DM Sans" font-size="8" font-weight="600" fill="#5d8fa8">Almanya</text>
+    <circle cx="425" cy="68" r="6" fill="#c06830" opacity="0.8"/><text x="425" y="84" text-anchor="middle" font-family="DM Sans" font-size="9" font-weight="700" fill="#c06830">ABD</text>
+    <circle cx="290" cy="48" r="5" fill="#d4956a" opacity="0.8"/><text x="268" y="52" text-anchor="end" font-family="DM Sans" font-size="8" font-weight="600" fill="#d4956a">Japonya</text>
   </svg>
 
   <p>Milli gelir ile yaşam süresi arasındaki korelasyon günümüz verilerinde 0,90'a ulaşıyor — son derece yüksek. Ama bu rakam devasa farklılıkları gizliyor. Bazı ülkeler zenginliklerinin öngördüğünden çok daha iyi performans gösterirken, diğerleri bol kaynaklarına rağmen feci biçimde başarısız oluyor. Görünen o ki eğri, hikâyenin sadece başlangıcı.</p>
@@ -246,9 +289,196 @@ html{scroll-behavior:smooth}body{font-family:'DM Sans',sans-serif;background:var
   <p class="final-line">"1975'in Preston Eğrisi'nde hikâye ulusların zenginliğiyle ilgiliydi. 2025'te toplumların dayanıklılığı ve insan zihninin esnekliğiyle ilgili. Artık yılları altınla satın almıyoruz; bilgiyle yetiştiriyoruz."</p>
   <div class="source-block">
     <strong>Kaynaklar:</strong> Preston, S.H. (1975). "The Changing Relation between Mortality and Level of Economic Development." IMF World Economic Outlook, Ekim 2025. UN World Population Prospects 2024. World Bank Development Indicators. Lutz &amp; Kebede, "Education and Health: Redrawing the Preston Curve" (PMC, 2018). Wilkinson &amp; Pickett, "The Spirit Level" (2009). WHO World Health Statistics 2025.<br><br>
-    <strong>Tasarım ve geliştirme:</strong> INFLOW Network · D3.js, Flubber, TopoJSON ile yapıldı
+    <strong>Tasarım ve geliştirme:</strong> Scrolli.co · D3.js, Flubber, TopoJSON ile yapıldı
   </div>
 </section>
+
+<!-- ═══════ CINEMATIC INTRO ENGINE ═══════ -->
+<script>
+(function(){
+  const canvas=document.getElementById("cin-canvas");
+  const ctx=canvas.getContext("2d");
+  let W,H,particles=[],raf,curvePoints=[];
+  const COLORS=["#c06830","#5d8fa8","#d4956a","#7db5c8","#e8a45a","#faf7f2"];
+
+  function resize(){
+    W=canvas.width=canvas.offsetWidth*devicePixelRatio;
+    H=canvas.height=canvas.offsetHeight*devicePixelRatio;
+    ctx.scale(devicePixelRatio,devicePixelRatio);
+    // Recompute Preston Curve target points
+    curvePoints=[];
+    const cw=canvas.offsetWidth,ch=canvas.offsetHeight;
+    for(let i=0;i<=60;i++){
+      const t=i/60;
+      const x=cw*0.12+t*(cw*0.76);
+      const y=ch*0.75-Math.log(1+t*8)*((ch*0.55)/Math.log(9));
+      curvePoints.push({x,y});
+    }
+  }
+
+  function initParticles(){
+    particles=[];
+    const cw=canvas.offsetWidth,ch=canvas.offsetHeight;
+    for(let i=0;i<120;i++){
+      const angle=Math.random()*Math.PI*2;
+      const dist=Math.random()*Math.max(cw,ch)*0.6;
+      particles.push({
+        x:cw/2+Math.cos(angle)*dist,
+        y:ch/2+Math.sin(angle)*dist,
+        vx:(Math.random()-0.5)*0.4,
+        vy:(Math.random()-0.5)*0.4,
+        r:Math.random()*2.5+1,
+        color:COLORS[Math.floor(Math.random()*COLORS.length)],
+        alpha:Math.random()*0.4+0.15,
+        phase:Math.random()*Math.PI*2,
+        tx:0,ty:0,settling:false
+      });
+    }
+  }
+
+  let phase="drift"; // drift → converge → settled
+  let phaseStart=0;
+
+  function setPhase(p){phase=p;phaseStart=performance.now();}
+
+  function draw(now){
+    const cw=canvas.offsetWidth,ch=canvas.offsetHeight;
+    ctx.clearRect(0,0,cw,ch);
+    const elapsed=(now-phaseStart)/1000;
+
+    particles.forEach((p,i)=>{
+      if(phase==="drift"){
+        p.x+=p.vx+Math.sin(now/3000+p.phase)*0.3;
+        p.y+=p.vy+Math.cos(now/2500+p.phase)*0.25;
+        // Wrap
+        if(p.x<-20)p.x=cw+20;if(p.x>cw+20)p.x=-20;
+        if(p.y<-20)p.y=ch+20;if(p.y>cw+20)p.y=-20;
+      }else if(phase==="converge"){
+        const ci=Math.floor((i/particles.length)*curvePoints.length);
+        const target=curvePoints[Math.min(ci,curvePoints.length-1)];
+        const ease=Math.min(elapsed/2.5,1);
+        const e=ease*ease*(3-2*ease); // smoothstep
+        p.x+=(target.x-p.x)*e*0.06;
+        p.y+=(target.y-p.y)*e*0.06;
+        // gentle wobble remains
+        p.x+=Math.sin(now/2000+p.phase)*0.15*(1-e);
+        p.y+=Math.cos(now/1800+p.phase)*0.12*(1-e);
+      }
+
+      // Draw glow
+      ctx.beginPath();
+      ctx.arc(p.x,p.y,p.r*2.5,0,Math.PI*2);
+      ctx.fillStyle=p.color.replace(")",`,${p.alpha*0.3})`).replace("rgb","rgba").replace("#","")?
+        `${p.color}${Math.round(p.alpha*0.3*255).toString(16).padStart(2,'0')}`:p.color;
+      // Simpler: just use globalAlpha
+      ctx.globalAlpha=p.alpha*0.25;
+      ctx.fillStyle=p.color;
+      ctx.fill();
+      // Draw core
+      ctx.beginPath();
+      ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+      ctx.globalAlpha=p.alpha;
+      ctx.fill();
+    });
+    ctx.globalAlpha=1;
+
+    // Draw faint curve line when converging
+    if(phase==="converge"&&elapsed>1.2){
+      const lineAlpha=Math.min((elapsed-1.2)/1.5,0.35);
+      ctx.beginPath();
+      ctx.moveTo(curvePoints[0].x,curvePoints[0].y);
+      for(let i=1;i<curvePoints.length;i++){
+        ctx.lineTo(curvePoints[i].x,curvePoints[i].y);
+      }
+      ctx.strokeStyle=`rgba(232,164,90,${lineAlpha})`;
+      ctx.lineWidth=1.5;
+      ctx.stroke();
+    }
+
+    raf=requestAnimationFrame(draw);
+  }
+
+  // ── Text sequence timeline ──
+  function runSequence(){
+    const lines=document.querySelectorAll(".cin-line");
+    const titleLayer=document.querySelector(".cin-title-layer");
+    const cue=document.getElementById("cin-cue");
+    const intro=document.getElementById("cin-intro");
+
+    const timeline=[
+      {el:lines[0],in:800,hold:2200,out:600},
+      {el:lines[1],in:800,hold:2200,out:600},
+      {el:lines[2],in:900,hold:2800,out:700},
+      {el:lines[3],in:900,hold:2800,out:700},
+      {el:lines[4],in:1000,hold:3000,out:800},
+      {el:lines[5],in:1000,hold:2000,out:800},
+    ];
+
+    let t=600;
+    timeline.forEach((step,i)=>{
+      // Position centered
+      setTimeout(()=>{
+        step.el.style.transform="translateX(-50%) translateY(0)";
+        step.el.style.opacity="1";
+        step.el.style.transition=`opacity ${step.in}ms ease, transform ${step.in}ms ease`;
+      },t);
+      t+=step.in;
+      // Hold, then fade out
+      setTimeout(()=>{
+        step.el.style.opacity="0";
+        step.el.style.transform="translateX(-50%) translateY(-16px)";
+        step.el.style.transition=`opacity ${step.out}ms ease, transform ${step.out}ms ease`;
+      },t+step.hold);
+      t+=step.hold+step.out+200;
+
+      // After line 5 (the question), start converge + show title
+      if(i===4){
+        const convergeTime=t-step.out;
+        setTimeout(()=>setPhase("converge"),convergeTime);
+      }
+    });
+
+    // Show main title after all lines
+    setTimeout(()=>{
+      titleLayer.style.opacity="1";
+      titleLayer.style.transform="scale(1)";
+      titleLayer.style.transition="opacity 1.2s ease, transform 1.2s cubic-bezier(0.16,1,0.3,1)";
+    },t+400);
+
+    // Show scroll cue
+    setTimeout(()=>{
+      cue.style.opacity="1";
+      cue.style.transition="opacity .8s ease";
+    },t+1800);
+
+    // Allow skip on click/scroll
+    let skipped=false;
+    function skip(){
+      if(skipped)return;skipped=true;
+      lines.forEach(l=>{l.style.opacity="0";l.style.transition="opacity .3s"});
+      setPhase("converge");
+      setTimeout(()=>{
+        titleLayer.style.opacity="1";
+        titleLayer.style.transform="scale(1)";
+        titleLayer.style.transition="opacity .6s ease, transform .6s ease";
+        cue.style.opacity="1";
+        cue.style.transition="opacity .5s ease";
+      },600);
+    }
+    intro.addEventListener("click",skip,{once:false});
+    intro.addEventListener("wheel",skip,{once:false});
+    intro.addEventListener("touchstart",skip,{passive:true});
+  }
+
+  // ── Init ──
+  window.addEventListener("DOMContentLoaded",()=>{
+    resize();initParticles();
+    raf=requestAnimationFrame(draw);
+    runSequence();
+  });
+  window.addEventListener("resize",resize);
+})();
+</script>
 
 <script>
 // ═══════════════════════════════════════════════════════════════════════════
