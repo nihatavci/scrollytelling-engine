@@ -35,27 +35,28 @@ html{scroll-behavior:smooth}body{font-family:'DM Sans',sans-serif;background:var
 .editorial figcaption{font-family:'DM Sans',sans-serif;font-size:.78rem;color:var(--muted);margin-top:.6rem;padding:0 2rem;font-style:italic}
 .pullquote{border-left:3px solid var(--accent);padding:.5rem 0 .5rem 1.5rem;margin:2rem 0;font-family:'Source Serif 4',serif;font-size:1.2rem;font-weight:600;font-style:italic;color:var(--text);line-height:1.6}
 .editorial .separator{width:60px;height:3px;background:var(--accent);margin:3rem auto;border-radius:2px}
-.editorial .curve-svg{display:block;margin:2rem auto;max-width:480px;width:100%}
+.editorial .curve-svg{display:block;margin:2.5rem auto;max-width:620px;width:100%}
 
 /* ── Scrollytelling ── */
-.scrolly{position:relative;max-width:1400px;margin:0 auto}
+.scrolly{position:relative;margin:0 auto}
 .scrolly__graphic{position:sticky;top:0;width:100%;height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:1rem 2rem;z-index:1}
-.viz-header{width:100%;max-width:920px;margin-bottom:.4rem;padding-left:.5rem}
-.viz-title{font-family:'Source Serif 4',serif;font-size:1.5rem;font-weight:700;line-height:1.25;transition:all .45s}
-.viz-sub{font-size:.82rem;color:var(--muted);margin-top:.12rem;transition:all .45s}
+.viz-header{width:100%;max-width:72vw;margin-bottom:.4rem;padding-left:.5rem}
+.viz-title{font-family:'Source Serif 4',serif;font-size:1.7rem;font-weight:700;line-height:1.25;transition:all .45s}
+.viz-sub{font-size:.85rem;color:var(--muted);margin-top:.15rem;transition:all .45s}
 .viz-legend{display:flex;gap:1.2rem;flex-wrap:wrap;margin-top:.45rem}
-.lg{display:flex;align-items:center;gap:.35rem;font-size:.74rem;color:var(--muted)}
+.lg{display:flex;align-items:center;gap:.35rem;font-size:.78rem;color:var(--muted)}
 .lg .sw{width:10px;height:10px;border-radius:50%}
-#viz{width:100%;max-width:920px}#viz svg{display:block;width:100%}
-.viz-source{width:100%;max-width:920px;font-size:.6rem;color:var(--muted);opacity:.4;margin-top:.4rem;padding-left:.5rem}
+#viz{width:100%;max-width:72vw}
+#viz svg{display:block;width:100%;height:auto;max-height:72vh}
+.viz-source{width:100%;max-width:72vw;font-size:.62rem;color:var(--muted);opacity:.4;margin-top:.4rem;padding-left:.5rem}
 .axis text{font-family:'DM Sans',sans-serif;font-size:11px;fill:var(--muted)}
 .axis line,.axis path{stroke:#ddd8d0}.grid line{stroke:#e6e1da;stroke-dasharray:2 3;stroke-opacity:.6}.grid path{stroke:none}
 
-.scrolly__steps{position:relative;z-index:2;width:380px;margin-left:auto;margin-right:2.5rem;margin-top:-100vh;pointer-events:none}
+.scrolly__steps{position:relative;z-index:2;width:340px;margin-left:auto;margin-right:3vw;margin-top:-100vh;pointer-events:none}
 .step{min-height:100vh;display:flex;align-items:center;padding:3rem 0;pointer-events:auto}
 .step:first-child{padding-top:48vh}.step:last-child{margin-bottom:55vh}
-.sc{background:rgba(255,255,255,.91);border-radius:16px;padding:1.05rem 1.5rem 1.15rem;border:none;transition:all .5s cubic-bezier(.23,1,.32,1);opacity:.06;transform:translateY(12px);max-width:360px;box-shadow:0 4px 28px rgba(0,0,0,.10);text-align:center}
-.step.is-active .sc{opacity:1;transform:translateY(0);background:rgba(255,255,255,.94);box-shadow:0 6px 32px rgba(0,0,0,.12)}
+.sc{background:rgba(255,255,255,.93);border-radius:16px;padding:1.1rem 1.5rem 1.2rem;border:none;transition:all .5s cubic-bezier(.23,1,.32,1);opacity:.06;transform:translateY(12px);max-width:340px;box-shadow:0 4px 28px rgba(0,0,0,.10);text-align:center}
+.step.is-active .sc{opacity:1;transform:translateY(0);background:rgba(255,255,255,.96);box-shadow:0 6px 32px rgba(0,0,0,.13)}
 .badge{display:inline-block;font-size:.52rem;font-weight:600;letter-spacing:.07em;text-transform:uppercase;padding:.1rem .45rem;border-radius:20px;margin-bottom:.4rem;opacity:.75}
 .b-map{background:#fde8d8;color:#c06830}.b-morph{background:linear-gradient(90deg,#fde8d8,#d6e8f0);color:#7a5a40}.b-scatter{background:#e8ddf5;color:#7a5a90}.b-bar{background:#d6e8f0;color:#3d7a94}.b-pop{background:#e3f0e3;color:#3d7a4a}.b-reveal{background:#fce4e4;color:#b84040}
 .sc h3{font-family:'DM Sans',sans-serif;font-size:.95rem;font-weight:400;line-height:1.55;color:var(--text);margin:0}
@@ -75,12 +76,12 @@ html{scroll-behavior:smooth}body{font-family:'DM Sans',sans-serif;background:var
   .editorial figure{margin:1.5rem -1.25rem;width:calc(100% + 2.5rem)}
   .pullquote{font-size:1.05rem}
   .scrolly__graphic{height:100vh;padding:.5rem .75rem .4rem;justify-content:flex-start;align-items:flex-start}
-  .viz-header{margin-bottom:.1rem;width:100%}
+  .viz-header{margin-bottom:.1rem;width:100%;max-width:100%}
   .viz-title{font-size:.88rem;line-height:1.2}
   .viz-sub{font-size:.65rem}
   .viz-legend{display:none}
   .viz-source{display:none}
-  #viz{width:100%}
+  #viz{width:100%;max-width:100%}
   #viz svg{display:block;width:100%;height:100vw;max-height:68vh}
   .scrolly__steps{width:100%;margin-left:0;margin-right:0;margin-top:-100vh;padding:0;pointer-events:none}
   .step{min-height:100vh;padding:0;align-items:flex-end;padding-bottom:2rem;pointer-events:none}
@@ -127,16 +128,16 @@ html{scroll-behavior:smooth}body{font-family:'DM Sans',sans-serif;background:var
     <text x="130" y="78" text-anchor="middle" font-family="DM Sans" font-size="9" font-weight="600" fill="#c06830">Steep zone</text>
     <text x="130" y="91" text-anchor="middle" font-family="DM Sans" font-size="8" fill="#8c8078">Each $ = years</text>
     <!-- Flat zone highlight -->
-    <rect x="290" y="35" width="140" height="55" rx="4" fill="rgba(93,143,168,0.08)"/>
-    <text x="360" y="52" text-anchor="middle" font-family="DM Sans" font-size="9" font-weight="600" fill="#5d8fa8">Flat zone</text>
-    <text x="360" y="65" text-anchor="middle" font-family="DM Sans" font-size="8" fill="#8c8078">Diminishing returns</text>
+    <rect x="310" y="20" width="140" height="30" rx="4" fill="rgba(93,143,168,0.08)"/>
+    <text x="380" y="33" text-anchor="middle" font-family="DM Sans" font-size="9" font-weight="600" fill="#5d8fa8">Flat zone</text>
+    <text x="380" y="45" text-anchor="middle" font-family="DM Sans" font-size="8" fill="#8c8078">Diminishing returns</text>
     <!-- Country dots -->
-    <circle cx="85" cy="205" r="5" fill="#7db5c8" opacity="0.8"/><text x="85" y="200" text-anchor="middle" font-family="DM Sans" font-size="7" fill="#7db5c8">Nigeria</text>
-    <circle cx="140" cy="162" r="5" fill="#d4956a" opacity="0.8"/><text x="140" y="157" text-anchor="middle" font-family="DM Sans" font-size="7" fill="#d4956a">India</text>
-    <circle cx="210" cy="100" r="5" fill="#d4956a" opacity="0.8"/><text x="210" y="95" text-anchor="middle" font-family="DM Sans" font-size="7" fill="#d4956a">China</text>
-    <circle cx="330" cy="53" r="5" fill="#5d8fa8" opacity="0.8"/><text x="330" y="48" text-anchor="middle" font-family="DM Sans" font-size="7" fill="#5d8fa8">Germany</text>
-    <circle cx="420" cy="70" r="6" fill="#c06830" opacity="0.8"/><text x="420" y="63" text-anchor="middle" font-family="DM Sans" font-size="7" font-weight="700" fill="#c06830">USA ←</text>
-    <circle cx="310" cy="47" r="5" fill="#d4956a" opacity="0.8"/><text x="310" y="40" text-anchor="middle" font-family="DM Sans" font-size="7" fill="#d4956a">Japan</text>
+    <circle cx="85" cy="205" r="5" fill="#7db5c8" opacity="0.8"/><text x="85" y="196" text-anchor="middle" font-family="DM Sans" font-size="8" font-weight="600" fill="#7db5c8">Nigeria</text>
+    <circle cx="145" cy="160" r="5" fill="#d4956a" opacity="0.8"/><text x="145" y="151" text-anchor="middle" font-family="DM Sans" font-size="8" font-weight="600" fill="#d4956a">India</text>
+    <circle cx="215" cy="98" r="5" fill="#d4956a" opacity="0.8"/><text x="215" y="89" text-anchor="middle" font-family="DM Sans" font-size="8" font-weight="600" fill="#d4956a">China</text>
+    <circle cx="340" cy="52" r="5" fill="#5d8fa8" opacity="0.8"/><text x="340" y="43" text-anchor="middle" font-family="DM Sans" font-size="8" font-weight="600" fill="#5d8fa8">Germany</text>
+    <circle cx="425" cy="68" r="6" fill="#c06830" opacity="0.8"/><text x="425" y="84" text-anchor="middle" font-family="DM Sans" font-size="9" font-weight="700" fill="#c06830">USA</text>
+    <circle cx="300" cy="46" r="5" fill="#d4956a" opacity="0.8"/><text x="278" y="40" text-anchor="end" font-family="DM Sans" font-size="8" font-weight="600" fill="#d4956a">Japan</text>
   </svg>
 
   <p>The correlation between national income and life expectancy reaches 0.90 in modern datasets — strikingly high. Yet it masks enormous variation. Some countries far outperform their wealth would predict; others fail spectacularly despite abundant resources. The curve, it turns out, is just the beginning of the story.</p>
