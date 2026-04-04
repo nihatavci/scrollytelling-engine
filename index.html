@@ -451,69 +451,146 @@ window.addEventListener("DOMContentLoaded",()=>{
        .alpha(0.4).restart();
   }
 
-  // Phase 2 — Japonya + ABD side by side
+  // GDP radius scale (separate from pop) — for phase 2
+  const rGdp = d3.scaleSqrt().domain([0, 90000]).range([8, maxR * 1.1]);
+
+  // Phase 2 — ABD zenginliği: daireler GDP ile boyutlanır
+  // ABD açıkça büyük, Japonya daha küçük → zenginlik paradoksunu kurar
   function phase2(){
     const show = ["Japonya","ABD"];
-    sim.force("x", d3.forceX(d=>show.includes(d.name)?(d.name==="Japonya"?W*0.36:W*0.64):W/2).strength(d=>show.includes(d.name)?0.15:0.02))
-       .force("y", d3.forceY(H/2).strength(0.06))
-       .force("collide", d3.forceCollide(d=>rScale(d.pop)*(show.includes(d.name)?1.1:0.3)+3).strength(0.7))
-       .alpha(0.55).restart();
-    circles.transition().duration(800)
-      .attr("r", d=>show.includes(d.name)?rScale(d.pop)*1.1:rScale(d.pop)*0.28)
-      .attr("opacity", d=>show.includes(d.name)?0.88:0.1);
-    labels.transition().duration(800)
-      .attr("opacity", d=>show.includes(d.name)?1:0)
-      .attr("font-size", d=>show.includes(d.name)?lblSize(d):"0px");
-  }
-
-  // Phase 3 — Life expectancy contrast: Japonya vs ABD positioned
-  function phase3(){
-    const show = ["Japonya","ABD"];
     sim.stop();
-    const R_jp = rScale(124)*1.1, R_us = rScale(340)*1.1;
-    circles.transition().duration(1000).ease(d3.easeCubicInOut)
-      .attr("cx", d=>d.name==="Japonya"?W*0.36:d.name==="ABD"?W*0.64:d.x)
+    const jpX = W*0.34, usX = W*0.66;
+    const R_jp = rGdp(33950), R_us = rGdp(85373);
+    circles.transition().duration(900).ease(d3.easeCubicInOut)
+      .attr("cx", d=>d.name==="Japonya"?jpX:d.name==="ABD"?usX:d.x)
       .attr("cy", d=>show.includes(d.name)?H*0.46:d.y)
-      .attr("r",  d=>show.includes(d.name)?rScale(d.pop)*1.1:rScale(d.pop)*0.25)
-      .attr("opacity", d=>show.includes(d.name)?0.88:0.07);
-    labels.transition().duration(1000)
-      .attr("x", d=>d.name==="Japonya"?W*0.36:d.name==="ABD"?W*0.64:d.x)
+      .attr("r",  d=>d.name==="Japonya"?R_jp:d.name==="ABD"?R_us:rScale(d.pop)*0.22)
+      .attr("opacity", d=>show.includes(d.name)?0.88:0.08);
+    labels.transition().duration(900)
+      .attr("x", d=>d.name==="Japonya"?jpX:d.name==="ABD"?usX:d.x)
       .attr("y", d=>show.includes(d.name)?H*0.46:d.y)
       .attr("opacity", d=>show.includes(d.name)?1:0)
-      .attr("font-size", d=>show.includes(d.name)?lblSize(d):"0px");
-    svg.selectAll(".cin-life-label").remove();
+      .attr("font-size", d=>{
+        const r = d.name==="Japonya"?R_jp:d.name==="ABD"?R_us:0;
+        return r>0 ? Math.max(11, r*0.42)+"px" : "0px";
+      });
+    // GDP labels below
+    svg.selectAll(".cin-gdp-label").remove();
     setTimeout(()=>{
-      const lifeFs = Math.max(12, maxR*0.32)+"px";
-      [{name:"Japonya",x:W*0.36,life:"84,8 yıl",col:"#d4956a"},
-       {name:"ABD",x:W*0.64,life:"79,7 yıl",col:"#c06830"}].forEach(d=>{
-        svg.append("text").attr("class","cin-life-label")
-          .attr("x",d.x).attr("y",H*0.46+rScale(d.name==="Japonya"?124:340)*1.1+22)
+      const fs = Math.max(12, maxR*0.28)+"px";
+      [{name:"Japonya",x:jpX,r:R_jp,gdp:"$34k",col:"#d4956a"},
+       {name:"ABD",    x:usX,r:R_us,gdp:"$85k",col:"#c06830"}].forEach(d=>{
+        svg.append("text").attr("class","cin-gdp-label")
+          .attr("x",d.x).attr("y",H*0.46+d.r+20)
           .attr("text-anchor","middle").attr("font-family","DM Sans")
-          .attr("font-size",lifeFs).attr("fill",d.col).attr("font-weight","700")
-          .attr("opacity",0).text(d.life)
-          .transition().duration(600).attr("opacity",0.9);
+          .attr("font-size",fs).attr("fill",d.col).attr("font-weight","700")
+          .attr("opacity",0).text(d.gdp)
+          .transition().duration(500).attr("opacity",0.85);
       });
     },500);
   }
 
-  // Phase 4 — Nijerya vs rich world size contrast
-  function phase4(){
-    svg.selectAll(".cin-life-label").transition().duration(300).attr("opacity",0).remove();
-    const show = ["Nijerya","ABD","Japonya","Almanya"];
-    circles.transition().duration(900)
-      .attr("r", d=>show.includes(d.name)?rScale(d.pop)*1.0:rScale(d.pop)*0.28)
-      .attr("opacity", d=>show.includes(d.name)?0.88:0.07);
-    labels.transition().duration(900)
+  // Phase 3 — Yaşam süresi paradoksu:
+  // Y ekseni = yaşam süresi. Japonya YUKARI çıkar, ABD AŞAĞI iner.
+  // Daireler eşit boyutta — zenginlik değil, ömür anlatılıyor.
+  function phase3(){
+    svg.selectAll(".cin-gdp-label").transition().duration(300).attr("opacity",0).remove();
+    const show = ["Japonya","ABD"];
+    sim.stop();
+    const R_eq = maxR * 0.72; // eşit boyut — karşılaştırma adil görünsün
+    const jpX = W*0.34, usX = W*0.66;
+    // Yaşam süresine göre Y: Japonya 84.8 → yukarı, ABD 79.7 → aşağı
+    const yScale = d3.scaleLinear().domain([75, 88]).range([H*0.78, H*0.18]);
+    const jpY = yScale(84.8), usY = yScale(79.7);
+
+    circles.transition().duration(1000).ease(d3.easeCubicInOut)
+      .attr("cx", d=>d.name==="Japonya"?jpX:d.name==="ABD"?usX:d.x)
+      .attr("cy", d=>d.name==="Japonya"?jpY:d.name==="ABD"?usY:d.y)
+      .attr("r",  d=>show.includes(d.name)?R_eq:rScale(d.pop)*0.18)
+      .attr("opacity", d=>show.includes(d.name)?0.88:0.06);
+    labels.transition().duration(1000)
+      .attr("x", d=>d.name==="Japonya"?jpX:d.name==="ABD"?usX:d.x)
+      .attr("y", d=>d.name==="Japonya"?jpY:d.name==="ABD"?usY:d.y)
       .attr("opacity", d=>show.includes(d.name)?1:0)
-      .attr("font-size", d=>show.includes(d.name)?lblSize(d):"0px");
-    sim.force("x", d3.forceX(W/2).strength(0.04))
-       .force("y", d3.forceY(H/2).strength(0.04))
-       .force("collide", d3.forceCollide(d=>rScale(d.pop)*(show.includes(d.name)?1.0:0.28)+4).strength(0.75))
-       .alpha(0.55).restart();
+      .attr("font-size", d=>show.includes(d.name)?Math.max(11,R_eq*0.4)+"px":"0px");
+
+    svg.selectAll(".cin-life-label,.cin-axis-label").remove();
+    setTimeout(()=>{
+      const fs = Math.max(13, maxR*0.32)+"px";
+      // Yaşam süresi etiketleri
+      [{x:jpX, y:jpY, life:"84,8 yıl", col:"#d4956a", dy:R_eq+20},
+       {x:usX, y:usY, life:"79,7 yıl", col:"#c06830", dy:R_eq+20}].forEach(d=>{
+        svg.append("text").attr("class","cin-life-label")
+          .attr("x",d.x).attr("y",d.y+d.dy)
+          .attr("text-anchor","middle").attr("font-family","DM Sans")
+          .attr("font-size",fs).attr("fill",d.col).attr("font-weight","700")
+          .attr("opacity",0).text(d.life)
+          .transition().duration(600).attr("opacity",0.9);
+      });
+      // Faint vertical axis hint: "yaşam süresi ↑"
+      svg.append("text").attr("class","cin-axis-label")
+        .attr("x", W*0.06).attr("y", H*0.5)
+        .attr("text-anchor","middle")
+        .attr("font-family","DM Sans").attr("font-size","11px")
+        .attr("fill","var(--muted)").attr("opacity",0)
+        .attr("transform",`rotate(-90,${W*0.06},${H*0.5})`)
+        .text("yaşam süresi ↑")
+        .transition().duration(600).attr("opacity",0.5);
+      // Connecting line showing the gap
+      svg.append("line").attr("class","cin-life-label")
+        .attr("x1",jpX).attr("y1",jpY)
+        .attr("x2",usX).attr("y2",usY)
+        .attr("stroke","rgba(140,128,120,0.25)").attr("stroke-width",1.5)
+        .attr("stroke-dasharray","4 3").attr("opacity",0)
+        .transition().delay(400).duration(600).attr("opacity",1);
+    }, 500);
+  }
+
+  // Phase 4 — Nijerya: yaşam süresi ekseni devam ediyor
+  // Nijerya en aşağıda (53.9 yıl), zengin ülkeler yukarıda
+  // Mesaj: bir çocuğun ömrü nerede doğduğuna göre ikiye katlanıyor
+  function phase4(){
+    svg.selectAll(".cin-life-label,.cin-axis-label,.cin-gdp-label").transition().duration(300).attr("opacity",0).remove();
+    const show = ["Nijerya","Japonya","ABD","Almanya"];
+    sim.stop();
+    const yScale = d3.scaleLinear().domain([50, 88]).range([H*0.88, H*0.10]);
+    const xPos = {Nijerya:W*0.22, ABD:W*0.42, Almanya:W*0.62, Japonya:W*0.82};
+    const rFixed = maxR * 0.62; // eşit boyut — sadece konum anlatıyor
+    circles.transition().duration(1000).ease(d3.easeCubicInOut)
+      .attr("cx", d=>show.includes(d.name)?xPos[d.name]:d.x)
+      .attr("cy", d=>show.includes(d.name)?yScale(d.life):d.y)
+      .attr("r",  d=>show.includes(d.name)?rFixed:rScale(d.pop)*0.18)
+      .attr("opacity", d=>show.includes(d.name)?0.88:0.05);
+    labels.transition().duration(1000)
+      .attr("x", d=>show.includes(d.name)?xPos[d.name]:d.x)
+      .attr("y", d=>show.includes(d.name)?yScale(d.life):d.y)
+      .attr("opacity", d=>show.includes(d.name)?1:0)
+      .attr("font-size", d=>show.includes(d.name)?Math.max(11,rFixed*0.38)+"px":"0px");
+    // Life year labels + axis
+    setTimeout(()=>{
+      const fs = Math.max(11, maxR*0.28)+"px";
+      show.forEach(name=>{
+        const d = CIN_DATA.find(x=>x.name===name);
+        svg.append("text").attr("class","cin-life-label")
+          .attr("x", xPos[name]).attr("y", yScale(d.life)+rFixed+18)
+          .attr("text-anchor","middle").attr("font-family","DM Sans")
+          .attr("font-size",fs).attr("fill",CRC[d.region]).attr("font-weight","700")
+          .attr("opacity",0).text(d.life+" yıl")
+          .transition().duration(500).attr("opacity",0.85);
+      });
+      svg.append("text").attr("class","cin-axis-label")
+        .attr("x", W*0.06).attr("y", H*0.5)
+        .attr("text-anchor","middle").attr("font-family","DM Sans").attr("font-size","11px")
+        .attr("fill","var(--muted)").attr("opacity",0)
+        .attr("transform",`rotate(-90,${W*0.06},${H*0.5})`)
+        .text("yaşam süresi ↑")
+        .transition().duration(600).attr("opacity",0.5);
+    }, 600);
   }
 
   // Phase 5 — Preston Curve scatter
   function phase5(){
+    svg.selectAll(".cin-life-label,.cin-axis-label,.cin-gdp-label").transition().duration(300).attr("opacity",0).remove();
     sim.stop();
     circles.transition().duration(1400).ease(d3.easeCubicInOut)
       .attr("cx", d=>xGdp(d.gdp)).attr("cy", d=>yLife(d.life))
