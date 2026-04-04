@@ -1186,9 +1186,9 @@ function resetAll(){
   lblG.selectAll("*").interrupt();
   annotG.selectAll("*").interrupt();
   fxG.selectAll("*").interrupt();
-  axXG.interrupt();axXG.selectAll("*").interrupt();
-  axYG.interrupt();axYG.selectAll("*").interrupt();
-  gridG.interrupt();gridG.selectAll("*").interrupt();
+  axXG.interrupt();axXG.selectAll("*").interrupt().remove();
+  axYG.interrupt();axYG.selectAll("*").interrupt().remove();
+  gridG.interrupt();gridG.selectAll("*").interrupt().remove();
   bgG.selectAll(".bgc").interrupt();
   const tmr=fxG.datum();if(tmr&&typeof tmr.stop==='function')tmr.stop();
   fxG.selectAll("*").remove();
