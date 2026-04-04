@@ -91,31 +91,32 @@ html{scroll-behavior:smooth}body{font-family:'DM Sans',sans-serif;background:var
 .outro .source-block{margin-top:3rem;padding-top:2rem;border-top:1px solid #e6e1da;font-family:'DM Sans',sans-serif;font-size:.78rem;color:var(--muted);line-height:1.6}
 
 /* ── Cinematic Intro ── */
-.cin-intro{position:relative;width:100%;height:100vh;overflow:hidden;background:#1a1a2e;display:flex;align-items:center;justify-content:center;z-index:10}
-.cin-brand{position:absolute;top:2.5rem;left:50%;transform:translateX(-50%);font-family:'DM Sans',sans-serif;font-size:.72rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:rgba(250,247,242,0.4);opacity:0;animation:cinFadeIn .8s .3s forwards}
-.cin-canvas-wrap{position:absolute;inset:0;z-index:0}
-.cin-canvas-wrap canvas{width:100%;height:100%;display:block}
-.cin-text-layer{position:relative;z-index:2;text-align:center;pointer-events:none}
-.cin-line{font-family:'Source Serif 4',serif;color:#faf7f2;opacity:0;transform:translateY(28px);position:absolute;left:50%;width:max-content;max-width:85vw}
-.cin-l1,.cin-l2{font-size:clamp(1.1rem,2.8vw,1.6rem);font-weight:400;color:rgba(250,247,242,0.7)}
-.cin-l3{font-size:clamp(1.2rem,3vw,1.8rem);font-weight:600;color:#faf7f2}
-.cin-l3 em{font-style:normal;color:#e8a45a;text-decoration:underline;text-decoration-color:rgba(232,164,90,0.4);text-underline-offset:3px}
-.cin-l4{font-size:clamp(1.05rem,2.6vw,1.5rem);font-weight:400;color:rgba(250,247,242,0.65)}
-.cin-l5{font-size:clamp(1.3rem,3.2vw,2rem);font-weight:600;color:#faf7f2;line-height:1.4}
-.cin-l6{font-size:clamp(1.5rem,4vw,2.4rem);font-weight:700;color:#e8a45a;letter-spacing:-.02em}
-.cin-title-layer{position:absolute;z-index:3;text-align:center;opacity:0;transform:scale(0.92);pointer-events:none}
-.cin-main-title{font-family:'Source Serif 4',serif;font-size:clamp(2.4rem,6.5vw,4.2rem);font-weight:700;color:#faf7f2;line-height:1.08;letter-spacing:-.03em;margin-bottom:.6rem}
-.cin-main-title span{color:#e8a45a}
-.cin-sub{font-family:'DM Sans',sans-serif;font-size:clamp(.85rem,1.8vw,1.1rem);color:rgba(250,247,242,0.55);font-weight:400}
-.cin-scroll-cue{position:absolute;bottom:2.5rem;left:50%;transform:translateX(-50%);z-index:4;color:rgba(250,247,242,0.5);font-family:'DM Sans',sans-serif;font-size:.78rem;display:flex;flex-direction:column;align-items:center;gap:.4rem;opacity:0;animation:bob 2s ease-in-out infinite}
-.cin-scroll-cue .arr{width:16px;height:16px;border-right:2px solid #e8a45a;border-bottom:2px solid #e8a45a;transform:rotate(45deg)}
+.cin-intro{position:relative;width:100%;height:100vh;overflow:hidden;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:10}
+.cin-brand{position:absolute;top:2.5rem;left:50%;transform:translateX(-50%);font-family:'DM Sans',sans-serif;font-size:.72rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);opacity:0}
+.cin-svg-wrap{position:absolute;inset:0;z-index:0;display:flex;align-items:center;justify-content:center}
+.cin-svg-wrap svg{width:80%;max-width:700px;height:60vh}
+.cin-text-layer{position:absolute;z-index:2;text-align:center;pointer-events:none;width:100%;top:50%;transform:translateY(-50%)}
+.cin-line{font-family:'Source Serif 4',serif;color:var(--text);opacity:0;position:absolute;left:50%;transform:translateX(-50%);width:max-content;max-width:80vw;white-space:nowrap}
+.cin-l1,.cin-l2{font-size:clamp(1.15rem,2.8vw,1.65rem);font-weight:400;color:var(--muted)}
+.cin-l3{font-size:clamp(1.25rem,3.2vw,1.9rem);font-weight:600;color:var(--text)}
+.cin-l3 em{font-style:normal;color:var(--accent);text-decoration:underline;text-decoration-color:rgba(192,104,48,0.3);text-underline-offset:4px}
+.cin-l4{font-size:clamp(1.05rem,2.6vw,1.5rem);font-weight:400;color:var(--muted);white-space:normal;max-width:70vw}
+.cin-l5{font-size:clamp(1.3rem,3.2vw,2rem);font-weight:600;color:var(--text);line-height:1.4;white-space:normal;max-width:65vw}
+.cin-l6{font-size:clamp(1.6rem,4.2vw,2.6rem);font-weight:700;color:var(--accent);letter-spacing:-.02em}
+.cin-title-layer{position:absolute;z-index:3;text-align:center;opacity:0;pointer-events:none}
+.cin-main-title{font-family:'Source Serif 4',serif;font-size:clamp(2.4rem,6.5vw,4.2rem);font-weight:700;color:var(--text);line-height:1.08;letter-spacing:-.03em;margin-bottom:.6rem}
+.cin-main-title span{color:var(--accent)}
+.cin-sub{font-family:'DM Sans',sans-serif;font-size:clamp(.85rem,1.8vw,1.1rem);color:var(--muted);font-weight:400}
+.cin-scroll-cue{position:absolute;bottom:2.5rem;left:50%;transform:translateX(-50%);z-index:4;color:var(--muted);font-family:'DM Sans',sans-serif;font-size:.78rem;display:flex;flex-direction:column;align-items:center;gap:.4rem;opacity:0;animation:bob 2s ease-in-out infinite}
+.cin-scroll-cue .arr{width:16px;height:16px;border-right:2px solid var(--accent);border-bottom:2px solid var(--accent);transform:rotate(45deg)}
 @keyframes cinFadeIn{to{opacity:1}}
 
 /* ── Mobile ── */
 @media(max-width:768px){
   .cin-main-title{font-size:clamp(1.8rem,8vw,2.8rem)}
-  .cin-line{max-width:90vw}
+  .cin-line{max-width:88vw;white-space:normal}
   .cin-brand{font-size:.6rem;top:1.5rem}
+  .cin-svg-wrap svg{width:95%;height:50vh}
   .editorial{padding:2.5rem 1.25rem}
   .editorial p{font-size:1.02rem;line-height:1.75}
   .editorial h2{font-size:1.4rem}
@@ -146,9 +147,9 @@ html{scroll-behavior:smooth}body{font-family:'DM Sans',sans-serif;background:var
 
 <!-- ════════════════════ CINEMATIC INTRO ════════════════════ -->
 <section class="cin-intro" id="cin-intro">
-  <div class="cin-brand">Scrolli Labs sunar</div>
-  <div class="cin-canvas-wrap"><canvas id="cin-canvas"></canvas></div>
-  <div class="cin-text-layer">
+  <div class="cin-brand" id="cin-brand">Scrolli Labs sunar</div>
+  <div class="cin-svg-wrap"><svg id="cin-svg"></svg></div>
+  <div class="cin-text-layer" id="cin-text-layer">
     <div class="cin-line cin-l1">Japonya: kişi başı $34.000</div>
     <div class="cin-line cin-l2">ABD: kişi başı $85.000</div>
     <div class="cin-line cin-l3">Ama Japonya'da insanlar <em>5 yıl daha uzun</em> yaşıyor.</div>
@@ -156,7 +157,7 @@ html{scroll-behavior:smooth}body{font-family:'DM Sans',sans-serif;background:var
     <div class="cin-line cin-l5">53 kat daha zengin bir ülke,<br>daha uzun ömür garanti etmiyor.</div>
     <div class="cin-line cin-l6">Peki ömrü gerçekten ne uzatıyor?</div>
   </div>
-  <div class="cin-title-layer">
+  <div class="cin-title-layer" id="cin-title-layer">
     <h1 class="cin-main-title">Para <span>Yıl Satın<br>Alabilir mi?</span></h1>
     <p class="cin-sub">Preston Eğrisi'nin 50 yıllık hikâyesi</p>
   </div>
@@ -293,190 +294,269 @@ html{scroll-behavior:smooth}body{font-family:'DM Sans',sans-serif;background:var
   </div>
 </section>
 
-<!-- ═══════ CINEMATIC INTRO ENGINE ═══════ -->
+<!-- ═══════ CINEMATIC INTRO ENGINE — D3 Swarm ═══════ -->
 <script>
 (function(){
-  const canvas=document.getElementById("cin-canvas");
-  const ctx=canvas.getContext("2d");
-  let W,H,particles=[],raf,curvePoints=[];
-  const COLORS=["#c06830","#5d8fa8","#d4956a","#7db5c8","#e8a45a","#faf7f2"];
+const CIN_DATA=[
+  {name:"ABD",gdp:85373,life:79.7,pop:340,region:"Americas"},
+  {name:"Brezilya",gdp:9673,life:76.5,pop:217,region:"Americas"},
+  {name:"Meksika",gdp:11845,life:75.1,pop:131,region:"Americas"},
+  {name:"Almanya",gdp:54291,life:81.2,pop:84,region:"Europe"},
+  {name:"İngiltere",gdp:49823,life:81.8,pop:68,region:"Europe"},
+  {name:"Fransa",gdp:47245,life:82.6,pop:66,region:"Europe"},
+  {name:"İtalya",gdp:39580,life:83.8,pop:59,region:"Europe"},
+  {name:"Çin",gdp:13136,life:78.6,pop:1425,region:"Asia"},
+  {name:"Japonya",gdp:33950,life:84.8,pop:124,region:"Asia"},
+  {name:"Hindistan",gdp:2731,life:72.7,pop:1441,region:"Asia"},
+  {name:"G. Kore",gdp:35638,life:84.1,pop:52,region:"Asia"},
+  {name:"Endonezya",gdp:5108,life:72.0,pop:278,region:"Asia"},
+  {name:"Nijerya",gdp:1601,life:53.9,pop:228,region:"Africa"},
+  {name:"G. Afrika",gdp:6191,life:65.3,pop:62,region:"Africa"},
+  {name:"Mısır",gdp:3905,life:72.4,pop:111,region:"Africa"},
+];
+const CRC={Americas:"#c06830",Europe:"#5d8fa8",Asia:"#d4956a",Africa:"#7db5c8"};
 
-  function resize(){
-    W=canvas.width=canvas.offsetWidth*devicePixelRatio;
-    H=canvas.height=canvas.offsetHeight*devicePixelRatio;
-    ctx.scale(devicePixelRatio,devicePixelRatio);
-    // Recompute Preston Curve target points
-    curvePoints=[];
-    const cw=canvas.offsetWidth,ch=canvas.offsetHeight;
-    for(let i=0;i<=60;i++){
-      const t=i/60;
-      const x=cw*0.12+t*(cw*0.76);
-      const y=ch*0.75-Math.log(1+t*8)*((ch*0.55)/Math.log(9));
-      curvePoints.push({x,y});
-    }
+window.addEventListener("DOMContentLoaded",()=>{
+  const svgEl=document.getElementById("cin-svg");
+  const bbox=svgEl.getBoundingClientRect();
+  const W=bbox.width,H=bbox.height;
+  const svg=d3.select("#cin-svg").attr("viewBox",`0 0 ${W} ${H}`);
+
+  // Scales
+  const rScale=d3.scaleSqrt().domain([0,1450]).range([4,Math.min(W,H)*0.08]);
+  const xGdp=d3.scaleLog().domain([1500,90000]).range([W*0.1,W*0.9]);
+  const yLife=d3.scaleLinear().domain([50,88]).range([H*0.85,H*0.1]);
+
+  // Create groups
+  const circG=svg.append("g").attr("class","cin-circles");
+  const labelG=svg.append("g").attr("class","cin-labels");
+
+  // Init circles at center, tiny
+  const nodes=CIN_DATA.map(d=>({...d,x:W/2+(Math.random()-0.5)*60,y:H/2+(Math.random()-0.5)*60}));
+  const circles=circG.selectAll("circle").data(nodes).join("circle")
+    .attr("cx",d=>d.x).attr("cy",d=>d.y)
+    .attr("r",0)
+    .attr("fill",d=>CRC[d.region])
+    .attr("opacity",0)
+    .attr("stroke","#faf7f2").attr("stroke-width",1.5);
+
+  const labels=labelG.selectAll("text").data(nodes).join("text")
+    .attr("x",d=>d.x).attr("y",d=>d.y)
+    .attr("text-anchor","middle").attr("dominant-baseline","central")
+    .attr("font-family","DM Sans").attr("font-size","0px").attr("font-weight","600")
+    .attr("fill",d=>CRC[d.region]).attr("opacity",0)
+    .style("paint-order","stroke").style("stroke","rgba(250,247,242,0.85)").style("stroke-width","3px").style("stroke-linejoin","round")
+    .text(d=>d.name);
+
+  // Force sim (paused by default)
+  const sim=d3.forceSimulation(nodes).alphaDecay(0.02).velocityDecay(0.3).stop();
+
+  function ticked(){
+    circles.attr("cx",d=>d.x).attr("cy",d=>d.y);
+    labels.attr("x",d=>d.x).attr("y",d=>d.y);
+  }
+  sim.on("tick",ticked);
+
+  // ── Phase functions ──
+  // Phase 0: gentle float — all circles small, centered, drifting
+  function phase0(){
+    circles.transition().duration(800)
+      .attr("r",d=>rScale(d.pop)*0.35).attr("opacity",0.2);
+    labels.transition().duration(800).attr("opacity",0).attr("font-size","0px");
+    sim.force("x",d3.forceX(W/2).strength(0.02))
+       .force("y",d3.forceY(H/2).strength(0.02))
+       .force("collide",d3.forceCollide(d=>rScale(d.pop)*0.35+2).strength(0.5))
+       .force("charge",d3.forceManyBody().strength(-3))
+       .alpha(0.4).restart();
   }
 
-  function initParticles(){
-    particles=[];
-    const cw=canvas.offsetWidth,ch=canvas.offsetHeight;
-    for(let i=0;i<120;i++){
-      const angle=Math.random()*Math.PI*2;
-      const dist=Math.random()*Math.max(cw,ch)*0.6;
-      particles.push({
-        x:cw/2+Math.cos(angle)*dist,
-        y:ch/2+Math.sin(angle)*dist,
-        vx:(Math.random()-0.5)*0.4,
-        vy:(Math.random()-0.5)*0.4,
-        r:Math.random()*2.5+1,
-        color:COLORS[Math.floor(Math.random()*COLORS.length)],
-        alpha:Math.random()*0.4+0.15,
-        phase:Math.random()*Math.PI*2,
-        tx:0,ty:0,settling:false
+  // Phase 1: Japan highlight
+  function phase1(){
+    circles.transition().duration(700)
+      .attr("r",d=>d.name==="Japonya"?rScale(d.pop)*0.8:rScale(d.pop)*0.3)
+      .attr("opacity",d=>d.name==="Japonya"?0.9:0.12);
+    labels.transition().duration(700)
+      .attr("opacity",d=>d.name==="Japonya"?1:0)
+      .attr("font-size",d=>d.name==="Japonya"?"13px":"0px");
+  }
+
+  // Phase 2: Japan + USA — two circles side by side
+  function phase2(){
+    const high=["Japonya","ABD"];
+    sim.force("x",d3.forceX(d=>high.includes(d.name)?(d.name==="Japonya"?W*0.38:W*0.62):W/2).strength(d=>high.includes(d.name)?0.12:0.015))
+       .force("y",d3.forceY(H/2).strength(0.05))
+       .force("collide",d3.forceCollide(d=>rScale(d.pop)*(high.includes(d.name)?0.8:0.3)+3).strength(0.6))
+       .alpha(0.5).restart();
+    circles.transition().duration(700)
+      .attr("r",d=>high.includes(d.name)?rScale(d.pop)*0.8:rScale(d.pop)*0.25)
+      .attr("opacity",d=>high.includes(d.name)?0.9:0.08);
+    labels.transition().duration(700)
+      .attr("opacity",d=>high.includes(d.name)?1:0)
+      .attr("font-size",d=>high.includes(d.name)?"13px":"0px");
+  }
+
+  // Phase 3: life expectancy comparison — Japan taller bar visual
+  function phase3(){
+    const show=["Japonya","ABD"];
+    sim.stop();
+    const jpY=yLife(84.8),usY=yLife(79.7);
+    circles.transition().duration(900).ease(d3.easeCubicInOut)
+      .attr("cx",d=>d.name==="Japonya"?W*0.38:d.name==="ABD"?W*0.62:d.x)
+      .attr("cy",d=>show.includes(d.name)?H*0.45:d.y)
+      .attr("r",d=>show.includes(d.name)?rScale(d.pop)*0.7:rScale(d.pop)*0.2)
+      .attr("opacity",d=>show.includes(d.name)?0.9:0.06);
+    labels.transition().duration(900)
+      .attr("x",d=>d.name==="Japonya"?W*0.38:d.name==="ABD"?W*0.62:d.x)
+      .attr("y",d=>show.includes(d.name)?H*0.45:d.y)
+      .attr("opacity",d=>show.includes(d.name)?1:0)
+      .attr("font-size",d=>show.includes(d.name)?"12px":"0px");
+    // Add life years below
+    svg.selectAll(".cin-life-label").remove();
+    setTimeout(()=>{
+      [{name:"Japonya",x:W*0.38,life:"84,8 yıl"},{name:"ABD",x:W*0.62,life:"79,7 yıl"}].forEach(d=>{
+        svg.append("text").attr("class","cin-life-label")
+          .attr("x",d.x).attr("y",H*0.45+rScale(124)*0.7+18)
+          .attr("text-anchor","middle").attr("font-family","DM Sans").attr("font-size","11px")
+          .attr("fill",d.name==="Japonya"?"#d4956a":"#c06830").attr("font-weight","700")
+          .attr("opacity",0).text(d.life)
+          .transition().duration(500).attr("opacity",0.85);
       });
-    }
+    },600);
   }
 
-  let phase="drift"; // drift → converge → settled
-  let phaseStart=0;
-
-  function setPhase(p){phase=p;phaseStart=performance.now();}
-
-  function draw(now){
-    const cw=canvas.offsetWidth,ch=canvas.offsetHeight;
-    ctx.clearRect(0,0,cw,ch);
-    const elapsed=(now-phaseStart)/1000;
-
-    particles.forEach((p,i)=>{
-      if(phase==="drift"){
-        p.x+=p.vx+Math.sin(now/3000+p.phase)*0.3;
-        p.y+=p.vy+Math.cos(now/2500+p.phase)*0.25;
-        // Wrap
-        if(p.x<-20)p.x=cw+20;if(p.x>cw+20)p.x=-20;
-        if(p.y<-20)p.y=ch+20;if(p.y>cw+20)p.y=-20;
-      }else if(phase==="converge"){
-        const ci=Math.floor((i/particles.length)*curvePoints.length);
-        const target=curvePoints[Math.min(ci,curvePoints.length-1)];
-        const ease=Math.min(elapsed/2.5,1);
-        const e=ease*ease*(3-2*ease); // smoothstep
-        p.x+=(target.x-p.x)*e*0.06;
-        p.y+=(target.y-p.y)*e*0.06;
-        // gentle wobble remains
-        p.x+=Math.sin(now/2000+p.phase)*0.15*(1-e);
-        p.y+=Math.cos(now/1800+p.phase)*0.12*(1-e);
-      }
-
-      // Draw glow
-      ctx.beginPath();
-      ctx.arc(p.x,p.y,p.r*2.5,0,Math.PI*2);
-      ctx.fillStyle=p.color.replace(")",`,${p.alpha*0.3})`).replace("rgb","rgba").replace("#","")?
-        `${p.color}${Math.round(p.alpha*0.3*255).toString(16).padStart(2,'0')}`:p.color;
-      // Simpler: just use globalAlpha
-      ctx.globalAlpha=p.alpha*0.25;
-      ctx.fillStyle=p.color;
-      ctx.fill();
-      // Draw core
-      ctx.beginPath();
-      ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
-      ctx.globalAlpha=p.alpha;
-      ctx.fill();
-    });
-    ctx.globalAlpha=1;
-
-    // Draw faint curve line when converging
-    if(phase==="converge"&&elapsed>1.2){
-      const lineAlpha=Math.min((elapsed-1.2)/1.5,0.35);
-      ctx.beginPath();
-      ctx.moveTo(curvePoints[0].x,curvePoints[0].y);
-      for(let i=1;i<curvePoints.length;i++){
-        ctx.lineTo(curvePoints[i].x,curvePoints[i].y);
-      }
-      ctx.strokeStyle=`rgba(232,164,90,${lineAlpha})`;
-      ctx.lineWidth=1.5;
-      ctx.stroke();
-    }
-
-    raf=requestAnimationFrame(draw);
+  // Phase 4: Nigeria vs rich — size contrast
+  function phase4(){
+    svg.selectAll(".cin-life-label").transition().duration(300).attr("opacity",0).remove();
+    const high=["Nijerya","ABD","Japonya","Almanya"];
+    circles.transition().duration(800)
+      .attr("r",d=>high.includes(d.name)?rScale(d.pop)*0.6:rScale(d.pop)*0.2)
+      .attr("opacity",d=>high.includes(d.name)?0.85:0.06);
+    labels.transition().duration(800)
+      .attr("opacity",d=>high.includes(d.name)?1:0)
+      .attr("font-size",d=>high.includes(d.name)?"10px":"0px");
+    sim.force("x",d3.forceX(W/2).strength(0.04))
+       .force("y",d3.forceY(H/2).strength(0.04))
+       .force("collide",d3.forceCollide(d=>rScale(d.pop)*(high.includes(d.name)?0.6:0.2)+3).strength(0.7))
+       .alpha(0.5).restart();
   }
 
-  // ── Text sequence timeline ──
-  function runSequence(){
-    const lines=document.querySelectorAll(".cin-line");
-    const titleLayer=document.querySelector(".cin-title-layer");
-    const cue=document.getElementById("cin-cue");
-    const intro=document.getElementById("cin-intro");
-
-    const timeline=[
-      {el:lines[0],in:800,hold:2200,out:600},
-      {el:lines[1],in:800,hold:2200,out:600},
-      {el:lines[2],in:900,hold:2800,out:700},
-      {el:lines[3],in:900,hold:2800,out:700},
-      {el:lines[4],in:1000,hold:3000,out:800},
-      {el:lines[5],in:1000,hold:2000,out:800},
-    ];
-
-    let t=600;
-    timeline.forEach((step,i)=>{
-      // Position centered
-      setTimeout(()=>{
-        step.el.style.transform="translateX(-50%) translateY(0)";
-        step.el.style.opacity="1";
-        step.el.style.transition=`opacity ${step.in}ms ease, transform ${step.in}ms ease`;
-      },t);
-      t+=step.in;
-      // Hold, then fade out
-      setTimeout(()=>{
-        step.el.style.opacity="0";
-        step.el.style.transform="translateX(-50%) translateY(-16px)";
-        step.el.style.transition=`opacity ${step.out}ms ease, transform ${step.out}ms ease`;
-      },t+step.hold);
-      t+=step.hold+step.out+200;
-
-      // After line 5 (the question), start converge + show title
-      if(i===4){
-        const convergeTime=t-step.out;
-        setTimeout(()=>setPhase("converge"),convergeTime);
-      }
-    });
-
-    // Show main title after all lines
-    setTimeout(()=>{
-      titleLayer.style.opacity="1";
-      titleLayer.style.transform="scale(1)";
-      titleLayer.style.transition="opacity 1.2s ease, transform 1.2s cubic-bezier(0.16,1,0.3,1)";
-    },t+400);
-
-    // Show scroll cue
-    setTimeout(()=>{
-      cue.style.opacity="1";
-      cue.style.transition="opacity .8s ease";
-    },t+1800);
-
-    // Allow skip on click/scroll
-    let skipped=false;
-    function skip(){
-      if(skipped)return;skipped=true;
-      lines.forEach(l=>{l.style.opacity="0";l.style.transition="opacity .3s"});
-      setPhase("converge");
-      setTimeout(()=>{
-        titleLayer.style.opacity="1";
-        titleLayer.style.transform="scale(1)";
-        titleLayer.style.transition="opacity .6s ease, transform .6s ease";
-        cue.style.opacity="1";
-        cue.style.transition="opacity .5s ease";
-      },600);
-    }
-    intro.addEventListener("click",skip,{once:false});
-    intro.addEventListener("wheel",skip,{once:false});
-    intro.addEventListener("touchstart",skip,{passive:true});
+  // Phase 5: scatter preview — all spread by GDP vs Life
+  function phase5(){
+    sim.stop();
+    circles.transition().duration(1200).ease(d3.easeCubicInOut)
+      .attr("cx",d=>xGdp(d.gdp)).attr("cy",d=>yLife(d.life))
+      .attr("r",d=>rScale(d.pop)*0.45)
+      .attr("opacity",0.75);
+    labels.transition().duration(1200).ease(d3.easeCubicInOut)
+      .attr("x",d=>xGdp(d.gdp)).attr("y",d=>yLife(d.life)-rScale(d.pop)*0.45-8)
+      .attr("opacity",d=>["ABD","Japonya","Nijerya","Hindistan","Almanya"].includes(d.name)?0.9:0)
+      .attr("font-size","9px");
+    // faint curve line
+    svg.selectAll(".cin-curve").remove();
+    const curveD=d3.line().curve(d3.curveBasis)(
+      d3.range(1500,90000,500).map(g=>[xGdp(g),yLife(50+34.8*Math.log(g/1500)/Math.log(90000/1500))])
+    );
+    svg.append("path").attr("class","cin-curve")
+      .attr("d",curveD).attr("fill","none").attr("stroke","var(--accent)").attr("stroke-width",1.5)
+      .attr("stroke-dasharray","4 3").attr("opacity",0)
+      .transition().delay(800).duration(600).attr("opacity",0.35);
   }
 
-  // ── Init ──
-  window.addEventListener("DOMContentLoaded",()=>{
-    resize();initParticles();
-    raf=requestAnimationFrame(draw);
-    runSequence();
+  // Phase 6: question — swirl all circles into a vortex
+  function phase6(){
+    svg.selectAll(".cin-curve").transition().duration(400).attr("opacity",0).remove();
+    labels.transition().duration(600).attr("opacity",0);
+    circles.transition().duration(800)
+      .attr("r",d=>rScale(d.pop)*0.3).attr("opacity",0.4);
+    sim.force("x",d3.forceX(W/2).strength(0.08))
+       .force("y",d3.forceY(H/2).strength(0.08))
+       .force("collide",d3.forceCollide(d=>rScale(d.pop)*0.3+2).strength(0.3))
+       .force("charge",d3.forceManyBody().strength(-1))
+       .alpha(0.7).restart();
+  }
+
+  // Phase 7: title reveal — circles fade to subtle bg
+  function phase7(){
+    sim.stop();
+    circles.transition().duration(1000)
+      .attr("cx",d=>W*0.15+Math.random()*W*0.7)
+      .attr("cy",d=>H*0.1+Math.random()*H*0.8)
+      .attr("r",d=>rScale(d.pop)*0.18)
+      .attr("opacity",0.12);
+    labels.transition().duration(400).attr("opacity",0);
+  }
+
+  // ── Text sequence ──
+  const lines=document.querySelectorAll(".cin-line");
+  const titleLayer=document.getElementById("cin-title-layer");
+  const cue=document.getElementById("cin-cue");
+  const brand=document.getElementById("cin-brand");
+  const intro=document.getElementById("cin-intro");
+
+  const timeline=[
+    {el:lines[0],inD:700,hold:1800,outD:500,vizFn:phase1},
+    {el:lines[1],inD:700,hold:1800,outD:500,vizFn:phase2},
+    {el:lines[2],inD:800,hold:2400,outD:600,vizFn:phase3},
+    {el:lines[3],inD:800,hold:2400,outD:600,vizFn:phase4},
+    {el:lines[4],inD:900,hold:2600,outD:700,vizFn:phase5},
+    {el:lines[5],inD:800,hold:1800,outD:600,vizFn:phase6},
+  ];
+
+  // Show brand first
+  setTimeout(()=>{brand.style.opacity="1";brand.style.transition="opacity 1s ease";},200);
+
+  // Start circles floating
+  setTimeout(phase0,400);
+
+  let t=1200;
+  const timers=[];
+  timeline.forEach((step,i)=>{
+    // Fade in text (pure opacity, no movement)
+    timers.push(setTimeout(()=>{
+      step.el.style.transform="translateX(-50%)";
+      step.el.style.opacity="1";
+      step.el.style.transition=`opacity ${step.inD}ms ease`;
+      step.vizFn();
+    },t));
+    const fadeOutAt=t+step.inD+step.hold;
+    timers.push(setTimeout(()=>{
+      step.el.style.opacity="0";
+      step.el.style.transition=`opacity ${step.outD}ms ease`;
+    },fadeOutAt));
+    t=fadeOutAt+step.outD+250;
   });
-  window.addEventListener("resize",resize);
+
+  // Title reveal
+  timers.push(setTimeout(()=>{
+    phase7();
+    titleLayer.style.opacity="1";
+    titleLayer.style.transform="scale(1)";
+    titleLayer.style.transition="opacity 1.2s ease, transform 1.2s cubic-bezier(0.16,1,0.3,1)";
+  },t+300));
+
+  timers.push(setTimeout(()=>{
+    cue.style.opacity="1";
+    cue.style.transition="opacity .8s ease";
+  },t+1600));
+
+  // Skip on click/scroll/touch
+  let skipped=false;
+  function skip(){
+    if(skipped)return;skipped=true;
+    timers.forEach(clearTimeout);
+    lines.forEach(l=>{l.style.opacity="0";l.style.transition="opacity .2s"});
+    svg.selectAll(".cin-life-label,.cin-curve").remove();
+    phase7();
+    setTimeout(()=>{
+      titleLayer.style.opacity="1";titleLayer.style.transform="scale(1)";
+      titleLayer.style.transition="opacity .5s ease, transform .5s ease";
+      cue.style.opacity="1";cue.style.transition="opacity .4s ease";
+    },400);
+  }
+  intro.addEventListener("click",skip);
+  intro.addEventListener("wheel",skip);
+  intro.addEventListener("touchstart",skip,{passive:true});
+});
 })();
 </script>
 
