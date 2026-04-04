@@ -369,8 +369,8 @@ window.addEventListener("DOMContentLoaded",()=>{
   const svg=d3.select("#cin-svg").attr("viewBox",`0 0 ${W} ${H}`);
 
   // ── Scales — sized for the full SVG viewport ──
-  const maxR = Math.min(W, H) * 0.09;  // max circle radius = 9% of smaller dimension
-  const rScale = d3.scaleSqrt().domain([0, 1450]).range([6, maxR]);
+  const maxR = Math.min(W, H) * 0.13;  // bigger: 13% of smaller dimension
+  const rScale = d3.scaleSqrt().domain([0, 1450]).range([8, maxR]);
   const xGdp   = d3.scaleLog().domain([1500, 90000]).range([W * 0.09, W * 0.91]);
   const yLife  = d3.scaleLinear().domain([50, 88]).range([H * 0.86, H * 0.1]);
 
@@ -390,7 +390,8 @@ window.addEventListener("DOMContentLoaded",()=>{
     .attr("r", 0).attr("fill", d=>CRC[d.region]).attr("opacity", 0)
     .attr("stroke", "var(--bg)").attr("stroke-width", 2);
 
-  const lblSize = d => Math.max(10, rScale(d.pop) * 0.38) + "px";
+  // Label font: ~40% of radius, capped so it fits inside the circle
+  const lblSize = d => Math.max(11, Math.min(rScale(d.pop) * 0.42, maxR * 0.44)) + "px";
 
   const labels = labelG.selectAll("text").data(nodes).join("text")
     .attr("x", d=>d.x).attr("y", d=>d.y)
@@ -519,20 +520,50 @@ window.addEventListener("DOMContentLoaded",()=>{
       .transition().delay(900).duration(700).attr("opacity",0.4);
   }
 
-  // Phase 6 — Question: all swirl to centre
+  // Phase 6 — Question: swirl + floating keyword bubbles
+  const KEYWORDS = ["Para?","Eğitim?","Altyapı?","Eşitlik?","Aşılar?","İklim?","Beslenme?","Politika?"];
+  let kwTimers = [];
   function phase6(){
     svg.selectAll(".cin-curve").transition().duration(400).attr("opacity",0).remove();
     labels.transition().duration(600).attr("opacity",0);
-    circles.transition().duration(900).attr("r", d=>rScale(d.pop)*0.38).attr("opacity",0.35);
-    sim.force("x", d3.forceX(W/2).strength(0.1))
-       .force("y", d3.forceY(H/2).strength(0.1))
-       .force("collide", d3.forceCollide(d=>rScale(d.pop)*0.38+3).strength(0.4))
-       .force("charge", d3.forceManyBody().strength(-2))
-       .alpha(0.8).restart();
+    circles.transition().duration(900).attr("r", d=>rScale(d.pop)*0.42).attr("opacity",0.28);
+    sim.force("x", d3.forceX(W/2).strength(0.08))
+       .force("y", d3.forceY(H/2).strength(0.08))
+       .force("collide", d3.forceCollide(d=>rScale(d.pop)*0.42+4).strength(0.45))
+       .force("charge", d3.forceManyBody().strength(-3))
+       .alpha(0.7).restart();
+
+    // Stagger keyword word-bubbles floating up & fading
+    const kwColors = ["#c06830","#5d8fa8","#d4956a","#7db5c8","#8e7560","#a87048","#5a8c9f","#c48860"];
+    kwTimers.forEach(clearTimeout);
+    kwTimers = [];
+    KEYWORDS.forEach((kw, i) => {
+      kwTimers.push(setTimeout(()=>{
+        const x = W*0.18 + Math.random()*W*0.64;
+        const y = H*0.7  + Math.random()*H*0.2;
+        const col = kwColors[i % kwColors.length];
+        const fs = Math.max(14, maxR * 0.38);
+        const kwEl = svg.append("text").attr("class","cin-kw")
+          .attr("x", x).attr("y", y)
+          .attr("text-anchor","middle")
+          .attr("font-family","Source Serif 4, serif")
+          .attr("font-size", fs + "px").attr("font-weight","700")
+          .attr("fill", col).attr("opacity", 0)
+          .style("paint-order","stroke")
+          .style("stroke","rgba(250,247,242,0.85)").style("stroke-width","4px")
+          .text(kw);
+        kwEl.transition().duration(500).attr("opacity", 0.85)
+          .transition().delay(900).duration(700)
+          .attr("y", y - 35).attr("opacity", 0)
+          .remove();
+      }, i * 420));
+    });
   }
 
   // Phase 7 — Title: scatter softly, fade low
   function phase7(){
+    kwTimers.forEach(clearTimeout);
+    svg.selectAll(".cin-kw").transition().duration(300).attr("opacity",0).remove();
     sim.stop();
     nodes.forEach(d=>{ d.tx = W*0.12+Math.random()*W*0.76; d.ty = H*0.08+Math.random()*H*0.84; });
     circles.transition().duration(1100).ease(d3.easeCubicInOut)
@@ -592,22 +623,7 @@ window.addEventListener("DOMContentLoaded",()=>{
     cue.style.transition = "opacity .9s ease";
   }, t + 1800));
 
-  // Skip
-  let skipped = false;
-  function skip(){
-    if(skipped) return; skipped=true;
-    timers.forEach(clearTimeout);
-    lines.forEach(l=>{ l.style.opacity="0"; l.style.transition="opacity .2s"; });
-    svg.selectAll(".cin-life-label,.cin-curve").remove();
-    phase7();
-    setTimeout(()=>{
-      titleLayer.style.opacity="1"; titleLayer.style.transition="opacity .6s ease";
-      cue.style.opacity="1";       cue.style.transition="opacity .5s ease";
-    }, 500);
-  }
-  intro.addEventListener("click", skip);
-  intro.addEventListener("wheel", skip);
-  intro.addEventListener("touchstart", skip, {passive:true});
+  // No skip — animation plays through fully
 });
 })();
 </script>
