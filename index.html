@@ -44,7 +44,7 @@ html{scroll-behavior:smooth}body{font-family:'DM Sans',sans-serif;background:var
 @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(8px)}}
 
 /* ── Editorial Sections ── */
-.editorial{max-width:720px;margin:0 auto;padding:4rem 2rem;position:relative;z-index:3;background:var(--bg)}
+.editorial{max-width:720px;margin:0 auto;padding:2.5rem 2rem 3rem;position:relative;z-index:3;background:var(--bg)}
 .editorial p{font-family:'Source Serif 4',serif;font-size:1.15rem;line-height:1.85;color:var(--text);margin-bottom:1.5rem}
 .editorial .lead{font-size:1.3rem;font-weight:400;line-height:1.7;color:var(--text)}
 .editorial h2{font-family:'Source Serif 4',serif;font-size:clamp(1.6rem,3.5vw,2.2rem);font-weight:700;margin-bottom:1.2rem;letter-spacing:-.02em;line-height:1.2}
@@ -59,7 +59,7 @@ html{scroll-behavior:smooth}body{font-family:'DM Sans',sans-serif;background:var
 /* ── Scrollytelling ── */
 .scrolly{position:relative;margin:0 auto}
 .scrolly__graphic{position:sticky;top:0;width:100%;height:100vh;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;padding:1.5rem 2rem 1rem 3vw;z-index:1}
-#chart-content{width:calc(100% - 380px);max-width:1200px}
+#chart-content{width:calc(100% - 350px);max-width:1200px}
 .viz-header{width:100%;margin-bottom:.5rem;padding-left:.5rem}
 .viz-title{font-family:'Source Serif 4',serif;font-size:1.7rem;font-weight:700;line-height:1.25;transition:all .45s}
 .viz-sub{font-size:.85rem;color:var(--muted);margin-top:.15rem;transition:all .45s}
@@ -67,24 +67,24 @@ html{scroll-behavior:smooth}body{font-family:'DM Sans',sans-serif;background:var
 .lg{display:flex;align-items:center;gap:.35rem;font-size:.78rem;color:var(--muted)}
 .lg .sw{width:10px;height:10px;border-radius:50%}
 #viz{width:100%}
-#viz svg{display:block;width:100%;height:auto;max-height:78vh}
+#viz svg{display:block;width:100%;height:auto;max-height:68vh}
 .viz-source{width:100%;font-size:.62rem;color:var(--muted);opacity:.4;margin-top:.4rem;padding-left:.5rem}
 /* Universal text halo — ONE style for ALL labels, never changes */
 #viz text.cl,#viz text[class*="cl-pop"]{paint-order:stroke;stroke:rgba(250,247,242,0.92);stroke-width:4px;stroke-linejoin:round}
 .axis text{font-family:'DM Sans',sans-serif;font-size:11px;fill:var(--muted)}
 .axis line,.axis path{stroke:#ddd8d0}.grid line{stroke:#e6e1da;stroke-dasharray:2 3;stroke-opacity:.6}.grid path{stroke:none}
 
-.scrolly__steps{position:relative;z-index:2;width:340px;margin-left:auto;margin-right:2vw;margin-top:-100vh;pointer-events:none}
-.step{min-height:100vh;display:flex;align-items:center;padding:3rem 0;pointer-events:auto}
-.step:first-child{padding-top:48vh}.step:last-child{margin-bottom:55vh}
-.sc{background:rgba(255,255,255,.93);border-radius:16px;padding:1.1rem 1.5rem 1.2rem;border:none;transition:all .5s cubic-bezier(.23,1,.32,1);opacity:.06;transform:translateY(12px);max-width:340px;box-shadow:0 4px 28px rgba(0,0,0,.10);text-align:center}
+.scrolly__steps{position:relative;z-index:2;width:320px;margin-left:auto;margin-right:1.5vw;margin-top:-100vh;pointer-events:none}
+.step{min-height:85vh;display:flex;align-items:center;padding:2rem 0;pointer-events:auto}
+.step:first-child{padding-top:38vh}.step:last-child{margin-bottom:20vh}
+.sc{background:rgba(255,255,255,.93);border-radius:16px;padding:1.1rem 1.4rem 1.2rem;border:none;transition:all .5s cubic-bezier(.23,1,.32,1);opacity:.06;transform:translateY(12px);max-width:320px;box-shadow:0 4px 28px rgba(0,0,0,.10);text-align:center}
 .step.is-active .sc{opacity:1;transform:translateY(0);background:rgba(255,255,255,.96);box-shadow:0 6px 32px rgba(0,0,0,.13)}
 .badge{display:inline-block;font-size:.52rem;font-weight:600;letter-spacing:.07em;text-transform:uppercase;padding:.1rem .45rem;border-radius:20px;margin-bottom:.4rem;opacity:.75}
 .b-map{background:#fde8d8;color:#c06830}.b-morph{background:linear-gradient(90deg,#fde8d8,#d6e8f0);color:#7a5a40}.b-scatter{background:#e8ddf5;color:#7a5a90}.b-bar{background:#d6e8f0;color:#3d7a94}.b-pop{background:#e3f0e3;color:#3d7a4a}.b-reveal{background:#fce4e4;color:#b84040}
 .sc h3{font-family:'DM Sans',sans-serif;font-size:.95rem;font-weight:400;line-height:1.55;color:var(--text);margin:0}
 
 /* ── Outro ── */
-.outro{max-width:720px;margin:0 auto;padding:5rem 2rem 8rem;font-family:'Source Serif 4',serif;position:relative;z-index:3;background:var(--bg)}
+.outro{max-width:720px;margin:0 auto;padding:3rem 2rem 6rem;font-family:'Source Serif 4',serif;position:relative;z-index:3;background:var(--bg)}
 .outro h2{font-size:1.6rem;font-weight:700;margin-bottom:1rem;letter-spacing:-.02em;line-height:1.25}
 .outro p{font-size:1.1rem;line-height:1.8;color:var(--text);margin-bottom:1.2rem}
 .outro .final-line{font-size:1.25rem;font-weight:600;color:var(--accent);font-style:italic;margin-top:2rem;line-height:1.6}
@@ -207,9 +207,9 @@ html{scroll-behavior:smooth}body{font-family:'DM Sans',sans-serif;background:var
   #viz{width:100%}
   #viz svg{display:block;width:100%;height:100vw;max-height:68vh}
   .scrolly__steps{width:100%;margin-left:0;margin-right:0;margin-top:-100vh;padding:0;pointer-events:none}
-  .step{min-height:100vh;padding:0;align-items:flex-end;padding-bottom:2rem;pointer-events:none}
-  .step:first-child{min-height:100vh}
-  .step:last-child{margin-bottom:50vh}
+  .step{min-height:85vh;padding:0;align-items:flex-end;padding-bottom:2rem;pointer-events:none}
+  .step:first-child{min-height:85vh}
+  .step:last-child{margin-bottom:20vh}
   .sc{max-width:calc(100% - 2rem);width:calc(100% - 2rem);margin:0 1rem;padding:.85rem 1.2rem 1rem;border-radius:14px;pointer-events:auto}
   .sc h3{font-size:.88rem}
   .badge{font-size:.48rem}
@@ -1344,7 +1344,7 @@ function s2(){
       .attr("text-anchor","middle").attr("font-size","9px").attr("font-weight","600")
       .attr("fill",RC[d.region]).attr("opacity",.8).text(tn(d))});
   stT(()=>{
-    annotG.append("text").attr("x",w-8).attr("y",h-36).attr("text-anchor","end").attr("font-family","DM Sans")
+    annotG.append("text").attr("x",12).attr("y",h-10).attr("text-anchor","start").attr("font-family","DM Sans")
       .attr("font-size","9px").attr("fill","var(--muted)").attr("opacity",0).text(L("js_annot_circle_size"))
       .transition().delay(800).duration(600).attr("opacity",0.6);
   },400);
@@ -1626,7 +1626,7 @@ function initScrolly(){
       entry.target.classList.add("is-active");
       fns[idx]();
     });
-  },{rootMargin:"-50% 0px -50% 0px"});
+  },{rootMargin:"-45% 0px -55% 0px"});
   steps.forEach(s=>stepObs.observe(s));
 
   // Block observer: moves chart SVG between scrolly sections
@@ -1637,7 +1637,7 @@ function initScrolly(){
       const blockNum=entry.target.dataset.block;
       moveChartTo('graphic-'+blockNum);
     });
-  },{rootMargin:"-20% 0px -20% 0px"});
+  },{rootMargin:"-30% 0px -30% 0px"});
   blocks.forEach(b=>blockObs.observe(b));
 
   // Progress bar: tracks full page scroll
