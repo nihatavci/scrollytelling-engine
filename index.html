@@ -170,6 +170,21 @@ html{scroll-behavior:smooth}body{font-family:'DM Sans',sans-serif;background:var
 .cin-scroll-cue .arr{width:16px;height:16px;border-right:2px solid var(--accent);border-bottom:2px solid var(--accent);transform:rotate(45deg)}
 @keyframes cinFadeIn{to{opacity:1}}
 
+/* ── Language Switcher ── */
+.lang-sw{
+  position:fixed;top:1rem;right:1.5rem;z-index:999;
+  display:flex;gap:0;border-radius:20px;overflow:hidden;
+  border:1.5px solid rgba(42,35,32,0.15);
+  background:rgba(250,247,242,0.88);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+  font-family:'DM Sans',sans-serif;font-size:.72rem;font-weight:600;
+  letter-spacing:.04em;
+}
+.lang-sw button{
+  padding:.4rem .9rem;border:none;cursor:pointer;
+  background:transparent;color:var(--muted);transition:all .25s ease;
+}
+.lang-sw button.active{background:var(--accent);color:#fff;border-radius:18px}
+
 /* ── Mobile ── */
 @media(max-width:768px){
   .cin-main-title{font-size:clamp(1.8rem,8vw,2.8rem)}
@@ -204,40 +219,41 @@ html{scroll-behavior:smooth}body{font-family:'DM Sans',sans-serif;background:var
 </head>
 <body>
 <div class="progress" id="prog"></div>
+<div class="lang-sw" id="lang-sw"><button class="active" data-lang="tr">TR</button><button data-lang="en">EN</button></div>
 
 <!-- ════════════════════ CINEMATIC INTRO ════════════════════ -->
 <section class="cin-intro" id="cin-intro">
-  <div class="cin-brand" id="cin-brand">Scrolli Labs sunar</div>
+  <div class="cin-brand" id="cin-brand" data-i18n="cin_brand">Scrolli Labs sunar</div>
   <div class="cin-svg-wrap"><svg id="cin-svg"></svg></div>
   <div class="cin-text-layer" id="cin-text-layer">
-    <div class="cin-line cin-l1">Japonya: kişi başı $34.000</div>
-    <div class="cin-line cin-l2">ABD: kişi başı $85.000</div>
-    <div class="cin-line cin-l3">Ama Japonya'da insanlar <em>5 yıl daha uzun</em> yaşıyor.</div>
-    <div class="cin-line cin-l4">Nijerya'da bir çocuk, Norveçli bir çocuğun yarısı kadar yaşıyor.</div>
-    <div class="cin-line cin-l5">53 kat daha zengin bir ülke,<br>daha uzun ömür garanti etmiyor.</div>
-    <div class="cin-line cin-l6">Peki ömrü gerçekten ne uzatıyor?</div>
+    <div class="cin-line cin-l1" data-i18n="cin_l1">Japonya: kişi başı $34.000</div>
+    <div class="cin-line cin-l2" data-i18n="cin_l2">ABD: kişi başı $85.000</div>
+    <div class="cin-line cin-l3" data-i18n="cin_l3">Ama Japonya'da insanlar <em>5 yıl daha uzun</em> yaşıyor.</div>
+    <div class="cin-line cin-l4" data-i18n="cin_l4">Nijerya'da bir çocuk, Norveçli bir çocuğun yarısı kadar yaşıyor.</div>
+    <div class="cin-line cin-l5" data-i18n="cin_l5">53 kat daha zengin bir ülke,<br>daha uzun ömür garanti etmiyor.</div>
+    <div class="cin-line cin-l6" data-i18n="cin_l6">Peki ömrü gerçekten ne uzatıyor?</div>
   </div>
   <div class="cin-title-layer" id="cin-title-layer">
-    <h1 class="cin-main-title">Para <span>Yıl Satın<br>Alabilir mi?</span></h1>
-    <p class="cin-sub">Preston Eğrisi'nin 50 yıllık hikâyesi</p>
+    <h1 class="cin-main-title" data-i18n="cin_title">Para <span>Yıl Satın<br>Alabilir mi?</span></h1>
+    <p class="cin-sub" data-i18n="cin_sub">Preston Eğrisi'nin 50 yıllık hikâyesi</p>
   </div>
   <div class="cin-scroll-cue" id="cin-cue">
-    <span>Kaydırarak başlayın</span>
+    <span data-i18n="cin_cue">Kaydırarak başlayın</span>
     <div class="arr"></div>
   </div>
 </section>
 
 <!-- ════════════════════ HERO (post-intro) ════════════════════ -->
 <section class="hero" id="hero-section" style="padding-top:2rem">
-  <div class="credit">Veri: IMF World Economic Outlook Ekim 2025 · UN World Population Prospects 2024 · World Bank</div>
+  <div class="credit" data-i18n="credit">Veri: IMF World Economic Outlook Ekim 2025 · UN World Population Prospects 2024 · World Bank</div>
 </section>
 
 <!-- ════════════════════ EDITORIAL: INTRO ════════════════════ -->
 <section class="editorial" id="ed-intro">
-  <div class="kicker">Birinci Perde · Soru</div>
-  <h2>Demografların Peşini Bırakmayan Soru</h2>
-  <p class="lead">1975'te ekonomist Samuel H. Preston, zenginlik ile hayatta kalma arasındaki ilişkiye bakışımızı kökten değiştirecek bir makale yayımladı. 20. yüzyılın üç farklı on yılına ait verileri incelediğinde çarpıcı bir örüntü buldu: zengin ülkeler daha uzun yaşıyordu. Ama ilişki doğrusal değildi. Kıvrılıyordu.</p>
-  <p>Kişi başı milli gelirin ilk birkaç bin doları, yaşam süresinde devasa kazanımlar sağlıyordu — temiz su, temel sağlık hizmetleri, çocukluk aşıları. Ancak belli bir eşiğin ötesinde eğri düzleşiyordu. Ek zenginlik giderek daha az yıl satın alıyordu. Bugün Preston Eğrisi olarak bilinen bu içbükey ilişki, küresel politikayı hâlâ meşgul eden bir soru ortaya koydu: para tek başına uzun ömür satın almıyorsa, ne satın alıyor?</p>
+  <div class="kicker" data-i18n="ed0_kicker">Birinci Perde · Soru</div>
+  <h2 data-i18n="ed0_h2">Demografların Peşini Bırakmayan Soru</h2>
+  <p class="lead" data-i18n="ed0_lead">1975'te ekonomist Samuel H. Preston, zenginlik ile hayatta kalma arasındaki ilişkiye bakışımızı kökten değiştirecek bir makale yayımladı. 20. yüzyılın üç farklı on yılına ait verileri incelediğinde çarpıcı bir örüntü buldu: zengin ülkeler daha uzun yaşıyordu. Ama ilişki doğrusal değildi. Kıvrılıyordu.</p>
+  <p data-i18n="ed0_p2">Kişi başı milli gelirin ilk birkaç bin doları, yaşam süresinde devasa kazanımlar sağlıyordu — temiz su, temel sağlık hizmetleri, çocukluk aşıları. Ancak belli bir eşiğin ötesinde eğri düzleşiyordu. Ek zenginlik giderek daha az yıl satın alıyordu. Bugün Preston Eğrisi olarak bilinen bu içbükey ilişki, küresel politikayı hâlâ meşgul eden bir soru ortaya koydu: para tek başına uzun ömür satın almıyorsa, ne satın alıyor?</p>
 
   <!-- Inline SVG: conceptual Preston Curve -->
   <svg class="curve-svg" viewBox="0 0 480 260" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -267,7 +283,7 @@ html{scroll-behavior:smooth}body{font-family:'DM Sans',sans-serif;background:var
     <circle cx="290" cy="48" r="5" fill="#d4956a" opacity="0.8"/><text x="268" y="52" text-anchor="end" font-family="DM Sans" font-size="8" font-weight="600" fill="#d4956a">Japonya</text>
   </svg>
 
-  <p>Milli gelir ile yaşam süresi arasındaki korelasyon günümüz verilerinde 0,90'a ulaşıyor — son derece yüksek. Ama bu rakam devasa farklılıkları gizliyor. Bazı ülkeler zenginliklerinin öngördüğünden çok daha iyi performans gösterirken, diğerleri bol kaynaklarına rağmen feci biçimde başarısız oluyor. Görünen o ki eğri, hikâyenin sadece başlangıcı.</p>
+  <p data-i18n="ed0_p3">Milli gelir ile yaşam süresi arasındaki korelasyon günümüz verilerinde 0,90'a ulaşıyor — son derece yüksek. Ama bu rakam devasa farklılıkları gizliyor. Bazı ülkeler zenginliklerinin öngördüğünden çok daha iyi performans gösterirken, diğerleri bol kaynaklarına rağmen feci biçimde başarısız oluyor. Görünen o ki eğri, hikâyenin sadece başlangıcı.</p>
   <div class="separator"></div>
 </section>
 
@@ -281,29 +297,29 @@ html{scroll-behavior:smooth}body{font-family:'DM Sans',sans-serif;background:var
         <div class="viz-legend" id="legend"></div>
       </div>
       <div id="viz"></div>
-      <div class="viz-source">IMF WEO Ekim 2025 · UN WPP 2024 · World Bank</div>
+      <div class="viz-source" data-i18n="viz_source">IMF WEO Ekim 2025 · UN WPP 2024 · World Bank</div>
     </div>
   </div>
   <div class="scrolly__steps">
-    <div class="step" data-step="0"><div class="sc"><div class="badge b-map">Dünya</div><h3>Ulusların zenginliği tanıdık bir tablo çiziyor — zengin Kuzey, gelişmekte olan Güney. Ama bu harita kimin yaşayıp kimin öleceği hakkında bize gerçekten ne söylüyor?</h3></div></div>
-    <div class="step" data-step="1"><div class="sc"><div class="badge b-map">Örneklem</div><h3>Ekonomik yelpazanin tamamını kapsayan 15 ülke. Kişi başı 85.000 dolardan (ABD) 1.600 dolara (Nijerya). Toplamda: 4,8 milyar insan — insanlığın %60'ı.</h3></div></div>
-    <div class="step" data-step="2"><div class="sc"><div class="badge b-morph">Dönüşüm</div><h3>Sınırları kaldırın. Her ülke nüfusuyla orantılı bir daireye dönüşüyor. Coğrafya eriyor; veri ortaya çıkıyor.</h3></div></div>
-    <div class="step" data-step="3"><div class="sc"><div class="badge b-scatter">Eğri</div><h3>Preston Eğrisi. 20.000 doların altında her dolar yıllar satın alıyor. Üstünde? Eğri düzleşiyor. Paranın etkisi azalıyor.</h3></div></div>
+    <div class="step" data-step="0"><div class="sc"><div class="badge b-map" data-i18n="s0_badge">Dünya</div><h3 data-i18n="s0_text">Ulusların zenginliği tanıdık bir tablo çiziyor — zengin Kuzey, gelişmekte olan Güney. Ama bu harita kimin yaşayıp kimin öleceği hakkında bize gerçekten ne söylüyor?</h3></div></div>
+    <div class="step" data-step="1"><div class="sc"><div class="badge b-map" data-i18n="s1_badge">Örneklem</div><h3 data-i18n="s1_text">Ekonomik yelpazanin tamamını kapsayan 15 ülke. Kişi başı 85.000 dolardan (ABD) 1.600 dolara (Nijerya). Toplamda: 4,8 milyar insan — insanlığın %60'ı.</h3></div></div>
+    <div class="step" data-step="2"><div class="sc"><div class="badge b-morph" data-i18n="s2_badge">Dönüşüm</div><h3 data-i18n="s2_text">Sınırları kaldırın. Her ülke nüfusuyla orantılı bir daireye dönüşüyor. Coğrafya eriyor; veri ortaya çıkıyor.</h3></div></div>
+    <div class="step" data-step="3"><div class="sc"><div class="badge b-scatter" data-i18n="s3_badge">Eğri</div><h3 data-i18n="s3_text">Preston Eğrisi. 20.000 doların altında her dolar yıllar satın alıyor. Üstünde? Eğri düzleşiyor. Paranın etkisi azalıyor.</h3></div></div>
   </div>
 </section>
 
 <!-- ════════════════════ EDITORIAL BREAK 1: The Upward Shift ════════════════════ -->
 <section class="editorial" id="ed-break1">
-  <div class="kicker">İkinci Perde · Bükülme</div>
-  <h2>Yukarı Kayma</h2>
+  <div class="kicker" data-i18n="ed1_kicker">İkinci Perde · Bükülme</div>
+  <h2 data-i18n="ed1_h2">Yukarı Kayma</h2>
   <figure>
     <img src="https://i.ibb.co/6cQTHpnW/doctor.webp" alt="Tıbbi araştırma ve sağlık hizmetlerindeki ilerleme" loading="lazy">
-    <figcaption>Tıp, aşılar ve halk sağlığı altyapısındaki ilerlemeler, eğrinin tamamını zaman içinde yukarı kaydırdı.</figcaption>
+    <figcaption data-i18n="ed1_fig">Tıp, aşılar ve halk sağlığı altyapısındaki ilerlemeler, eğrinin tamamını zaman içinde yukarı kaydırdı.</figcaption>
   </figure>
-  <div class="pullquote">"Aynı gelir düzeyinde, 1960'lardaki bir ülke 1930'lardaki bir ülkeden çok daha uzun yaşıyordu. Paranın ötesinde bir şey ömürleri uzatıyordu."</div>
-  <p>Preston'ın bir sonraki keşfi daha da çarpıcıydı. Eğrinin tamamı zamanla yukarı kayıyordu. 1960'lardaki ülkeler, aynı gelir düzeyindeki 1930'ların ülkelerinden daha uzun yaşıyordu. GSYİH'nin ötesinde bir şey ömürleri uzatıyordu — aşılar, antibiyotikler, temiz su altyapısı, oral rehidrasyon tedavisi. Preston buna "dışsal yukarı kayma" adını verdi.</p>
-  <p>Hans Rosling daha sonra bu "Büyük Yakınsama"yı ünlü Gapminder görselleştirmeleriyle kamuoyuna taşıdı; ulusların "yoksul ve hasta" köşesinden "zengin ve sağlıklı" köşesine nasıl göç ettiğini gösterdi. Ama hepsi aynı hızda değildi. Ve her zaman zenginlik sayesinde değildi. Akademik bir rekabet doğdu: ömürleri gerçekten uzatan gelir mi, eğitim mi?</p>
-  <p>Wolfgang Lutz ve Endale Kebede, eğitim düzeyinin çok daha güçlü bir belirleyici olduğunu savundu. Eğitimin, bilişsel birikim, daha iyi sağlık okuryazarlığı ve karmaşık sağlık sistemlerinde artan bireysel etkinlik yoluyla sağlığı iyileştirdiğini gösterdiler. Gelişmekte olan ülkelerde kadın eğitimi tek başına çocuk sağkalımının temel itici gücü.</p>
+  <div class="pullquote" data-i18n="ed1_quote">"Aynı gelir düzeyinde, 1960'lardaki bir ülke 1930'lardaki bir ülkeden çok daha uzun yaşıyordu. Paranın ötesinde bir şey ömürleri uzatıyordu."</div>
+  <p data-i18n="ed1_p1">Preston'ın bir sonraki keşfi daha da çarpıcıydı. Eğrinin tamamı zamanla yukarı kayıyordu. 1960'lardaki ülkeler, aynı gelir düzeyindeki 1930'ların ülkelerinden daha uzun yaşıyordu. GSYİH'nin ötesinde bir şey ömürleri uzatıyordu — aşılar, antibiyotikler, temiz su altyapısı, oral rehidrasyon tedavisi. Preston buna "dışsal yukarı kayma" adını verdi.</p>
+  <p data-i18n="ed1_p2">Hans Rosling daha sonra bu "Büyük Yakınsama"yı ünlü Gapminder görselleştirmeleriyle kamuoyuna taşıdı; ulusların "yoksul ve hasta" köşesinden "zengin ve sağlıklı" köşesine nasıl göç ettiğini gösterdi. Ama hepsi aynı hızda değildi. Ve her zaman zenginlik sayesinde değildi. Akademik bir rekabet doğdu: ömürleri gerçekten uzatan gelir mi, eğitim mi?</p>
+  <p data-i18n="ed1_p3">Wolfgang Lutz ve Endale Kebede, eğitim düzeyinin çok daha güçlü bir belirleyici olduğunu savundu. Eğitimin, bilişsel birikim, daha iyi sağlık okuryazarlığı ve karmaşık sağlık sistemlerinde artan bireysel etkinlik yoluyla sağlığı iyileştirdiğini gösterdiler. Gelişmekte olan ülkelerde kadın eğitimi tek başına çocuk sağkalımının temel itici gücü.</p>
   <div class="separator"></div>
 </section>
 
@@ -311,23 +327,23 @@ html{scroll-behavior:smooth}body{font-family:'DM Sans',sans-serif;background:var
 <section class="scrolly" id="scrolly-2" data-block="2">
   <div class="scrolly__graphic" id="graphic-2"></div>
   <div class="scrolly__steps">
-    <div class="step" data-step="4"><div class="sc"><div class="badge b-reveal">İstisna</div><h3>Dünyanın en zengin ülkesi, ama Amerikalılar çok daha yoksul ülkelerin vatandaşlarından önce ölüyor. ABD sağlığa kişi başı 12.500 dolar harcıyor — Japonya'nın iki katından fazla — ama 5 yıl daha kısa yaşıyor.</h3></div></div>
-    <div class="step" data-step="5"><div class="sc"><div class="badge b-bar">Merdiven</div><h3>Gelire göre sıralayın. Nijerya'nın 1.600 dolarından Amerika'nın 85.000 dolarına uzanan merdiven, 53 katlık bir uçurumu temsil ediyor.</h3></div></div>
-    <div class="step" data-step="6"><div class="sc"><div class="badge b-bar">Basamaklar</div><h3>Sıralanıp dizildiğinde bölgesel kümeler ortaya çıkıyor. Avrupa'nın orta sınıfı, Asya'nın geniş yelpazesi, Afrika'nın tabanı. Ama en uzun çubuk en uzun ömrü garanti etmiyor.</h3></div></div>
+    <div class="step" data-step="4"><div class="sc"><div class="badge b-reveal" data-i18n="s4_badge">İstisna</div><h3 data-i18n="s4_text">Dünyanın en zengin ülkesi, ama Amerikalılar çok daha yoksul ülkelerin vatandaşlarından önce ölüyor. ABD sağlığa kişi başı 12.500 dolar harcıyor — Japonya'nın iki katından fazla — ama 5 yıl daha kısa yaşıyor.</h3></div></div>
+    <div class="step" data-step="5"><div class="sc"><div class="badge b-bar" data-i18n="s5_badge">Merdiven</div><h3 data-i18n="s5_text">Gelire göre sıralayın. Nijerya'nın 1.600 dolarından Amerika'nın 85.000 dolarına uzanan merdiven, 53 katlık bir uçurumu temsil ediyor.</h3></div></div>
+    <div class="step" data-step="6"><div class="sc"><div class="badge b-bar" data-i18n="s6_badge">Basamaklar</div><h3 data-i18n="s6_text">Sıralanıp dizildiğinde bölgesel kümeler ortaya çıkıyor. Avrupa'nın orta sınıfı, Asya'nın geniş yelpazesi, Afrika'nın tabanı. Ama en uzun çubuk en uzun ömrü garanti etmiyor.</h3></div></div>
   </div>
 </section>
 
 <!-- ════════════════════ EDITORIAL BREAK 2: The Outliers ════════════════════ -->
 <section class="editorial" id="ed-break2">
-  <div class="kicker">Üçüncü Perde · Eğrinin Ötesi</div>
-  <h2>Veriye Meydan Okuyan Ülkeler</h2>
+  <div class="kicker" data-i18n="ed2_kicker">Üçüncü Perde · Eğrinin Ötesi</div>
+  <h2 data-i18n="ed2_h2">Veriye Meydan Okuyan Ülkeler</h2>
   <figure>
     <img src="https://i.ibb.co/kgq20dY0/people.webp" alt="Kentsel eşitsizlik ve karşıt yaşam koşulları" loading="lazy">
-    <figcaption>Zengin ülkelerde sağlık sonuçlarını aşındıran mutlak gelir değil, eşitsizlik. Zengin ile yoksul arasındaki uçurum kronik psikososyal stres yaratıyor.</figcaption>
+    <figcaption data-i18n="ed2_fig">Zengin ülkelerde sağlık sonuçlarını aşındıran mutlak gelir değil, eşitsizlik. Zengin ile yoksul arasındaki uçurum kronik psikososyal stres yaratıyor.</figcaption>
   </figure>
-  <div class="pullquote">"Kosta Rika, Amerika'nın yaşam süresine beşte bir maliyetle ulaşıyor. Rusya ise görece zenginliğine rağmen eğrinin öngördüğünün yıllar altında kalıyor."</div>
-  <p>Paranın tek başına yıl satın almadığının en ikna edici kanıtı aykırı değerlerden geliyor. Kosta Rika, Küba ve Hindistan'ın Kerala eyaleti, gelirlerinin çok küçük bir kısmıyla zengin ülkelere rakip yaşam süreleri elde etti. Formülleri: evrensel temel sağlık hizmeti, yüksek okuryazarlık ve güçlü halk sağlığı sistemleri — araştırmacıların "Düşük Maliyetle İyi Sağlık" dediği şey.</p>
-  <p>Öte yandan, Richard Wilkinson ve Kate Pickett'in araştırması, zengin ülkelerde öldürenin mutlak gelir değil eşitsizlik olduğunu ortaya koydu. Japonya ve İsveç gibi eşitlikçi toplumlarda — zenginlerin yoksullardan 3,5 kat daha varlıklı olduğu yerlerde — sağlık sonuçları tutarlı biçimde daha iyi. ABD ve İngiltere'de ise uçurum 7-8 kata ulaşıyor ve kronik psikososyal stres yılları aşındırıyor. Preston Eğrisi'nin gizli bir boyutu var: dağılım.</p>
+  <div class="pullquote" data-i18n="ed2_quote">"Kosta Rika, Amerika'nın yaşam süresine beşte bir maliyetle ulaşıyor. Rusya ise görece zenginliğine rağmen eğrinin öngördüğünün yıllar altında kalıyor."</div>
+  <p data-i18n="ed2_p1">Paranın tek başına yıl satın almadığının en ikna edici kanıtı aykırı değerlerden geliyor. Kosta Rika, Küba ve Hindistan'ın Kerala eyaleti, gelirlerinin çok küçük bir kısmıyla zengin ülkelere rakip yaşam süreleri elde etti. Formülleri: evrensel temel sağlık hizmeti, yüksek okuryazarlık ve güçlü halk sağlığı sistemleri — araştırmacıların "Düşük Maliyetle İyi Sağlık" dediği şey.</p>
+  <p data-i18n="ed2_p2">Öte yandan, Richard Wilkinson ve Kate Pickett'in araştırması, zengin ülkelerde öldürenin mutlak gelir değil eşitsizlik olduğunu ortaya koydu. Japonya ve İsveç gibi eşitlikçi toplumlarda — zenginlerin yoksullardan 3,5 kat daha varlıklı olduğu yerlerde — sağlık sonuçları tutarlı biçimde daha iyi. ABD ve İngiltere'de ise uçurum 7-8 kata ulaşıyor ve kronik psikososyal stres yılları aşındırıyor. Preston Eğrisi'nin gizli bir boyutu var: dağılım.</p>
   <div class="separator"></div>
 </section>
 
@@ -335,45 +351,338 @@ html{scroll-behavior:smooth}body{font-family:'DM Sans',sans-serif;background:var
 <section class="scrolly" id="scrolly-3" data-block="3">
   <div class="scrolly__graphic" id="graphic-3"></div>
   <div class="scrolly__steps">
-    <div class="step" data-step="7"><div class="sc"><div class="badge b-pop">Nüfus</div><h3>Artık büyüklük önemli. Hindistan ve Çin birlikte diğerlerinin toplamından fazla insana sahip. ABD'nin uzun gelir çubuğu? Burada mütevazı bir baloncuk. Zenginlik ölçek değil.</h3></div></div>
-    <div class="step" data-step="8"><div class="sc"><div class="badge b-pop">Halka</div><h3>Tek bir halka, 4,8 milyar insan. Her dilim nüfusla orantılı. İnsanlığın dağılımı zenginliğin dağılımına hiç benzemiyor.</h3></div></div>
-    <div class="step" data-step="9"><div class="sc"><div class="badge b-pop">Dört Dünya</div><h3>Dört bölge, dört hikâye. Asya'nın 3,3 milyarı baskın. Ama her halkanın içinde aynı paradoks: nüfus payı ekonomik güçle çok az ilişkili.</h3></div></div>
+    <div class="step" data-step="7"><div class="sc"><div class="badge b-pop" data-i18n="s7_badge">Nüfus</div><h3 data-i18n="s7_text">Artık büyüklük önemli. Hindistan ve Çin birlikte diğerlerinin toplamından fazla insana sahip. ABD'nin uzun gelir çubuğu? Burada mütevazı bir baloncuk. Zenginlik ölçek değil.</h3></div></div>
+    <div class="step" data-step="8"><div class="sc"><div class="badge b-pop" data-i18n="s8_badge">Halka</div><h3 data-i18n="s8_text">Tek bir halka, 4,8 milyar insan. Her dilim nüfusla orantılı. İnsanlığın dağılımı zenginliğin dağılımına hiç benzemiyor.</h3></div></div>
+    <div class="step" data-step="9"><div class="sc"><div class="badge b-pop" data-i18n="s9_badge">Dört Dünya</div><h3 data-i18n="s9_text">Dört bölge, dört hikâye. Asya'nın 3,3 milyarı baskın. Ama her halkanın içinde aynı paradoks: nüfus payı ekonomik güçle çok az ilişkili.</h3></div></div>
   </div>
 </section>
 
 <!-- ════════════════════ OUTRO ════════════════════ -->
 <section class="outro">
-  <h2>Sonuç</h2>
-  <p>Para yıl satın alabilir mi? 50 yıllık araştırmanın ardından cevap nüanslı. Para yılları kolaylaştırıyor, ama hayatta kalmanın motoru değil. Motor, Preston'ın "Yukarı Kayma" dediği şey — insan bilgisinin, eğitimin ve teknolojinin durmak bilmeyen ilerleyişi.</p>
-  <p>Gelişmekte olan dünya için uzun ömre giden en verimli yol GSYİH büyümesi değil, belirli müdahalelerle sağlık teknolojisi sınırına ulaşmak: aşılar, temiz su, anne bakımı, okuryazarlık. Zengin dünya için ise sınır eşitsizliğe, ruh sağlığına ve hiçbir milli gelirin tek başına çözemeyeceği sosyal belirleyicilere kaymış durumda.</p>
-  <p>COVID-19 pandemisi bunu doğruladı. 2019-2021 arasında küresel yaşam süresi 1,8 yıl düştü — yakın tarihin en büyük düşüşü. Düşüş tekdüze değildi: hangi toplumların zenginliğin ötesinde dayanıklılık inşa ettiğini ortaya koyan bir stres testiydi. 2023'te yaşam süresi büyük ölçüde aşılar sayesinde 73,3 yıla toparlandı — bir yukarı kayma daha.</p>
-  <p class="final-line">"1975'in Preston Eğrisi'nde hikâye ulusların zenginliğiyle ilgiliydi. 2025'te toplumların dayanıklılığı ve insan zihninin esnekliğiyle ilgili. Artık yılları altınla satın almıyoruz; bilgiyle yetiştiriyoruz."</p>
-  <div class="source-block">
+  <h2 data-i18n="outro_h2">Sonuç</h2>
+  <p data-i18n="outro_p1">Para yıl satın alabilir mi? 50 yıllık araştırmanın ardından cevap nüanslı. Para yılları kolaylaştırıyor, ama hayatta kalmanın motoru değil. Motor, Preston'ın "Yukarı Kayma" dediği şey — insan bilgisinin, eğitimin ve teknolojinin durmak bilmeyen ilerleyişi.</p>
+  <p data-i18n="outro_p2">Gelişmekte olan dünya için uzun ömre giden en verimli yol GSYİH büyümesi değil, belirli müdahalelerle sağlık teknolojisi sınırına ulaşmak: aşılar, temiz su, anne bakımı, okuryazarlık. Zengin dünya için ise sınır eşitsizliğe, ruh sağlığına ve hiçbir milli gelirin tek başına çözemeyeceği sosyal belirleyicilere kaymış durumda.</p>
+  <p data-i18n="outro_p3">COVID-19 pandemisi bunu doğruladı. 2019-2021 arasında küresel yaşam süresi 1,8 yıl düştü — yakın tarihin en büyük düşüşü. Düşüş tekdüze değildi: hangi toplumların zenginliğin ötesinde dayanıklılık inşa ettiğini ortaya koyan bir stres testiydi. 2023'te yaşam süresi büyük ölçüde aşılar sayesinde 73,3 yıla toparlandı — bir yukarı kayma daha.</p>
+  <p class="final-line" data-i18n="outro_final">"1975'in Preston Eğrisi'nde hikâye ulusların zenginliğiyle ilgiliydi. 2025'te toplumların dayanıklılığı ve insan zihninin esnekliğiyle ilgili. Artık yılları altınla satın almıyoruz; bilgiyle yetiştiriyoruz."</p>
+  <div class="source-block" data-i18n="outro_sources">
     <strong>Kaynaklar:</strong> Preston, S.H. (1975). "The Changing Relation between Mortality and Level of Economic Development." IMF World Economic Outlook, Ekim 2025. UN World Population Prospects 2024. World Bank Development Indicators. Lutz &amp; Kebede, "Education and Health: Redrawing the Preston Curve" (PMC, 2018). Wilkinson &amp; Pickett, "The Spirit Level" (2009). WHO World Health Statistics 2025.<br><br>
     <strong>Tasarım ve geliştirme:</strong> Scrolli.co · D3.js, Flubber, TopoJSON ile yapıldı
   </div>
 </section>
 
+<!-- ═══════ I18N SYSTEM ═══════ -->
+<script>
+window.LANG = "tr";
+const I18N = {
+tr: {
+  // Cinematic intro
+  cin_brand: "Scrolli Labs sunar",
+  cin_l1: "Japonya: kişi başı $34.000",
+  cin_l2: "ABD: kişi başı $85.000",
+  cin_l3: 'Ama Japonya\'da insanlar <em>5 yıl daha uzun</em> yaşıyor.',
+  cin_l4: "Nijerya'da bir çocuk, Norveçli bir çocuğun yarısı kadar yaşıyor.",
+  cin_l5: "53 kat daha zengin bir ülke,<br>daha uzun ömür garanti etmiyor.",
+  cin_l6: "Peki ömrü gerçekten ne uzatıyor?",
+  cin_title: 'Para <span>Yıl Satın<br>Alabilir mi?</span>',
+  cin_sub: "Preston Eğrisi'nin 50 yıllık hikâyesi",
+  cin_cue: "Kaydırarak başlayın",
+  credit: "Veri: IMF World Economic Outlook Ekim 2025 · UN World Population Prospects 2024 · World Bank",
+  // Editorial intro
+  ed0_kicker: "Birinci Perde · Soru",
+  ed0_h2: "Demografların Peşini Bırakmayan Soru",
+  ed0_lead: "1975'te ekonomist Samuel H. Preston, zenginlik ile hayatta kalma arasındaki ilişkiye bakışımızı kökten değiştirecek bir makale yayımladı. 20. yüzyılın üç farklı on yılına ait verileri incelediğinde çarpıcı bir örüntü buldu: zengin ülkeler daha uzun yaşıyordu. Ama ilişki doğrusal değildi. Kıvrılıyordu.",
+  ed0_p2: "Kişi başı milli gelirin ilk birkaç bin doları, yaşam süresinde devasa kazanımlar sağlıyordu — temiz su, temel sağlık hizmetleri, çocukluk aşıları. Ancak belli bir eşiğin ötesinde eğri düzleşiyordu. Ek zenginlik giderek daha az yıl satın alıyordu. Bugün Preston Eğrisi olarak bilinen bu içbükey ilişki, küresel politikayı hâlâ meşgul eden bir soru ortaya koydu: para tek başına uzun ömür satın almıyorsa, ne satın alıyor?",
+  ed0_p3: "Milli gelir ile yaşam süresi arasındaki korelasyon günümüz verilerinde 0,90'a ulaşıyor — son derece yüksek. Ama bu rakam devasa farklılıkları gizliyor. Bazı ülkeler zenginliklerinin öngördüğünden çok daha iyi performans gösterirken, diğerleri bol kaynaklarına rağmen feci biçimde başarısız oluyor. Görünen o ki eğri, hikâyenin sadece başlangıcı.",
+  viz_source: "IMF WEO Ekim 2025 · UN WPP 2024 · World Bank",
+  // Scrolly block 1
+  s0_badge: "Dünya", s0_text: "Ulusların zenginliği tanıdık bir tablo çiziyor — zengin Kuzey, gelişmekte olan Güney. Ama bu harita kimin yaşayıp kimin öleceği hakkında bize gerçekten ne söylüyor?",
+  s1_badge: "Örneklem", s1_text: "Ekonomik yelpazanin tamamını kapsayan 15 ülke. Kişi başı 85.000 dolardan (ABD) 1.600 dolara (Nijerya). Toplamda: 4,8 milyar insan — insanlığın %60'ı.",
+  s2_badge: "Dönüşüm", s2_text: "Sınırları kaldırın. Her ülke nüfusuyla orantılı bir daireye dönüşüyor. Coğrafya eriyor; veri ortaya çıkıyor.",
+  s3_badge: "Eğri", s3_text: "Preston Eğrisi. 20.000 doların altında her dolar yıllar satın alıyor. Üstünde? Eğri düzleşiyor. Paranın etkisi azalıyor.",
+  // Editorial break 1
+  ed1_kicker: "İkinci Perde · Bükülme",
+  ed1_h2: "Yukarı Kayma",
+  ed1_fig: "Tıp, aşılar ve halk sağlığı altyapısındaki ilerlemeler, eğrinin tamamını zaman içinde yukarı kaydırdı.",
+  ed1_quote: "\"Aynı gelir düzeyinde, 1960'lardaki bir ülke 1930'lardaki bir ülkeden çok daha uzun yaşıyordu. Paranın ötesinde bir şey ömürleri uzatıyordu.\"",
+  ed1_p1: "Preston'ın bir sonraki keşfi daha da çarpıcıydı. Eğrinin tamamı zamanla yukarı kayıyordu. 1960'lardaki ülkeler, aynı gelir düzeyindeki 1930'ların ülkelerinden daha uzun yaşıyordu. GSYİH'nin ötesinde bir şey ömürleri uzatıyordu — aşılar, antibiyotikler, temiz su altyapısı, oral rehidrasyon tedavisi. Preston buna \"dışsal yukarı kayma\" adını verdi.",
+  ed1_p2: "Hans Rosling daha sonra bu \"Büyük Yakınsama\"yı ünlü Gapminder görselleştirmeleriyle kamuoyuna taşıdı; ulusların \"yoksul ve hasta\" köşesinden \"zengin ve sağlıklı\" köşesine nasıl göç ettiğini gösterdi. Ama hepsi aynı hızda değildi. Ve her zaman zenginlik sayesinde değildi. Akademik bir rekabet doğdu: ömürleri gerçekten uzatan gelir mi, eğitim mi?",
+  ed1_p3: "Wolfgang Lutz ve Endale Kebede, eğitim düzeyinin çok daha güçlü bir belirleyici olduğunu savundu. Eğitimin, bilişsel birikim, daha iyi sağlık okuryazarlığı ve karmaşık sağlık sistemlerinde artan bireysel etkinlik yoluyla sağlığı iyileştirdiğini gösterdiler. Gelişmekte olan ülkelerde kadın eğitimi tek başına çocuk sağkalımının temel itici gücü.",
+  // Scrolly block 2
+  s4_badge: "İstisna", s4_text: "Dünyanın en zengin ülkesi, ama Amerikalılar çok daha yoksul ülkelerin vatandaşlarından önce ölüyor. ABD sağlığa kişi başı 12.500 dolar harcıyor — Japonya'nın iki katından fazla — ama 5 yıl daha kısa yaşıyor.",
+  s5_badge: "Merdiven", s5_text: "Gelire göre sıralayın. Nijerya'nın 1.600 dolarından Amerika'nın 85.000 dolarına uzanan merdiven, 53 katlık bir uçurumu temsil ediyor.",
+  s6_badge: "Basamaklar", s6_text: "Sıralanıp dizildiğinde bölgesel kümeler ortaya çıkıyor. Avrupa'nın orta sınıfı, Asya'nın geniş yelpazesi, Afrika'nın tabanı. Ama en uzun çubuk en uzun ömrü garanti etmiyor.",
+  // Editorial break 2
+  ed2_kicker: "Üçüncü Perde · Eğrinin Ötesi",
+  ed2_h2: "Veriye Meydan Okuyan Ülkeler",
+  ed2_fig: "Zengin ülkelerde sağlık sonuçlarını aşındıran mutlak gelir değil, eşitsizlik. Zengin ile yoksul arasındaki uçurum kronik psikososyal stres yaratıyor.",
+  ed2_quote: "\"Kosta Rika, Amerika'nın yaşam süresine beşte bir maliyetle ulaşıyor. Rusya ise görece zenginliğine rağmen eğrinin öngördüğünün yıllar altında kalıyor.\"",
+  ed2_p1: "Paranın tek başına yıl satın almadığının en ikna edici kanıtı aykırı değerlerden geliyor. Kosta Rika, Küba ve Hindistan'ın Kerala eyaleti, gelirlerinin çok küçük bir kısmıyla zengin ülkelere rakip yaşam süreleri elde etti. Formülleri: evrensel temel sağlık hizmeti, yüksek okuryazarlık ve güçlü halk sağlığı sistemleri — araştırmacıların \"Düşük Maliyetle İyi Sağlık\" dediği şey.",
+  ed2_p2: "Öte yandan, Richard Wilkinson ve Kate Pickett'in araştırması, zengin ülkelerde öldürenin mutlak gelir değil eşitsizlik olduğunu ortaya koydu. Japonya ve İsveç gibi eşitlikçi toplumlarda — zenginlerin yoksullardan 3,5 kat daha varlıklı olduğu yerlerde — sağlık sonuçları tutarlı biçimde daha iyi. ABD ve İngiltere'de ise uçurum 7-8 kata ulaşıyor ve kronik psikososyal stres yılları aşındırıyor. Preston Eğrisi'nin gizli bir boyutu var: dağılım.",
+  // Scrolly block 3
+  s7_badge: "Nüfus", s7_text: "Artık büyüklük önemli. Hindistan ve Çin birlikte diğerlerinin toplamından fazla insana sahip. ABD'nin uzun gelir çubuğu? Burada mütevazı bir baloncuk. Zenginlik ölçek değil.",
+  s8_badge: "Halka", s8_text: "Tek bir halka, 4,8 milyar insan. Her dilim nüfusla orantılı. İnsanlığın dağılımı zenginliğin dağılımına hiç benzemiyor.",
+  s9_badge: "Dört Dünya", s9_text: "Dört bölge, dört hikâye. Asya'nın 3,3 milyarı baskın. Ama her halkanın içinde aynı paradoks: nüfus payı ekonomik güçle çok az ilişkili.",
+  // Outro
+  outro_h2: "Sonuç",
+  outro_p1: "Para yıl satın alabilir mi? 50 yıllık araştırmanın ardından cevap nüanslı. Para yılları kolaylaştırıyor, ama hayatta kalmanın motoru değil. Motor, Preston'ın \"Yukarı Kayma\" dediği şey — insan bilgisinin, eğitimin ve teknolojinin durmak bilmeyen ilerleyişi.",
+  outro_p2: "Gelişmekte olan dünya için uzun ömre giden en verimli yol GSYİH büyümesi değil, belirli müdahalelerle sağlık teknolojisi sınırına ulaşmak: aşılar, temiz su, anne bakımı, okuryazarlık. Zengin dünya için ise sınır eşitsizliğe, ruh sağlığına ve hiçbir milli gelirin tek başına çözemeyeceği sosyal belirleyicilere kaymış durumda.",
+  outro_p3: "COVID-19 pandemisi bunu doğruladı. 2019-2021 arasında küresel yaşam süresi 1,8 yıl düştü — yakın tarihin en büyük düşüşü. Düşüş tekdüze değildi: hangi toplumların zenginliğin ötesinde dayanıklılık inşa ettiğini ortaya koyan bir stres testiydi. 2023'te yaşam süresi büyük ölçüde aşılar sayesinde 73,3 yıla toparlandı — bir yukarı kayma daha.",
+  outro_final: "\"1975'in Preston Eğrisi'nde hikâye ulusların zenginliğiyle ilgiliydi. 2025'te toplumların dayanıklılığı ve insan zihninin esnekliğiyle ilgili. Artık yılları altınla satın almıyoruz; bilgiyle yetiştiriyoruz.\"",
+  outro_sources: '<strong>Kaynaklar:</strong> Preston, S.H. (1975). "The Changing Relation between Mortality and Level of Economic Development." IMF World Economic Outlook, Ekim 2025. UN World Population Prospects 2024. World Bank Development Indicators. Lutz &amp; Kebede, "Education and Health: Redrawing the Preston Curve" (PMC, 2018). Wilkinson &amp; Pickett, "The Spirit Level" (2009). WHO World Health Statistics 2025.<br><br><strong>Tasarım ve geliştirme:</strong> Scrolli.co · D3.js, Flubber, TopoJSON ile yapıldı',
+  // Dynamic JS strings
+  js_title_s0: "Kişi Başı GSYİH — Dünya Görünümü, 2025",
+  js_sub_s0: "Nominal ABD doları · IMF Ekim 2025 tahminleri",
+  js_title_s1: "15 Ülke, 4,8 Milyar İnsan",
+  js_sub_s1: "İnsanlığın %60'ı — ekonomik yelpazanin tamamı",
+  js_title_s2: "Sınırlardan Baloncuklara",
+  js_sub_s2: "Coğrafi şekiller nüfus büyüklüğünde dairelere dönüşüyor",
+  js_title_s3: "Preston Eğrisi, 2025",
+  js_sub_s3: "Kişi başı GSYİH ve doğumda yaşam beklentisi",
+  js_title_s4: "Amerika Paradoksu",
+  js_sub_s4: "En zengin ülke, ama çok daha yoksul ülkelerden kısa ömür",
+  js_title_s5: "Gelir Merdiveni",
+  js_sub_s5: "Daireler çubuklara dönüşüyor — kişi başı GSYİH sıralı",
+  js_title_s6: "Küresel Gelir Basamakları",
+  js_sub_s6: "Bölgeye göre gruplanmış — aynı veri, farklı hikâye",
+  js_title_s7: "Nüfus Her Şeyi Değiştirir",
+  js_sub_s7: "Daire büyüklüğü = nüfus · Hindistan ve Çin diğerlerini cüce bırakıyor",
+  js_title_s8: "Bir Halkada Dünya",
+  js_sub_s8_pre: "Nüfus payı · Toplam: ",
+  js_sub_s8_suf: "M",
+  js_title_s9: "Bir Dünyanın İçinde Dört Dünya",
+  js_sub_s9: "Her bölgenin nüfusu — Asya 3,3 milyarla baskın",
+  // Annotation strings
+  js_annot_gdp_diff: "GSYİH farkı: 53 kat",
+  js_annot_usa_gdp: "ABD: Kişi başı $85.373",
+  js_annot_nigeria_gdp: "Nijerya: Kişi başı $1.601",
+  js_annot_15countries: "15 ülke · İnsanlığın %60'ı",
+  js_annot_48billion: "4,8 milyar insan temsil ediliyor",
+  js_annot_gdp_range: "$1,6k → $85k GSYİH aralığı",
+  js_annot_circle_size: "daire büyüklüğü = nüfus",
+  js_annot_steep: "$2k→$20k = +10 yıl",
+  js_annot_flat: "$40k→$85k = +2 yıl",
+  js_annot_usa_but: "$85k ama sadece 79,7 yıl",
+  js_annot_japan_compare: "Japonya: $34k → 84,8 yıl",
+  js_annot_53x: "53 kat fark",
+  js_annot_india_china: "Hindistan + Çin = %",
+  js_annot_wealth_scale: "Zenginlik ≠ ölçek. ABD çubuğu uzundu; baloncuğu mütevazı.",
+  js_annot_billion: "milyar",
+  js_axis_year: " yıl",
+  js_axis_life: "yaşam süresi ↑",
+  // Country names (TR)
+  cn_USA: "ABD", cn_Brazil: "Brezilya", cn_Mexico: "Meksika", cn_Germany: "Almanya",
+  cn_UK: "İngiltere", cn_France: "Fransa", cn_Italy: "İtalya", cn_China: "Çin",
+  cn_Japan: "Japonya", cn_India: "Hindistan", cn_SKorea: "G. Kore", cn_Indonesia: "Endonezya",
+  cn_Nigeria: "Nijerya", cn_SAfrica: "G. Afrika", cn_Egypt: "Mısır",
+  // Region names
+  rn_Americas: "Amerika", rn_Europe: "Avrupa", rn_Asia: "Asya", rn_Africa: "Afrika",
+  // Cinematic intro keywords
+  kw: ["Para?","Eğitim?","Altyapı?","Eşitlik?","Aşılar?","İklim?","Beslenme?","Politika?"],
+  // Cinematic phases
+  cin_gdp_jp: "$34k", cin_gdp_us: "$85k",
+  cin_life_jp: "84,8 yıl", cin_life_us: "79,7 yıl",
+  // SVG diagram labels
+  svg_income: "Kişi başı gelir →", svg_life: "Yaşam süresi ↑",
+  svg_steep: "Dik bölge", svg_steep_sub: "Her $ = yıllar",
+  svg_flat: "Düz bölge", svg_flat_sub: "Azalan getiri",
+  svg_nigeria: "Nijerya", svg_india: "Hindistan", svg_china: "Çin",
+  svg_germany: "Almanya", svg_usa: "ABD", svg_japan: "Japonya",
+  // Page title
+  page_title: "Para Yıl Satın Alabilir mi? — Preston Eğrisi",
+},
+en: {
+  cin_brand: "Scrolli Labs presents",
+  cin_l1: "Japan: $34,000 per capita",
+  cin_l2: "USA: $85,000 per capita",
+  cin_l3: 'But people in Japan live <em>5 years longer</em>.',
+  cin_l4: "A child in Nigeria lives half as long as a child in Norway.",
+  cin_l5: "A country 53× richer<br>doesn't guarantee a longer life.",
+  cin_l6: "So what really extends life?",
+  cin_title: 'Can Money <span>Buy<br>Years?</span>',
+  cin_sub: "The 50-year story of the Preston Curve",
+  cin_cue: "Scroll to begin",
+  credit: "Data: IMF World Economic Outlook Oct 2025 · UN World Population Prospects 2024 · World Bank",
+  ed0_kicker: "Act One · The Question",
+  ed0_h2: "The Question That Haunts Demographers",
+  ed0_lead: "In 1975, economist Samuel H. Preston published a paper that would fundamentally change how we view the relationship between wealth and survival. Examining data from three different decades of the 20th century, he found a striking pattern: richer countries lived longer. But the relationship wasn't linear. It curved.",
+  ed0_p2: "The first few thousand dollars of per capita income bought enormous gains in life expectancy — clean water, basic healthcare, childhood vaccines. But beyond a certain threshold, the curve flattened. Additional wealth bought fewer and fewer years. This concave relationship, now known as the Preston Curve, posed a question that still occupies global policy: if money alone doesn't buy long life, what does?",
+  ed0_p3: "The correlation between national income and life expectancy reaches 0.90 in today's data — extremely high. But that figure masks enormous differences. Some countries vastly outperform what their wealth would predict, while others fail catastrophically despite abundant resources. It seems the curve is just the beginning of the story.",
+  viz_source: "IMF WEO Oct 2025 · UN WPP 2024 · World Bank",
+  s0_badge: "World", s0_text: "The wealth of nations paints a familiar picture — rich North, developing South. But what does this map really tell us about who lives and who dies?",
+  s1_badge: "Sample", s1_text: "15 countries spanning the full economic spectrum. From $85,000 per capita (USA) to $1,600 (Nigeria). In total: 4.8 billion people — 60% of humanity.",
+  s2_badge: "Transform", s2_text: "Remove the borders. Each country becomes a circle proportional to its population. Geography melts away; data emerges.",
+  s3_badge: "The Curve", s3_text: "The Preston Curve. Below $20,000, every dollar buys years. Above? The curve flattens. Money's impact fades.",
+  ed1_kicker: "Act Two · The Bend",
+  ed1_h2: "The Upward Shift",
+  ed1_fig: "Advances in medicine, vaccines, and public health infrastructure shifted the entire curve upward over time.",
+  ed1_quote: "\"At the same income level, a country in the 1960s lived far longer than one in the 1930s. Something beyond money was extending lives.\"",
+  ed1_p1: "Preston's next discovery was even more striking. The entire curve was shifting upward over time. Countries in the 1960s were living longer than 1930s countries at the same income level. Something beyond GDP was extending lives — vaccines, antibiotics, clean water infrastructure, oral rehydration therapy. Preston called it the \"exogenous upward shift.\"",
+  ed1_p2: "Hans Rosling later popularized this \"Great Convergence\" with his famous Gapminder visualizations, showing how nations migrated from the \"poor and sick\" corner to the \"rich and healthy\" one. But not all at the same speed. And not always thanks to wealth. An academic rivalry was born: was it income or education that truly extended lives?",
+  ed1_p3: "Wolfgang Lutz and Endale Kebede argued that education level was a far stronger determinant. They showed that education improves health through cognitive accumulation, better health literacy, and increased individual agency in complex health systems. In developing countries, female education alone is the primary driver of child survival.",
+  s4_badge: "Exception", s4_text: "The world's richest country, yet Americans die before citizens of far poorer nations. The USA spends $12,500 per capita on health — more than double Japan's — but lives 5 years less.",
+  s5_badge: "Ladder", s5_text: "Sort by income. The ladder from Nigeria's $1,600 to America's $85,000 represents a 53-fold gap.",
+  s6_badge: "Steps", s6_text: "When sorted and grouped, regional clusters emerge. Europe's middle class, Asia's wide spectrum, Africa's base. But the tallest bar doesn't guarantee the longest life.",
+  ed2_kicker: "Act Three · Beyond the Curve",
+  ed2_h2: "Countries That Defy the Data",
+  ed2_fig: "In wealthy nations, it's not absolute income but inequality that erodes health outcomes. The gap between rich and poor creates chronic psychosocial stress.",
+  ed2_quote: "\"Costa Rica matches America's life expectancy at one-fifth the cost. Russia, despite its relative wealth, falls years below what the curve predicts.\"",
+  ed2_p1: "The most compelling evidence that money alone doesn't buy years comes from the outliers. Costa Rica, Cuba, and India's Kerala state achieved life expectancies rivaling wealthy nations at a fraction of the income. Their formula: universal basic healthcare, high literacy, and strong public health systems — what researchers call \"Good Health at Low Cost.\"",
+  ed2_p2: "On the other hand, research by Richard Wilkinson and Kate Pickett revealed that in wealthy countries, it's not absolute income but inequality that kills. In egalitarian societies like Japan and Sweden — where the rich are only 3.5× wealthier than the poor — health outcomes are consistently better. In the USA and UK, the gap reaches 7-8×, and chronic psychosocial stress erodes years. The Preston Curve has a hidden dimension: distribution.",
+  s7_badge: "Population", s7_text: "Now size matters. India and China together have more people than all the others combined. The USA's tall income bar? Here, a modest bubble. Wealth isn't scale.",
+  s8_badge: "Ring", s8_text: "One ring, 4.8 billion people. Each slice proportional to population. Humanity's distribution looks nothing like wealth's distribution.",
+  s9_badge: "Four Worlds", s9_text: "Four regions, four stories. Asia's 3.3 billion dominates. But within each ring lies the same paradox: population share has little to do with economic power.",
+  outro_h2: "Conclusion",
+  outro_p1: "Can money buy years? After 50 years of research, the answer is nuanced. Money facilitates years, but it's not the engine of survival. The engine is what Preston called the \"Upward Shift\" — the relentless advance of human knowledge, education, and technology.",
+  outro_p2: "For the developing world, the most efficient path to long life isn't GDP growth, but reaching the health technology frontier through targeted interventions: vaccines, clean water, maternal care, literacy. For the rich world, the frontier has shifted to inequality, mental health, and social determinants that no national income alone can solve.",
+  outro_p3: "The COVID-19 pandemic confirmed this. Between 2019-2021, global life expectancy dropped 1.8 years — the largest decline in recent history. The drop wasn't uniform: it was a stress test revealing which societies had built resilience beyond wealth. By 2023, life expectancy recovered to 73.3 years, largely thanks to vaccines — another upward shift.",
+  outro_final: "\"In Preston's 1975 curve, the story was about the wealth of nations. In 2025, it's about the resilience of societies and the flexibility of the human mind. We no longer buy years with gold; we grow them with knowledge.\"",
+  outro_sources: '<strong>Sources:</strong> Preston, S.H. (1975). "The Changing Relation between Mortality and Level of Economic Development." IMF World Economic Outlook, Oct 2025. UN World Population Prospects 2024. World Bank Development Indicators. Lutz &amp; Kebede, "Education and Health: Redrawing the Preston Curve" (PMC, 2018). Wilkinson &amp; Pickett, "The Spirit Level" (2009). WHO World Health Statistics 2025.<br><br><strong>Design &amp; development:</strong> Scrolli.co · Built with D3.js, Flubber, TopoJSON',
+  js_title_s0: "GDP Per Capita — World View, 2025",
+  js_sub_s0: "Nominal US dollars · IMF Oct 2025 estimates",
+  js_title_s1: "15 Countries, 4.8 Billion People",
+  js_sub_s1: "60% of humanity — the full economic spectrum",
+  js_title_s2: "From Borders to Bubbles",
+  js_sub_s2: "Geographic shapes become circles sized by population",
+  js_title_s3: "The Preston Curve, 2025",
+  js_sub_s3: "GDP per capita vs. life expectancy at birth",
+  js_title_s4: "The American Paradox",
+  js_sub_s4: "The richest country, but shorter lives than far poorer nations",
+  js_title_s5: "Income Ladder",
+  js_sub_s5: "Circles morph to bars — GDP per capita ranked",
+  js_title_s6: "Global Income Steps",
+  js_sub_s6: "Grouped by region — same data, different story",
+  js_title_s7: "Population Changes Everything",
+  js_sub_s7: "Circle size = population · India and China dwarf the rest",
+  js_title_s8: "The World in One Ring",
+  js_sub_s8_pre: "Population share · Total: ",
+  js_sub_s8_suf: "M",
+  js_title_s9: "Four Worlds Within One",
+  js_sub_s9: "Each region's population — Asia dominates with 3.3 billion",
+  js_annot_gdp_diff: "GDP gap: 53×",
+  js_annot_usa_gdp: "USA: $85,373 per capita",
+  js_annot_nigeria_gdp: "Nigeria: $1,601 per capita",
+  js_annot_15countries: "15 countries · 60% of humanity",
+  js_annot_48billion: "4.8 billion people represented",
+  js_annot_gdp_range: "$1.6k → $85k GDP range",
+  js_annot_circle_size: "circle size = population",
+  js_annot_steep: "$2k→$20k = +10 years",
+  js_annot_flat: "$40k→$85k = +2 years",
+  js_annot_usa_but: "$85k but only 79.7 years",
+  js_annot_japan_compare: "Japan: $34k → 84.8 years",
+  js_annot_53x: "53× gap",
+  js_annot_india_china: "India + China = ",
+  js_annot_wealth_scale: "Wealth ≠ scale. The USA's bar was tall; its bubble is modest.",
+  js_annot_billion: "billion",
+  js_axis_year: " yrs",
+  js_axis_life: "life expectancy ↑",
+  cn_USA: "USA", cn_Brazil: "Brazil", cn_Mexico: "Mexico", cn_Germany: "Germany",
+  cn_UK: "UK", cn_France: "France", cn_Italy: "Italy", cn_China: "China",
+  cn_Japan: "Japan", cn_India: "India", cn_SKorea: "S. Korea", cn_Indonesia: "Indonesia",
+  cn_Nigeria: "Nigeria", cn_SAfrica: "S. Africa", cn_Egypt: "Egypt",
+  rn_Americas: "Americas", rn_Europe: "Europe", rn_Asia: "Asia", rn_Africa: "Africa",
+  kw: ["Money?","Education?","Infrastructure?","Equality?","Vaccines?","Climate?","Nutrition?","Policy?"],
+  cin_gdp_jp: "$34k", cin_gdp_us: "$85k",
+  cin_life_jp: "84.8 yrs", cin_life_us: "79.7 yrs",
+  svg_income: "Income per capita →", svg_life: "Life expectancy ↑",
+  svg_steep: "Steep zone", svg_steep_sub: "Every $ = years",
+  svg_flat: "Flat zone", svg_flat_sub: "Diminishing returns",
+  svg_nigeria: "Nigeria", svg_india: "India", svg_china: "China",
+  svg_germany: "Germany", svg_usa: "USA", svg_japan: "Japan",
+  page_title: "Can Money Buy Years? — The Preston Curve",
+}
+};
+
+function L(key){ return (I18N[window.LANG]||I18N.tr)[key] || (I18N.tr[key]) || key; }
+
+function setLang(lang){
+  window.LANG = lang;
+  document.documentElement.lang = lang;
+  document.title = L("page_title");
+  // Swap all data-i18n elements
+  document.querySelectorAll("[data-i18n]").forEach(el => {
+    const key = el.getAttribute("data-i18n");
+    const val = L(key);
+    if(val) el.innerHTML = val;
+  });
+  // Update switcher buttons
+  document.querySelectorAll("#lang-sw button").forEach(btn => {
+    btn.classList.toggle("active", btn.dataset.lang === lang);
+  });
+  // Update inline SVG labels (conceptual Preston Curve diagram)
+  const svgLabels = {
+    "Kişi başı gelir →": "svg_income", "Income per capita →": "svg_income",
+    "Yaşam süresi ↑": "svg_life", "Life expectancy ↑": "svg_life",
+    "Dik bölge": "svg_steep", "Steep zone": "svg_steep",
+    "Her $ = yıllar": "svg_steep_sub", "Every $ = years": "svg_steep_sub",
+    "Düz bölge": "svg_flat", "Flat zone": "svg_flat",
+    "Azalan getiri": "svg_flat_sub", "Diminishing returns": "svg_flat_sub",
+    "Nijerya": "svg_nigeria", "Nigeria": "svg_nigeria",
+    "Hindistan": "svg_india", "India": "svg_india",
+    "Çin": "svg_china", "China": "svg_china",
+    "Almanya": "svg_germany", "Germany": "svg_germany",
+    "ABD": "svg_usa", "USA": "svg_usa",
+    "Japonya": "svg_japan", "Japan": "svg_japan",
+  };
+  document.querySelectorAll(".curve-svg text").forEach(t => {
+    const cur = t.textContent.trim();
+    const key = svgLabels[cur];
+    if(key) t.textContent = L(key);
+  });
+  // Update legend
+  const legendEl = document.getElementById("legend");
+  if(legendEl) legendEl.innerHTML = Object.entries(RC).map(([r,c])=>`<div class="lg"><div class="sw" style="background:${c}"></div>${L("rn_"+r)}</div>`).join("");
+  // Re-trigger current chart state if scrolly is active
+  if(typeof cur !== "undefined" && cur >= 0 && typeof fns !== "undefined") fns[cur]();
+}
+
+// Detect language from URL hash or browser preference
+(function(){
+  const hash = window.location.hash.replace("#","").toLowerCase();
+  if(hash === "en" || hash === "tr") window.LANG = hash;
+  else if(navigator.language && navigator.language.startsWith("en")) window.LANG = "en";
+})();
+
+// Wire switcher buttons
+document.addEventListener("DOMContentLoaded", () => {
+  // Apply initial language
+  if(window.LANG === "en") setLang("en");
+  else {
+    // Ensure TR button is active on load
+    document.querySelectorAll("#lang-sw button").forEach(btn => {
+      btn.classList.toggle("active", btn.dataset.lang === window.LANG);
+    });
+  }
+  document.querySelectorAll("#lang-sw button").forEach(btn => {
+    btn.addEventListener("click", () => {
+      setLang(btn.dataset.lang);
+      window.location.hash = btn.dataset.lang;
+    });
+  });
+});
+</script>
+
 <!-- ═══════ CINEMATIC INTRO ENGINE — D3 Swarm ═══════ -->
 <script>
 (function(){
 const CIN_DATA=[
-  {name:"ABD",gdp:85373,life:79.7,pop:340,region:"Americas"},
-  {name:"Brezilya",gdp:9673,life:76.5,pop:217,region:"Americas"},
-  {name:"Meksika",gdp:11845,life:75.1,pop:131,region:"Americas"},
-  {name:"Almanya",gdp:54291,life:81.2,pop:84,region:"Europe"},
-  {name:"İngiltere",gdp:49823,life:81.8,pop:68,region:"Europe"},
-  {name:"Fransa",gdp:47245,life:82.6,pop:66,region:"Europe"},
-  {name:"İtalya",gdp:39580,life:83.8,pop:59,region:"Europe"},
-  {name:"Çin",gdp:13136,life:78.6,pop:1425,region:"Asia"},
-  {name:"Japonya",gdp:33950,life:84.8,pop:124,region:"Asia"},
-  {name:"Hindistan",gdp:2731,life:72.7,pop:1441,region:"Asia"},
-  {name:"G. Kore",gdp:35638,life:84.1,pop:52,region:"Asia"},
-  {name:"Endonezya",gdp:5108,life:72.0,pop:278,region:"Asia"},
-  {name:"Nijerya",gdp:1601,life:53.9,pop:228,region:"Africa"},
-  {name:"G. Afrika",gdp:6191,life:65.3,pop:62,region:"Africa"},
-  {name:"Mısır",gdp:3905,life:72.4,pop:111,region:"Africa"},
+  {name:"USA",gdp:85373,life:79.7,pop:340,region:"Americas"},
+  {name:"Brazil",gdp:9673,life:76.5,pop:217,region:"Americas"},
+  {name:"Mexico",gdp:11845,life:75.1,pop:131,region:"Americas"},
+  {name:"Germany",gdp:54291,life:81.2,pop:84,region:"Europe"},
+  {name:"UK",gdp:49823,life:81.8,pop:68,region:"Europe"},
+  {name:"France",gdp:47245,life:82.6,pop:66,region:"Europe"},
+  {name:"Italy",gdp:39580,life:83.8,pop:59,region:"Europe"},
+  {name:"China",gdp:13136,life:78.6,pop:1425,region:"Asia"},
+  {name:"Japan",gdp:33950,life:84.8,pop:124,region:"Asia"},
+  {name:"India",gdp:2731,life:72.7,pop:1441,region:"Asia"},
+  {name:"S. Korea",gdp:35638,life:84.1,pop:52,region:"Asia"},
+  {name:"Indonesia",gdp:5108,life:72.0,pop:278,region:"Asia"},
+  {name:"Nigeria",gdp:1601,life:53.9,pop:228,region:"Africa"},
+  {name:"S. Africa",gdp:6191,life:65.3,pop:62,region:"Africa"},
+  {name:"Egypt",gdp:3905,life:72.4,pop:111,region:"Africa"},
 ];
+const CIN_CN={"USA":"cn_USA","Brazil":"cn_Brazil","Mexico":"cn_Mexico","Germany":"cn_Germany","UK":"cn_UK","France":"cn_France","Italy":"cn_Italy","China":"cn_China","Japan":"cn_Japan","India":"cn_India","S. Korea":"cn_SKorea","Indonesia":"cn_Indonesia","Nigeria":"cn_Nigeria","S. Africa":"cn_SAfrica","Egypt":"cn_Egypt"};
+function cinTn(d){ return L(CIN_CN[d.name])||d.name; }
 const CRC={Americas:"#c06830",Europe:"#5d8fa8",Asia:"#d4956a",Africa:"#7db5c8"};
 
 window.addEventListener("DOMContentLoaded",()=>{
@@ -414,7 +723,7 @@ window.addEventListener("DOMContentLoaded",()=>{
     .attr("fill", d=>CRC[d.region]).attr("opacity", 0)
     .style("paint-order","stroke")
     .style("stroke","rgba(250,247,242,0.9)").style("stroke-width","3px").style("stroke-linejoin","round")
-    .text(d=>d.name);
+    .text(d=>cinTn(d));
 
   // Force sim
   const sim = d3.forceSimulation(nodes).alphaDecay(0.025).velocityDecay(0.35).stop();
@@ -442,12 +751,12 @@ window.addEventListener("DOMContentLoaded",()=>{
   // Phase 1 — Japonya highlight
   function phase1(){
     circles.transition().duration(800)
-      .attr("r", d=>d.name==="Japonya"?rScale(d.pop)*1.1:rScale(d.pop)*0.38)
-      .attr("opacity", d=>d.name==="Japonya"?0.9:0.14);
+      .attr("r", d=>d.name==="Japan"?rScale(d.pop)*1.1:rScale(d.pop)*0.38)
+      .attr("opacity", d=>d.name==="Japan"?0.9:0.14);
     labels.transition().duration(800)
-      .attr("opacity", d=>d.name==="Japonya"?1:0)
-      .attr("font-size", d=>d.name==="Japonya"?lblSize(d):"0px");
-    sim.force("collide", d3.forceCollide(d=>rScale(d.pop)*(d.name==="Japonya"?1.1:0.38)+3).strength(0.65))
+      .attr("opacity", d=>d.name==="Japan"?1:0)
+      .attr("font-size", d=>d.name==="Japan"?lblSize(d):"0px");
+    sim.force("collide", d3.forceCollide(d=>rScale(d.pop)*(d.name==="Japan"?1.1:0.38)+3).strength(0.65))
        .alpha(0.4).restart();
   }
 
@@ -457,29 +766,29 @@ window.addEventListener("DOMContentLoaded",()=>{
   // Phase 2 — ABD zenginliği: daireler GDP ile boyutlanır
   // ABD açıkça büyük, Japonya daha küçük → zenginlik paradoksunu kurar
   function phase2(){
-    const show = ["Japonya","ABD"];
+    const show = ["Japan","USA"];
     sim.stop();
     const jpX = W*0.34, usX = W*0.66;
     const R_jp = rGdp(33950), R_us = rGdp(85373);
     circles.transition().duration(900).ease(d3.easeCubicInOut)
-      .attr("cx", d=>d.name==="Japonya"?jpX:d.name==="ABD"?usX:d.x)
+      .attr("cx", d=>d.name==="Japan"?jpX:d.name==="USA"?usX:d.x)
       .attr("cy", d=>show.includes(d.name)?H*0.46:d.y)
-      .attr("r",  d=>d.name==="Japonya"?R_jp:d.name==="ABD"?R_us:rScale(d.pop)*0.22)
+      .attr("r",  d=>d.name==="Japan"?R_jp:d.name==="USA"?R_us:rScale(d.pop)*0.22)
       .attr("opacity", d=>show.includes(d.name)?0.88:0.08);
     labels.transition().duration(900)
-      .attr("x", d=>d.name==="Japonya"?jpX:d.name==="ABD"?usX:d.x)
+      .attr("x", d=>d.name==="Japan"?jpX:d.name==="USA"?usX:d.x)
       .attr("y", d=>show.includes(d.name)?H*0.46:d.y)
       .attr("opacity", d=>show.includes(d.name)?1:0)
       .attr("font-size", d=>{
-        const r = d.name==="Japonya"?R_jp:d.name==="ABD"?R_us:0;
+        const r = d.name==="Japan"?R_jp:d.name==="USA"?R_us:0;
         return r>0 ? Math.max(11, r*0.42)+"px" : "0px";
       });
     // GDP labels below
     svg.selectAll(".cin-gdp-label").remove();
     setTimeout(()=>{
       const fs = Math.max(12, maxR*0.28)+"px";
-      [{name:"Japonya",x:jpX,r:R_jp,gdp:"$34k",col:"#d4956a"},
-       {name:"ABD",    x:usX,r:R_us,gdp:"$85k",col:"#c06830"}].forEach(d=>{
+      [{name:"Japan",x:jpX,r:R_jp,gdp:L("cin_gdp_jp"),col:"#d4956a"},
+       {name:"USA",  x:usX,r:R_us,gdp:L("cin_gdp_us"),col:"#c06830"}].forEach(d=>{
         svg.append("text").attr("class","cin-gdp-label")
           .attr("x",d.x).attr("y",H*0.46+d.r+20)
           .attr("text-anchor","middle").attr("font-family","DM Sans")
@@ -495,7 +804,7 @@ window.addEventListener("DOMContentLoaded",()=>{
   // Daireler eşit boyutta — zenginlik değil, ömür anlatılıyor.
   function phase3(){
     svg.selectAll(".cin-gdp-label").transition().duration(300).attr("opacity",0).remove();
-    const show = ["Japonya","ABD"];
+    const show = ["Japan","USA"];
     sim.stop();
     const R_eq = maxR * 0.72; // eşit boyut — karşılaştırma adil görünsün
     const jpX = W*0.34, usX = W*0.66;
@@ -504,13 +813,13 @@ window.addEventListener("DOMContentLoaded",()=>{
     const jpY = yScale(84.8), usY = yScale(79.7);
 
     circles.transition().duration(1000).ease(d3.easeCubicInOut)
-      .attr("cx", d=>d.name==="Japonya"?jpX:d.name==="ABD"?usX:d.x)
-      .attr("cy", d=>d.name==="Japonya"?jpY:d.name==="ABD"?usY:d.y)
+      .attr("cx", d=>d.name==="Japan"?jpX:d.name==="USA"?usX:d.x)
+      .attr("cy", d=>d.name==="Japan"?jpY:d.name==="USA"?usY:d.y)
       .attr("r",  d=>show.includes(d.name)?R_eq:rScale(d.pop)*0.18)
       .attr("opacity", d=>show.includes(d.name)?0.88:0.06);
     labels.transition().duration(1000)
-      .attr("x", d=>d.name==="Japonya"?jpX:d.name==="ABD"?usX:d.x)
-      .attr("y", d=>d.name==="Japonya"?jpY:d.name==="ABD"?usY:d.y)
+      .attr("x", d=>d.name==="Japan"?jpX:d.name==="USA"?usX:d.x)
+      .attr("y", d=>d.name==="Japan"?jpY:d.name==="USA"?usY:d.y)
       .attr("opacity", d=>show.includes(d.name)?1:0)
       .attr("font-size", d=>show.includes(d.name)?Math.max(11,R_eq*0.4)+"px":"0px");
 
@@ -518,8 +827,8 @@ window.addEventListener("DOMContentLoaded",()=>{
     setTimeout(()=>{
       const fs = Math.max(13, maxR*0.32)+"px";
       // Yaşam süresi etiketleri
-      [{x:jpX, y:jpY, life:"84,8 yıl", col:"#d4956a", dy:R_eq+20},
-       {x:usX, y:usY, life:"79,7 yıl", col:"#c06830", dy:R_eq+20}].forEach(d=>{
+      [{x:jpX, y:jpY, life:L("cin_life_jp"), col:"#d4956a", dy:R_eq+20},
+       {x:usX, y:usY, life:L("cin_life_us"), col:"#c06830", dy:R_eq+20}].forEach(d=>{
         svg.append("text").attr("class","cin-life-label")
           .attr("x",d.x).attr("y",d.y+d.dy)
           .attr("text-anchor","middle").attr("font-family","DM Sans")
@@ -534,7 +843,7 @@ window.addEventListener("DOMContentLoaded",()=>{
         .attr("font-family","DM Sans").attr("font-size","11px")
         .attr("fill","var(--muted)").attr("opacity",0)
         .attr("transform",`rotate(-90,${W*0.06},${H*0.5})`)
-        .text("yaşam süresi ↑")
+        .text(L("js_axis_life"))
         .transition().duration(600).attr("opacity",0.5);
       // Connecting line showing the gap
       svg.append("line").attr("class","cin-life-label")
@@ -551,10 +860,10 @@ window.addEventListener("DOMContentLoaded",()=>{
   // Mesaj: bir çocuğun ömrü nerede doğduğuna göre ikiye katlanıyor
   function phase4(){
     svg.selectAll(".cin-life-label,.cin-axis-label,.cin-gdp-label").transition().duration(300).attr("opacity",0).remove();
-    const show = ["Nijerya","Japonya","ABD","Almanya"];
+    const show = ["Nigeria","Japan","USA","Germany"];
     sim.stop();
     const yScale = d3.scaleLinear().domain([50, 88]).range([H*0.88, H*0.10]);
-    const xPos = {Nijerya:W*0.22, ABD:W*0.42, Almanya:W*0.62, Japonya:W*0.82};
+    const xPos = {Nigeria:W*0.22, USA:W*0.42, Germany:W*0.62, Japan:W*0.82};
     const rFixed = maxR * 0.62; // eşit boyut — sadece konum anlatıyor
     circles.transition().duration(1000).ease(d3.easeCubicInOut)
       .attr("cx", d=>show.includes(d.name)?xPos[d.name]:d.x)
@@ -575,7 +884,7 @@ window.addEventListener("DOMContentLoaded",()=>{
           .attr("x", xPos[name]).attr("y", yScale(d.life)+rFixed+18)
           .attr("text-anchor","middle").attr("font-family","DM Sans")
           .attr("font-size",fs).attr("fill",CRC[d.region]).attr("font-weight","700")
-          .attr("opacity",0).text(d.life+" yıl")
+          .attr("opacity",0).text(d.life+L("js_axis_year"))
           .transition().duration(500).attr("opacity",0.85);
       });
       svg.append("text").attr("class","cin-axis-label")
@@ -583,7 +892,7 @@ window.addEventListener("DOMContentLoaded",()=>{
         .attr("text-anchor","middle").attr("font-family","DM Sans").attr("font-size","11px")
         .attr("fill","var(--muted)").attr("opacity",0)
         .attr("transform",`rotate(-90,${W*0.06},${H*0.5})`)
-        .text("yaşam süresi ↑")
+        .text(L("js_axis_life"))
         .transition().duration(600).attr("opacity",0.5);
     }, 600);
   }
@@ -595,7 +904,7 @@ window.addEventListener("DOMContentLoaded",()=>{
     circles.transition().duration(1400).ease(d3.easeCubicInOut)
       .attr("cx", d=>xGdp(d.gdp)).attr("cy", d=>yLife(d.life))
       .attr("r",  d=>rScale(d.pop)*0.55).attr("opacity", 0.8);
-    const showLabels = ["ABD","Japonya","Nijerya","Hindistan","Almanya","G. Kore"];
+    const showLabels = ["USA","Japan","Nigeria","India","Germany","S. Korea"];
     labels.transition().duration(1400).ease(d3.easeCubicInOut)
       .attr("x", d=>xGdp(d.gdp))
       .attr("y", d=>yLife(d.life) - rScale(d.pop)*0.55 - 9)
@@ -612,7 +921,8 @@ window.addEventListener("DOMContentLoaded",()=>{
   }
 
   // Phase 6 — Question: swirl + floating keyword bubbles
-  const KEYWORDS = ["Para?","Eğitim?","Altyapı?","Eşitlik?","Aşılar?","İklim?","Beslenme?","Politika?"];
+  const KEYWORDS_TR = ["Para?","Eğitim?","Altyapı?","Eşitlik?","Aşılar?","İklim?","Beslenme?","Politika?"];
+  function getKeywords(){ return L("kw") || KEYWORDS_TR; }
   let kwTimers = [];
   function phase6(){
     svg.selectAll(".cin-curve").transition().duration(400).attr("opacity",0).remove();
@@ -628,7 +938,7 @@ window.addEventListener("DOMContentLoaded",()=>{
     const kwColors = ["#c06830","#5d8fa8","#d4956a","#7db5c8","#8e7560","#a87048","#5a8c9f","#c48860"];
     kwTimers.forEach(clearTimeout);
     kwTimers = [];
-    KEYWORDS.forEach((kw, i) => {
+    getKeywords().forEach((kw, i) => {
       kwTimers.push(setTimeout(()=>{
         const x = W*0.18 + Math.random()*W*0.64;
         const y = H*0.7  + Math.random()*H*0.2;
@@ -755,7 +1065,8 @@ const DATA=[
 ];
 const RC={Americas:"#c06830",Europe:"#5d8fa8",Asia:"#d4956a",Africa:"#7db5c8"};
 const TR={"USA":"ABD","Brazil":"Brezilya","Mexico":"Meksika","Germany":"Almanya","UK":"İngiltere","France":"Fransa","Italy":"İtalya","China":"Çin","Japan":"Japonya","India":"Hindistan","S. Korea":"G. Kore","Indonesia":"Endonezya","Nigeria":"Nijerya","S. Africa":"G. Afrika","Egypt":"Mısır"};
-function tn(d){return TR[d.name]||d.name}
+const CN_KEY={"USA":"cn_USA","Brazil":"cn_Brazil","Mexico":"cn_Mexico","Germany":"cn_Germany","UK":"cn_UK","France":"cn_France","Italy":"cn_Italy","China":"cn_China","Japan":"cn_Japan","India":"cn_India","S. Korea":"cn_SKorea","Indonesia":"cn_Indonesia","Nigeria":"cn_Nigeria","S. Africa":"cn_SAfrica","Egypt":"cn_Egypt"};
+function tn(d){return L(CN_KEY[d.name])||TR[d.name]||d.name}
 const regOrder=["Americas","Europe","Asia","Africa"];
 const dataById={};DATA.forEach(d=>dataById[d.id]=d);
 const sorted=[...DATA].sort((a,b)=>b.gdp-a.gdp);
@@ -785,7 +1096,8 @@ const bgG=g.append("g"),gridG=g.append("g"),axXG=g.append("g").attr("transform",
 const fxG=g.append("g"),dataG=g.append("g"),lblG=g.append("g"),annotG=g.append("g");
 
 const regTR={Americas:"Amerika",Europe:"Avrupa",Asia:"Asya",Africa:"Afrika"};
-document.getElementById("legend").innerHTML=Object.entries(RC).map(([r,c])=>`<div class="lg"><div class="sw" style="background:${c}"></div>${regTR[r]||r}</div>`).join("");
+function regName(r){return L("rn_"+r)||regTR[r]||r}
+document.getElementById("legend").innerHTML=Object.entries(RC).map(([r,c])=>`<div class="lg"><div class="sw" style="background:${c}"></div>${regName(r)}</div>`).join("");
 
 const proj=d3.geoNaturalEarth1().fitSize([w,h],{type:"Sphere"});
 const pathGen=d3.geoPath().projection(proj);
@@ -848,8 +1160,8 @@ d3.json("https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json").then(w
     .attr("font-family","DM Sans").attr("text-anchor","middle").attr("dominant-baseline","auto")
     .attr("font-size","0px").attr("fill",d=>RC[d.region]).attr("opacity",0).text(d=>tn(d));
   axXG.attr("opacity",0);axYG.attr("opacity",0);gridG.attr("opacity",0);
-  document.getElementById("title").textContent="Kişi Başı GSYİH — Dünya Görünümü, 2025";
-  document.getElementById("subtitle").textContent="Nominal ABD doları · IMF Ekim 2025 tahminleri";
+  document.getElementById("title").textContent=L("js_title_s0");
+  document.getElementById("subtitle").textContent=L("js_sub_s0");
   initScrolly();
 });
 
@@ -893,10 +1205,10 @@ function showAxes(type,dur=700){
   const t=d3.transition().duration(dur).ease(d3.easeCubicInOut);
   if(type==="scatter"){
     axXG.transition(t).attr("opacity",1).call(d3.axisBottom(xLin).ticks(6).tickFormat(d=>d>=1000?`$${d/1000}k`:`$${d}`).tickSize(0).tickPadding(10));
-    axYG.transition(t).attr("opacity",1).call(d3.axisLeft(yLin).ticks(6).tickFormat(d=>d+" yıl").tickSize(0).tickPadding(10));
+    axYG.transition(t).attr("opacity",1).call(d3.axisLeft(yLin).ticks(6).tickFormat(d=>d+L("js_axis_year")).tickSize(0).tickPadding(10));
     gridG.transition(t).attr("opacity",1).call(d3.axisLeft(yLin).ticks(6).tickSize(-w).tickFormat("")).call(g=>{g.select(".domain").remove();g.selectAll("line").attr("stroke","#e6e1da").attr("stroke-dasharray","2 3")});
   }else if(type==="bar"){
-    axXG.transition(t).attr("opacity",1).call(d3.axisBottom(xBand).tickSize(0).tickPadding(8).tickFormat(n=>TR[n]||n))
+    axXG.transition(t).attr("opacity",1).call(d3.axisBottom(xBand).tickSize(0).tickPadding(8).tickFormat(n=>L(CN_KEY[n])||TR[n]||n))
       .selectAll("text").style("text-anchor","end").attr("dx","-.6em").attr("dy",".12em").attr("transform","rotate(-35)").style("font-size","10px");
     axYG.transition(t).attr("opacity",1).call(d3.axisLeft(yBar).ticks(6).tickFormat(d=>d>=1000?`$${d/1000}k`:`$${d}`).tickSize(0).tickPadding(10));
     gridG.transition(t).attr("opacity",1).call(d3.axisLeft(yBar).ticks(6).tickSize(-w).tickFormat("")).call(g=>{g.select(".domain").remove();g.selectAll("line").attr("stroke","#e6e1da").attr("stroke-dasharray","2 3")});
@@ -968,8 +1280,8 @@ function fadeToMap(paths,getTarget,fill){
 // ═══════════════════════════════════════════════════════════════════════════
 function s0(){
   resetAll();setView(0);
-  document.getElementById("title").textContent="Kişi Başı GSYİH — Dünya Görünümü, 2025";
-  document.getElementById("subtitle").textContent="Nominal ABD doları · IMF Ekim 2025 tahminleri";
+  document.getElementById("title").textContent=L("js_title_s0");
+  document.getElementById("subtitle").textContent=L("js_sub_s0");
   hideAxes();
   bgG.selectAll(".bgc").transition().duration(700).attr("opacity",.55);
   fadeToMap(ourPaths,d=>mapPS[d.id],d=>RC[d.region]);
@@ -977,17 +1289,17 @@ function s0(){
   lblG.selectAll(".cl").transition().duration(500).attr("opacity",0).attr("font-size","0px");
   stT(()=>{
     addAnnotBox(w-195, 28, [
-      {text:"GSYİH farkı: 53 kat",size:"11px",weight:"700",fill:"var(--accent)",serif:true},
-      {text:"ABD: Kişi başı $85.373",size:"9.5px",fill:"var(--text)"},
-      {text:"Nijerya: Kişi başı $1.601",size:"9.5px",fill:"var(--muted)",opacity:0.7}
+      {text:L("js_annot_gdp_diff"),size:"11px",weight:"700",fill:"var(--accent)",serif:true},
+      {text:L("js_annot_usa_gdp"),size:"9.5px",fill:"var(--text)"},
+      {text:L("js_annot_nigeria_gdp"),size:"9.5px",fill:"var(--muted)",opacity:0.7}
     ],"rgba(192,104,48,0.4)");
   },800);
 }
 
 function s1(){
   resetAll();setView(1);
-  document.getElementById("title").textContent="15 Ülke, 4,8 Milyar İnsan";
-  document.getElementById("subtitle").textContent="İnsanlığın %60'ı — ekonomik yelpazanin tamamı";
+  document.getElementById("title").textContent=L("js_title_s1");
+  document.getElementById("subtitle").textContent=L("js_sub_s1");
   hideAxes();
   bgG.selectAll(".bgc").transition().duration(600).attr("opacity",.1);
   fadeToMap(ourPaths,d=>mapPS[d.id],d=>RC[d.region]);
@@ -1011,17 +1323,17 @@ function s1(){
   });
   stT(()=>{
     addAnnotBox(12, 28, [
-      {text:"15 ülke · İnsanlığın %60'ı",size:"11px",weight:"700",fill:"var(--accent)",serif:true},
-      {text:"4,8 milyar insan temsil ediliyor",size:"9.5px",fill:"var(--text)"},
-      {text:"$1,6k → $85k GSYİH aralığı",size:"9.5px",fill:"var(--muted)",opacity:0.7}
+      {text:L("js_annot_15countries"),size:"11px",weight:"700",fill:"var(--accent)",serif:true},
+      {text:L("js_annot_48billion"),size:"9.5px",fill:"var(--text)"},
+      {text:L("js_annot_gdp_range"),size:"9.5px",fill:"var(--muted)",opacity:0.7}
     ],"rgba(93,143,168,0.4)");
   },600);
 }
 
 function s2(){
   resetAll();setView(2);
-  document.getElementById("title").textContent="Sınırlardan Baloncuklara";
-  document.getElementById("subtitle").textContent="Coğrafi şekiller nüfus büyüklüğünde dairelere dönüşüyor";
+  document.getElementById("title").textContent=L("js_title_s2");
+  document.getElementById("subtitle").textContent=L("js_sub_s2");
   hideAxes();
   bgG.selectAll(".bgc").transition().duration(500).attr("opacity",.04);
   ourPaths.each(function(d,i){const r=rSc(d.pop);const col=i%5,row=Math.floor(i/5);
@@ -1033,15 +1345,15 @@ function s2(){
       .attr("fill",RC[d.region]).attr("opacity",.8).text(tn(d))});
   stT(()=>{
     annotG.append("text").attr("x",w-8).attr("y",h-36).attr("text-anchor","end").attr("font-family","DM Sans")
-      .attr("font-size","9px").attr("fill","var(--muted)").attr("opacity",0).text("daire büyüklüğü = nüfus")
+      .attr("font-size","9px").attr("fill","var(--muted)").attr("opacity",0).text(L("js_annot_circle_size"))
       .transition().delay(800).duration(600).attr("opacity",0.6);
   },400);
 }
 
 function s3(){
   resetAll();setView(3);
-  document.getElementById("title").textContent="Preston Eğrisi, 2025";
-  document.getElementById("subtitle").textContent="Kişi başı GSYİH ve doğumda yaşam beklentisi";
+  document.getElementById("title").textContent=L("js_title_s3");
+  document.getElementById("subtitle").textContent=L("js_sub_s3");
   showAxes("scatter");
   bgG.selectAll(".bgc").transition().duration(400).attr("opacity",0);
   ourPaths.each(function(d,i){const r=rSc(d.pop);
@@ -1061,10 +1373,10 @@ function s3(){
       .transition().delay(900).duration(700).attr("opacity",1);
     annotG.append("text").attr("x",xLin(3500)).attr("y",yLin(61)).attr("text-anchor","start").attr("font-family","DM Sans")
       .attr("font-size","9px").attr("font-weight","600").attr("fill","var(--accent)").attr("opacity",0)
-      .text("$2k→$20k = +10 yıl").transition().delay(1100).duration(500).attr("opacity",0.8);
+      .text(L("js_annot_steep")).transition().delay(1100).duration(500).attr("opacity",0.8);
     annotG.append("text").attr("x",xLin(62000)).attr("y",yLin(87)).attr("text-anchor","middle").attr("font-family","DM Sans")
       .attr("font-size","9px").attr("font-weight","600").attr("fill","var(--muted)").attr("opacity",0)
-      .text("$40k→$85k = +2 yıl").transition().delay(1300).duration(500).attr("opacity",0.7);
+      .text(L("js_annot_flat")).transition().delay(1300).duration(500).attr("opacity",0.7);
     annotG.append("line").attr("x1",xLin(40000)).attr("y1",yLin(83)).attr("x2",xLin(86000)).attr("y2",yLin(83))
       .attr("stroke","rgba(140,128,120,0.4)").attr("stroke-width",1).attr("stroke-dasharray","3 3").attr("opacity",0)
       .transition().delay(1200).duration(500).attr("opacity",1);
@@ -1073,8 +1385,8 @@ function s3(){
 
 function s4(){
   resetAll();setView(4);
-  document.getElementById("title").textContent="Amerika Paradoksu";
-  document.getElementById("subtitle").textContent="En zengin ülke, ama çok daha yoksul ülkelerden kısa ömür";
+  document.getElementById("title").textContent=L("js_title_s4");
+  document.getElementById("subtitle").textContent=L("js_sub_s4");
   showAxes("scatter");
   ourPaths.each(function(d){const isUSA=d.name==="USA";
     d3.select(this).transition().duration(600).attr("opacity",isUSA?1:.18).attr("stroke",isUSA?"#b84040":"#faf7f2").attr("stroke-width",isUSA?3:1)});
@@ -1092,14 +1404,14 @@ function s4(){
   pulse();const tmr=d3.interval(pulse,1800);fxG.datum(tmr);
   const jpn=DATA.find(d=>d.name==="Japan");
   annotG.append("line").attr("x1",ux).attr("y1",uy-ur-10).attr("x2",ux).attr("y2",16).attr("stroke","#b84040").attr("stroke-width",1).attr("stroke-dasharray","4 3").attr("opacity",0).transition().delay(400).duration(600).attr("opacity",.5);
-  annotG.append("text").attr("x",ux).attr("y",10).attr("text-anchor","middle").attr("font-family","DM Sans").attr("font-size","10px").attr("fill","#b84040").attr("font-weight","600").attr("opacity",0).text("$85k ama sadece 79,7 yıl").transition().delay(700).duration(600).attr("opacity",.7);
-  annotG.append("text").attr("x",xLin(jpn.gdp)+12).attr("y",yLin(jpn.life)-rSc(jpn.pop)-10).attr("text-anchor","start").attr("font-family","DM Sans").attr("font-size","9px").attr("fill","#5d8fa8").attr("font-weight","600").attr("opacity",0).text("Japonya: $34k → 84,8 yıl").transition().delay(1000).duration(600).attr("opacity",.7);
+  annotG.append("text").attr("x",ux).attr("y",10).attr("text-anchor","middle").attr("font-family","DM Sans").attr("font-size","10px").attr("fill","#b84040").attr("font-weight","600").attr("opacity",0).text(L("js_annot_usa_but")).transition().delay(700).duration(600).attr("opacity",.7);
+  annotG.append("text").attr("x",xLin(jpn.gdp)+12).attr("y",yLin(jpn.life)-rSc(jpn.pop)-10).attr("text-anchor","start").attr("font-family","DM Sans").attr("font-size","9px").attr("fill","#5d8fa8").attr("font-weight","600").attr("opacity",0).text(L("js_annot_japan_compare")).transition().delay(1000).duration(600).attr("opacity",.7);
 }
 
 function s5(){
   resetAll();setView(5);
-  document.getElementById("title").textContent="Gelir Merdiveni";
-  document.getElementById("subtitle").textContent="Daireler çubuklara dönüşüyor — kişi başı GSYİH sıralı";
+  document.getElementById("title").textContent=L("js_title_s5");
+  document.getElementById("subtitle").textContent=L("js_sub_s5");
   showAxes("bar",900);bgG.selectAll(".bgc").transition().duration(300).attr("opacity",0);
   ourPaths.each(function(d,i){const bx=xBand(d.name);if(bx===undefined)return;
     morphTo(this,rP(bx,yBar(d.gdp),xBand.bandwidth(),h-yBar(d.gdp),4),1100,i*45).attr("fill",RC[d.region]).attr("stroke","none").attr("opacity",.85)});
@@ -1117,7 +1429,7 @@ function s5(){
         .transition().delay(900).duration(600).attr("opacity",1);
       annotG.append("text").attr("x",(usaBx+nigBx)/2+xBand.bandwidth()).attr("y",yBar(85373)-34)
         .attr("text-anchor","middle").attr("font-family","DM Sans").attr("font-size","10px").attr("font-weight","700")
-        .attr("fill","var(--accent)").attr("opacity",0).text("53 kat fark")
+        .attr("fill","var(--accent)").attr("opacity",0).text(L("js_annot_53x"))
         .transition().delay(1100).duration(500).attr("opacity",0.9);
     }
   },800);
@@ -1125,11 +1437,11 @@ function s5(){
 
 function s6(){
   resetAll();setView(6);
-  document.getElementById("title").textContent="Küresel Gelir Basamakları";
-  document.getElementById("subtitle").textContent="Bölgeye göre gruplanmış — aynı veri, farklı hikâye";
+  document.getElementById("title").textContent=L("js_title_s6");
+  document.getElementById("subtitle").textContent=L("js_sub_s6");
   /* Use region-grouped band scale for x-axis */
   const t6=d3.transition().duration(600).ease(d3.easeCubicInOut);
-  axXG.transition(t6).attr("opacity",1).call(d3.axisBottom(xBandReg).tickSize(0).tickPadding(8).tickFormat(n=>TR[n]||n))
+  axXG.transition(t6).attr("opacity",1).call(d3.axisBottom(xBandReg).tickSize(0).tickPadding(8).tickFormat(n=>L(CN_KEY[n])||TR[n]||n))
     .selectAll("text").style("text-anchor","end").attr("dx","-.6em").attr("dy",".12em").attr("transform","rotate(-35)").style("font-size","10px");
   axYG.transition(t6).attr("opacity",1).call(d3.axisLeft(yBar).ticks(6).tickFormat(d=>d>=1000?`$${d/1000}k`:`$${d}`).tickSize(0).tickPadding(10));
   gridG.transition(t6).attr("opacity",1).call(d3.axisLeft(yBar).ticks(6).tickSize(-w).tickFormat("")).call(g=>{g.select(".domain").remove();g.selectAll("line").attr("stroke","#e6e1da").attr("stroke-dasharray","2 3")});
@@ -1143,10 +1455,10 @@ function s6(){
       .text(`$${d.gdp>=10000?Math.round(d.gdp/1000)+'k':d.gdp.toLocaleString()}`)});
   stT(()=>{
     const regions=[
-      {label:"Amerika",countries:["USA","Mexico","Brazil"],color:"#c06830"},
-      {label:"Avrupa",countries:["Germany","UK","France","Italy"],color:"#5d8fa8"},
-      {label:"Asya",countries:["S. Korea","Japan","China","Indonesia","India"],color:"#d4956a"},
-      {label:"Afrika",countries:["S. Africa","Egypt","Nigeria"],color:"#7db5c8"},
+      {label:regName("Americas"),countries:["USA","Mexico","Brazil"],color:"#c06830"},
+      {label:regName("Europe"),countries:["Germany","UK","France","Italy"],color:"#5d8fa8"},
+      {label:regName("Asia"),countries:["S. Korea","Japan","China","Indonesia","India"],color:"#d4956a"},
+      {label:regName("Africa"),countries:["S. Africa","Egypt","Nigeria"],color:"#7db5c8"},
     ];
     regions.forEach(rg=>{
       const bxs=rg.countries.map(n=>xBandReg(n)).filter(x=>x!==undefined);
@@ -1165,8 +1477,8 @@ function s6(){
 
 function s7(){
   resetAll();setView(7);
-  document.getElementById("title").textContent="Nüfus Her Şeyi Değiştirir";
-  document.getElementById("subtitle").textContent="Daire büyüklüğü = nüfus · Hindistan ve Çin diğerlerini cüce bırakıyor";
+  document.getElementById("title").textContent=L("js_title_s7");
+  document.getElementById("subtitle").textContent=L("js_sub_s7");
   hideAxes();
   ourPaths.each(function(d,i){const n=packN[d.name];if(!n)return;
     morphTo(this,cP(n.x,n.y,n.r),1200,i*50,d3.easeElasticOut.amplitude(1).period(.5)).attr("fill",RC[d.region]).attr("stroke","#faf7f2").attr("stroke-width",1.5).attr("opacity",.85)});
@@ -1214,17 +1526,17 @@ function s7(){
     const pct=Math.round(indChina/totalPop*100);
     annotG.append("text").attr("x",12).attr("y",22).attr("text-anchor","start").attr("font-family","Source Serif 4")
       .attr("font-size","12px").attr("font-weight","700").attr("fill","var(--accent)").attr("opacity",0)
-      .text(`Hindistan + Çin = %${pct}`).transition().delay(1000).duration(600).attr("opacity",0.85);
+      .text(L("js_annot_india_china")+pct+"%").transition().delay(1000).duration(600).attr("opacity",0.85);
     annotG.append("text").attr("x",12).attr("y",38).attr("text-anchor","start").attr("font-family","DM Sans")
       .attr("font-size","9.5px").attr("fill","var(--muted)").attr("opacity",0)
-      .text("Zenginlik ≠ ölçek. ABD çubuğu uzundu; baloncuğu mütevazı.").transition().delay(1200).duration(600).attr("opacity",0.65);
+      .text(L("js_annot_wealth_scale")).transition().delay(1200).duration(600).attr("opacity",0.65);
   },800);
 }
 
 function s8(){
   resetAll();setView(8);
-  document.getElementById("title").textContent="Bir Halkada Dünya";
-  document.getElementById("subtitle").textContent="Nüfus payı · Toplam: "+totalPop.toLocaleString()+"M";
+  document.getElementById("title").textContent=L("js_title_s8");
+  document.getElementById("subtitle").textContent=L("js_sub_s8_pre")+totalPop.toLocaleString()+L("js_sub_s8_suf");
   hideAxes();
   ourPaths.each(function(d,i){const sl=donutSlices[i];
     const tgt=arcPathAt(donutInner,donutR,sl.startAngle,sl.endAngle,sl.padAngle,cx,cy);
@@ -1258,14 +1570,14 @@ function s8(){
       .attr("fill",RC[d.region])
       .attr("font-size",fs).attr("font-weight","600").attr("opacity",.9).text(txt);
   });
-  annotG.append("text").attr("x",cx).attr("y",cy-6).attr("text-anchor","middle").attr("font-family","Source Serif 4").attr("font-size","24px").attr("font-weight","700").attr("fill","var(--text)").attr("opacity",0).text("4,8M").transition().delay(800).duration(600).attr("opacity",.8);
-  annotG.append("text").attr("x",cx).attr("y",cy+16).attr("text-anchor","middle").attr("font-family","DM Sans").attr("font-size","11px").attr("fill","var(--muted)").attr("opacity",0).text("milyar").transition().delay(1000).duration(600).attr("opacity",.6);
+  annotG.append("text").attr("x",cx).attr("y",cy-6).attr("text-anchor","middle").attr("font-family","Source Serif 4").attr("font-size","24px").attr("font-weight","700").attr("fill","var(--text)").attr("opacity",0).text("4.8").transition().delay(800).duration(600).attr("opacity",.8);
+  annotG.append("text").attr("x",cx).attr("y",cy+16).attr("text-anchor","middle").attr("font-family","DM Sans").attr("font-size","11px").attr("fill","var(--muted)").attr("opacity",0).text(L("js_annot_billion")).transition().delay(1000).duration(600).attr("opacity",.6);
 }
 
 function s9(){
   resetAll();setView(9);
-  document.getElementById("title").textContent="Bir Dünyanın İçinde Dört Dünya";
-  document.getElementById("subtitle").textContent="Her bölgenin nüfusu — Asya 3,3 milyarla baskın";
+  document.getElementById("title").textContent=L("js_title_s9");
+  document.getElementById("subtitle").textContent=L("js_sub_s9");
   hideAxes();
   const regPies={};
   regOrder.forEach((reg,ri)=>{
@@ -1273,7 +1585,7 @@ function s9(){
     const slices=d3.pie().value(d=>d.pop).sort(null).padAngle(0.03)(countries);
     const pos=miniPos[ri];const regTotal=countries.reduce((s,d)=>s+d.pop,0);
     regPies[reg]={slices,pos,total:regTotal,countries};
-    annotG.append("text").attr("x",pos.x).attr("y",pos.y-miniR-14).attr("text-anchor","middle").attr("font-family","Source Serif 4").attr("font-size","13px").attr("font-weight","700").attr("fill",RC[reg]).attr("opacity",0).text(regTR[reg]||reg).transition().delay(800+ri*150).duration(600).attr("opacity",.85);
+    annotG.append("text").attr("x",pos.x).attr("y",pos.y-miniR-14).attr("text-anchor","middle").attr("font-family","Source Serif 4").attr("font-size","13px").attr("font-weight","700").attr("fill",RC[reg]).attr("opacity",0).text(regName(reg)).transition().delay(800+ri*150).duration(600).attr("opacity",.85);
     annotG.append("text").attr("x",pos.x).attr("y",pos.y+3).attr("text-anchor","middle").attr("font-family","DM Sans").attr("font-size","14px").attr("font-weight","700").attr("fill","var(--text)").attr("opacity",0).text(regTotal.toLocaleString()+"M").transition().delay(1000+ri*150).duration(600).attr("opacity",.7);
   });
   ourPaths.each(function(d,i){const rp=regPies[d.region];const ci=rp.countries.findIndex(c=>c.name===d.name);const sl=rp.slices[ci];
