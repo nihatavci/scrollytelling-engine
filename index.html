@@ -91,32 +91,78 @@ html{scroll-behavior:smooth}body{font-family:'DM Sans',sans-serif;background:var
 .outro .source-block{margin-top:3rem;padding-top:2rem;border-top:1px solid #e6e1da;font-family:'DM Sans',sans-serif;font-size:.78rem;color:var(--muted);line-height:1.6}
 
 /* ── Cinematic Intro ── */
-.cin-intro{position:relative;width:100%;height:100vh;overflow:hidden;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:10}
-.cin-brand{position:absolute;top:2.5rem;left:50%;transform:translateX(-50%);font-family:'DM Sans',sans-serif;font-size:.72rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);opacity:0}
-.cin-svg-wrap{position:absolute;inset:0;z-index:0;display:flex;align-items:center;justify-content:center}
-.cin-svg-wrap svg{width:80%;max-width:700px;height:60vh}
-.cin-text-layer{position:absolute;z-index:2;text-align:center;pointer-events:none;width:100%;top:50%;transform:translateY(-50%)}
-.cin-line{font-family:'Source Serif 4',serif;color:var(--text);opacity:0;position:absolute;left:50%;transform:translateX(-50%);width:max-content;max-width:80vw;white-space:nowrap}
-.cin-l1,.cin-l2{font-size:clamp(1.15rem,2.8vw,1.65rem);font-weight:400;color:var(--muted)}
-.cin-l3{font-size:clamp(1.25rem,3.2vw,1.9rem);font-weight:600;color:var(--text)}
-.cin-l3 em{font-style:normal;color:var(--accent);text-decoration:underline;text-decoration-color:rgba(192,104,48,0.3);text-underline-offset:4px}
-.cin-l4{font-size:clamp(1.05rem,2.6vw,1.5rem);font-weight:400;color:var(--muted);white-space:normal;max-width:70vw}
-.cin-l5{font-size:clamp(1.3rem,3.2vw,2rem);font-weight:600;color:var(--text);line-height:1.4;white-space:normal;max-width:65vw}
-.cin-l6{font-size:clamp(1.6rem,4.2vw,2.6rem);font-weight:700;color:var(--accent);letter-spacing:-.02em}
-.cin-title-layer{position:absolute;z-index:3;text-align:center;opacity:0;pointer-events:none}
-.cin-main-title{font-family:'Source Serif 4',serif;font-size:clamp(2.4rem,6.5vw,4.2rem);font-weight:700;color:var(--text);line-height:1.08;letter-spacing:-.03em;margin-bottom:.6rem}
+.cin-intro{position:relative;width:100%;height:100vh;overflow:hidden;background:var(--bg);z-index:10}
+
+/* Branding top-center */
+.cin-brand{
+  position:absolute;top:2rem;left:0;right:0;
+  text-align:center;
+  font-family:'DM Sans',sans-serif;font-size:.72rem;font-weight:600;
+  letter-spacing:.18em;text-transform:uppercase;color:var(--muted);
+  opacity:0;z-index:5;
+}
+
+/* SVG: top 58%, full width */
+.cin-svg-wrap{position:absolute;top:0;left:0;width:100%;height:58%;z-index:1}
+.cin-svg-wrap svg{width:100%;height:100%;display:block}
+
+/* Text zone: below SVG, vertically centered in remaining 42% */
+.cin-text-layer{
+  position:absolute;left:0;right:0;
+  top:58%;height:32%;          /* 58% + 32% = 90% — leaves room for scroll cue */
+  z-index:2;
+  display:flex;align-items:center;justify-content:center;
+  pointer-events:none;
+}
+.cin-line{
+  font-family:'Source Serif 4',serif;color:var(--text);
+  opacity:0;position:absolute;
+  text-align:center;max-width:72vw;line-height:1.5;
+  /* NO transform — pure opacity only */
+}
+.cin-l1,.cin-l2{font-size:clamp(1.3rem,2.6vw,1.75rem);font-weight:400;color:var(--muted)}
+.cin-l3{font-size:clamp(1.35rem,2.8vw,1.9rem);font-weight:600;color:var(--text)}
+.cin-l3 em{font-style:normal;color:var(--accent);text-decoration:underline;text-decoration-color:rgba(192,104,48,0.35);text-underline-offset:5px}
+.cin-l4{font-size:clamp(1.2rem,2.4vw,1.6rem);font-weight:400;color:var(--muted)}
+.cin-l5{font-size:clamp(1.3rem,2.7vw,1.85rem);font-weight:600;color:var(--text)}
+.cin-l6{font-size:clamp(1.6rem,3.8vw,2.5rem);font-weight:700;color:var(--accent);letter-spacing:-.02em}
+
+/* Title: full-screen centred overlay (shown last) */
+.cin-title-layer{
+  position:absolute;top:0;left:0;right:0;bottom:0;
+  z-index:4;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  text-align:center;padding:0 2rem;
+  opacity:0;pointer-events:none;
+}
+.cin-main-title{
+  font-family:'Source Serif 4',serif;
+  font-size:clamp(2.6rem,7vw,4.8rem);font-weight:700;
+  color:var(--text);line-height:1.05;letter-spacing:-.03em;margin-bottom:.8rem;
+}
 .cin-main-title span{color:var(--accent)}
-.cin-sub{font-family:'DM Sans',sans-serif;font-size:clamp(.85rem,1.8vw,1.1rem);color:var(--muted);font-weight:400}
-.cin-scroll-cue{position:absolute;bottom:2.5rem;left:50%;transform:translateX(-50%);z-index:4;color:var(--muted);font-family:'DM Sans',sans-serif;font-size:.78rem;display:flex;flex-direction:column;align-items:center;gap:.4rem;opacity:0;animation:bob 2s ease-in-out infinite}
+.cin-sub{font-family:'DM Sans',sans-serif;font-size:clamp(.9rem,1.8vw,1.15rem);color:var(--muted);font-weight:400}
+
+/* Scroll cue: pinned to very bottom, horizontally centred */
+.cin-scroll-cue{
+  position:absolute;bottom:2rem;
+  left:0;right:0;          /* full width so text-align centres it */
+  text-align:center;
+  z-index:6;color:var(--muted);font-family:'DM Sans',sans-serif;font-size:.78rem;
+  display:flex;flex-direction:column;align-items:center;gap:.5rem;
+  opacity:0;animation:bob 2s ease-in-out infinite;
+}
 .cin-scroll-cue .arr{width:16px;height:16px;border-right:2px solid var(--accent);border-bottom:2px solid var(--accent);transform:rotate(45deg)}
 @keyframes cinFadeIn{to{opacity:1}}
 
 /* ── Mobile ── */
 @media(max-width:768px){
   .cin-main-title{font-size:clamp(1.8rem,8vw,2.8rem)}
-  .cin-line{max-width:88vw;white-space:normal}
+  .cin-line{max-width:88vw}
   .cin-brand{font-size:.6rem;top:1.5rem}
-  .cin-svg-wrap svg{width:95%;height:50vh}
+  .cin-svg-wrap{height:52%}
+  .cin-text-layer{top:52%;height:36%}
   .editorial{padding:2.5rem 1.25rem}
   .editorial p{font-size:1.02rem;line-height:1.75}
   .editorial h2{font-size:1.4rem}
@@ -317,245 +363,251 @@ const CIN_DATA=[
 const CRC={Americas:"#c06830",Europe:"#5d8fa8",Asia:"#d4956a",Africa:"#7db5c8"};
 
 window.addEventListener("DOMContentLoaded",()=>{
-  const svgEl=document.getElementById("cin-svg");
-  const bbox=svgEl.getBoundingClientRect();
-  const W=bbox.width,H=bbox.height;
+  // Use window dimensions — guarantees correct size before layout settles
+  const W=window.innerWidth;
+  const H=window.innerHeight*0.58; // matches .cin-svg-wrap height:58%
   const svg=d3.select("#cin-svg").attr("viewBox",`0 0 ${W} ${H}`);
 
-  // Scales
-  const rScale=d3.scaleSqrt().domain([0,1450]).range([4,Math.min(W,H)*0.08]);
-  const xGdp=d3.scaleLog().domain([1500,90000]).range([W*0.1,W*0.9]);
-  const yLife=d3.scaleLinear().domain([50,88]).range([H*0.85,H*0.1]);
+  // ── Scales — sized for the full SVG viewport ──
+  const maxR = Math.min(W, H) * 0.09;  // max circle radius = 9% of smaller dimension
+  const rScale = d3.scaleSqrt().domain([0, 1450]).range([6, maxR]);
+  const xGdp   = d3.scaleLog().domain([1500, 90000]).range([W * 0.09, W * 0.91]);
+  const yLife  = d3.scaleLinear().domain([50, 88]).range([H * 0.86, H * 0.1]);
 
   // Create groups
-  const circG=svg.append("g").attr("class","cin-circles");
-  const labelG=svg.append("g").attr("class","cin-labels");
+  const circG = svg.append("g").attr("class","cin-circles");
+  const labelG = svg.append("g").attr("class","cin-labels");
 
-  // Init circles at center, tiny
-  const nodes=CIN_DATA.map(d=>({...d,x:W/2+(Math.random()-0.5)*60,y:H/2+(Math.random()-0.5)*60}));
-  const circles=circG.selectAll("circle").data(nodes).join("circle")
-    .attr("cx",d=>d.x).attr("cy",d=>d.y)
-    .attr("r",0)
-    .attr("fill",d=>CRC[d.region])
-    .attr("opacity",0)
-    .attr("stroke","#faf7f2").attr("stroke-width",1.5);
+  // Init circles scattered across SVG
+  const nodes = CIN_DATA.map(d=>({
+    ...d,
+    x: W * 0.2 + Math.random() * W * 0.6,
+    y: H * 0.2 + Math.random() * H * 0.6
+  }));
 
-  const labels=labelG.selectAll("text").data(nodes).join("text")
-    .attr("x",d=>d.x).attr("y",d=>d.y)
+  const circles = circG.selectAll("circle").data(nodes).join("circle")
+    .attr("cx", d=>d.x).attr("cy", d=>d.y)
+    .attr("r", 0).attr("fill", d=>CRC[d.region]).attr("opacity", 0)
+    .attr("stroke", "var(--bg)").attr("stroke-width", 2);
+
+  const lblSize = d => Math.max(10, rScale(d.pop) * 0.38) + "px";
+
+  const labels = labelG.selectAll("text").data(nodes).join("text")
+    .attr("x", d=>d.x).attr("y", d=>d.y)
     .attr("text-anchor","middle").attr("dominant-baseline","central")
     .attr("font-family","DM Sans").attr("font-size","0px").attr("font-weight","600")
-    .attr("fill",d=>CRC[d.region]).attr("opacity",0)
-    .style("paint-order","stroke").style("stroke","rgba(250,247,242,0.85)").style("stroke-width","3px").style("stroke-linejoin","round")
+    .attr("fill", d=>CRC[d.region]).attr("opacity", 0)
+    .style("paint-order","stroke")
+    .style("stroke","rgba(250,247,242,0.9)").style("stroke-width","3px").style("stroke-linejoin","round")
     .text(d=>d.name);
 
-  // Force sim (paused by default)
-  const sim=d3.forceSimulation(nodes).alphaDecay(0.02).velocityDecay(0.3).stop();
+  // Force sim
+  const sim = d3.forceSimulation(nodes).alphaDecay(0.025).velocityDecay(0.35).stop();
+  sim.on("tick", ()=>{
+    circles.attr("cx", d=>d.x).attr("cy", d=>d.y);
+    labels.attr("x", d=>d.x).attr("y", d=>d.y);
+  });
 
-  function ticked(){
-    circles.attr("cx",d=>d.x).attr("cy",d=>d.y);
-    labels.attr("x",d=>d.x).attr("y",d=>d.y);
-  }
-  sim.on("tick",ticked);
+  // ── Phase helpers ──
+  const hi  = names => d => names.includes(d.name);
+  const rOf = (d, scale, hi_names) => rScale(d.pop) * (hi_names.includes(d.name) ? scale : scale * 0.35);
 
-  // ── Phase functions ──
-  // Phase 0: gentle float — all circles small, centered, drifting
+  // Phase 0 — gentle float, all visible, small
   function phase0(){
+    const r0 = d => rScale(d.pop) * 0.42;
+    circles.transition().duration(900).attr("r", r0).attr("opacity", 0.28);
+    labels.transition().duration(900).attr("opacity", 0).attr("font-size","0px");
+    sim.force("x", d3.forceX(W/2).strength(0.025))
+       .force("y", d3.forceY(H/2).strength(0.025))
+       .force("collide", d3.forceCollide(d=>r0(d)+3).strength(0.6))
+       .force("charge", d3.forceManyBody().strength(-5))
+       .alpha(0.5).restart();
+  }
+
+  // Phase 1 — Japonya highlight
+  function phase1(){
     circles.transition().duration(800)
-      .attr("r",d=>rScale(d.pop)*0.35).attr("opacity",0.2);
-    labels.transition().duration(800).attr("opacity",0).attr("font-size","0px");
-    sim.force("x",d3.forceX(W/2).strength(0.02))
-       .force("y",d3.forceY(H/2).strength(0.02))
-       .force("collide",d3.forceCollide(d=>rScale(d.pop)*0.35+2).strength(0.5))
-       .force("charge",d3.forceManyBody().strength(-3))
+      .attr("r", d=>d.name==="Japonya"?rScale(d.pop)*1.1:rScale(d.pop)*0.38)
+      .attr("opacity", d=>d.name==="Japonya"?0.9:0.14);
+    labels.transition().duration(800)
+      .attr("opacity", d=>d.name==="Japonya"?1:0)
+      .attr("font-size", d=>d.name==="Japonya"?lblSize(d):"0px");
+    sim.force("collide", d3.forceCollide(d=>rScale(d.pop)*(d.name==="Japonya"?1.1:0.38)+3).strength(0.65))
        .alpha(0.4).restart();
   }
 
-  // Phase 1: Japan highlight
-  function phase1(){
-    circles.transition().duration(700)
-      .attr("r",d=>d.name==="Japonya"?rScale(d.pop)*0.8:rScale(d.pop)*0.3)
-      .attr("opacity",d=>d.name==="Japonya"?0.9:0.12);
-    labels.transition().duration(700)
-      .attr("opacity",d=>d.name==="Japonya"?1:0)
-      .attr("font-size",d=>d.name==="Japonya"?"13px":"0px");
-  }
-
-  // Phase 2: Japan + USA — two circles side by side
+  // Phase 2 — Japonya + ABD side by side
   function phase2(){
-    const high=["Japonya","ABD"];
-    sim.force("x",d3.forceX(d=>high.includes(d.name)?(d.name==="Japonya"?W*0.38:W*0.62):W/2).strength(d=>high.includes(d.name)?0.12:0.015))
-       .force("y",d3.forceY(H/2).strength(0.05))
-       .force("collide",d3.forceCollide(d=>rScale(d.pop)*(high.includes(d.name)?0.8:0.3)+3).strength(0.6))
-       .alpha(0.5).restart();
-    circles.transition().duration(700)
-      .attr("r",d=>high.includes(d.name)?rScale(d.pop)*0.8:rScale(d.pop)*0.25)
-      .attr("opacity",d=>high.includes(d.name)?0.9:0.08);
-    labels.transition().duration(700)
-      .attr("opacity",d=>high.includes(d.name)?1:0)
-      .attr("font-size",d=>high.includes(d.name)?"13px":"0px");
+    const show = ["Japonya","ABD"];
+    sim.force("x", d3.forceX(d=>show.includes(d.name)?(d.name==="Japonya"?W*0.36:W*0.64):W/2).strength(d=>show.includes(d.name)?0.15:0.02))
+       .force("y", d3.forceY(H/2).strength(0.06))
+       .force("collide", d3.forceCollide(d=>rScale(d.pop)*(show.includes(d.name)?1.1:0.3)+3).strength(0.7))
+       .alpha(0.55).restart();
+    circles.transition().duration(800)
+      .attr("r", d=>show.includes(d.name)?rScale(d.pop)*1.1:rScale(d.pop)*0.28)
+      .attr("opacity", d=>show.includes(d.name)?0.88:0.1);
+    labels.transition().duration(800)
+      .attr("opacity", d=>show.includes(d.name)?1:0)
+      .attr("font-size", d=>show.includes(d.name)?lblSize(d):"0px");
   }
 
-  // Phase 3: life expectancy comparison — Japan taller bar visual
+  // Phase 3 — Life expectancy contrast: Japonya vs ABD positioned
   function phase3(){
-    const show=["Japonya","ABD"];
+    const show = ["Japonya","ABD"];
     sim.stop();
-    const jpY=yLife(84.8),usY=yLife(79.7);
-    circles.transition().duration(900).ease(d3.easeCubicInOut)
-      .attr("cx",d=>d.name==="Japonya"?W*0.38:d.name==="ABD"?W*0.62:d.x)
-      .attr("cy",d=>show.includes(d.name)?H*0.45:d.y)
-      .attr("r",d=>show.includes(d.name)?rScale(d.pop)*0.7:rScale(d.pop)*0.2)
-      .attr("opacity",d=>show.includes(d.name)?0.9:0.06);
-    labels.transition().duration(900)
-      .attr("x",d=>d.name==="Japonya"?W*0.38:d.name==="ABD"?W*0.62:d.x)
-      .attr("y",d=>show.includes(d.name)?H*0.45:d.y)
-      .attr("opacity",d=>show.includes(d.name)?1:0)
-      .attr("font-size",d=>show.includes(d.name)?"12px":"0px");
-    // Add life years below
+    const R_jp = rScale(124)*1.1, R_us = rScale(340)*1.1;
+    circles.transition().duration(1000).ease(d3.easeCubicInOut)
+      .attr("cx", d=>d.name==="Japonya"?W*0.36:d.name==="ABD"?W*0.64:d.x)
+      .attr("cy", d=>show.includes(d.name)?H*0.46:d.y)
+      .attr("r",  d=>show.includes(d.name)?rScale(d.pop)*1.1:rScale(d.pop)*0.25)
+      .attr("opacity", d=>show.includes(d.name)?0.88:0.07);
+    labels.transition().duration(1000)
+      .attr("x", d=>d.name==="Japonya"?W*0.36:d.name==="ABD"?W*0.64:d.x)
+      .attr("y", d=>show.includes(d.name)?H*0.46:d.y)
+      .attr("opacity", d=>show.includes(d.name)?1:0)
+      .attr("font-size", d=>show.includes(d.name)?lblSize(d):"0px");
     svg.selectAll(".cin-life-label").remove();
     setTimeout(()=>{
-      [{name:"Japonya",x:W*0.38,life:"84,8 yıl"},{name:"ABD",x:W*0.62,life:"79,7 yıl"}].forEach(d=>{
+      const lifeFs = Math.max(12, maxR*0.32)+"px";
+      [{name:"Japonya",x:W*0.36,life:"84,8 yıl",col:"#d4956a"},
+       {name:"ABD",x:W*0.64,life:"79,7 yıl",col:"#c06830"}].forEach(d=>{
         svg.append("text").attr("class","cin-life-label")
-          .attr("x",d.x).attr("y",H*0.45+rScale(124)*0.7+18)
-          .attr("text-anchor","middle").attr("font-family","DM Sans").attr("font-size","11px")
-          .attr("fill",d.name==="Japonya"?"#d4956a":"#c06830").attr("font-weight","700")
+          .attr("x",d.x).attr("y",H*0.46+rScale(d.name==="Japonya"?124:340)*1.1+22)
+          .attr("text-anchor","middle").attr("font-family","DM Sans")
+          .attr("font-size",lifeFs).attr("fill",d.col).attr("font-weight","700")
           .attr("opacity",0).text(d.life)
-          .transition().duration(500).attr("opacity",0.85);
+          .transition().duration(600).attr("opacity",0.9);
       });
-    },600);
+    },500);
   }
 
-  // Phase 4: Nigeria vs rich — size contrast
+  // Phase 4 — Nijerya vs rich world size contrast
   function phase4(){
     svg.selectAll(".cin-life-label").transition().duration(300).attr("opacity",0).remove();
-    const high=["Nijerya","ABD","Japonya","Almanya"];
-    circles.transition().duration(800)
-      .attr("r",d=>high.includes(d.name)?rScale(d.pop)*0.6:rScale(d.pop)*0.2)
-      .attr("opacity",d=>high.includes(d.name)?0.85:0.06);
-    labels.transition().duration(800)
-      .attr("opacity",d=>high.includes(d.name)?1:0)
-      .attr("font-size",d=>high.includes(d.name)?"10px":"0px");
-    sim.force("x",d3.forceX(W/2).strength(0.04))
-       .force("y",d3.forceY(H/2).strength(0.04))
-       .force("collide",d3.forceCollide(d=>rScale(d.pop)*(high.includes(d.name)?0.6:0.2)+3).strength(0.7))
-       .alpha(0.5).restart();
+    const show = ["Nijerya","ABD","Japonya","Almanya"];
+    circles.transition().duration(900)
+      .attr("r", d=>show.includes(d.name)?rScale(d.pop)*1.0:rScale(d.pop)*0.28)
+      .attr("opacity", d=>show.includes(d.name)?0.88:0.07);
+    labels.transition().duration(900)
+      .attr("opacity", d=>show.includes(d.name)?1:0)
+      .attr("font-size", d=>show.includes(d.name)?lblSize(d):"0px");
+    sim.force("x", d3.forceX(W/2).strength(0.04))
+       .force("y", d3.forceY(H/2).strength(0.04))
+       .force("collide", d3.forceCollide(d=>rScale(d.pop)*(show.includes(d.name)?1.0:0.28)+4).strength(0.75))
+       .alpha(0.55).restart();
   }
 
-  // Phase 5: scatter preview — all spread by GDP vs Life
+  // Phase 5 — Preston Curve scatter
   function phase5(){
     sim.stop();
-    circles.transition().duration(1200).ease(d3.easeCubicInOut)
-      .attr("cx",d=>xGdp(d.gdp)).attr("cy",d=>yLife(d.life))
-      .attr("r",d=>rScale(d.pop)*0.45)
-      .attr("opacity",0.75);
-    labels.transition().duration(1200).ease(d3.easeCubicInOut)
-      .attr("x",d=>xGdp(d.gdp)).attr("y",d=>yLife(d.life)-rScale(d.pop)*0.45-8)
-      .attr("opacity",d=>["ABD","Japonya","Nijerya","Hindistan","Almanya"].includes(d.name)?0.9:0)
-      .attr("font-size","9px");
-    // faint curve line
+    circles.transition().duration(1400).ease(d3.easeCubicInOut)
+      .attr("cx", d=>xGdp(d.gdp)).attr("cy", d=>yLife(d.life))
+      .attr("r",  d=>rScale(d.pop)*0.55).attr("opacity", 0.8);
+    const showLabels = ["ABD","Japonya","Nijerya","Hindistan","Almanya","G. Kore"];
+    labels.transition().duration(1400).ease(d3.easeCubicInOut)
+      .attr("x", d=>xGdp(d.gdp))
+      .attr("y", d=>yLife(d.life) - rScale(d.pop)*0.55 - 9)
+      .attr("opacity", d=>showLabels.includes(d.name)?0.9:0)
+      .attr("font-size", d=>showLabels.includes(d.name)?Math.max(10,maxR*0.28)+"px":"0px");
     svg.selectAll(".cin-curve").remove();
-    const curveD=d3.line().curve(d3.curveBasis)(
-      d3.range(1500,90000,500).map(g=>[xGdp(g),yLife(50+34.8*Math.log(g/1500)/Math.log(90000/1500))])
-    );
+    const pts = d3.range(1500,90000,800).map(g=>[xGdp(g), yLife(50+34.8*Math.log(g/1500)/Math.log(90000/1500))]);
+    const curveD = d3.line().curve(d3.curveBasis)(pts);
     svg.append("path").attr("class","cin-curve")
-      .attr("d",curveD).attr("fill","none").attr("stroke","var(--accent)").attr("stroke-width",1.5)
-      .attr("stroke-dasharray","4 3").attr("opacity",0)
-      .transition().delay(800).duration(600).attr("opacity",0.35);
+      .attr("d",curveD).attr("fill","none")
+      .attr("stroke","var(--accent)").attr("stroke-width",2)
+      .attr("stroke-dasharray","5 4").attr("opacity",0)
+      .transition().delay(900).duration(700).attr("opacity",0.4);
   }
 
-  // Phase 6: question — swirl all circles into a vortex
+  // Phase 6 — Question: all swirl to centre
   function phase6(){
     svg.selectAll(".cin-curve").transition().duration(400).attr("opacity",0).remove();
     labels.transition().duration(600).attr("opacity",0);
-    circles.transition().duration(800)
-      .attr("r",d=>rScale(d.pop)*0.3).attr("opacity",0.4);
-    sim.force("x",d3.forceX(W/2).strength(0.08))
-       .force("y",d3.forceY(H/2).strength(0.08))
-       .force("collide",d3.forceCollide(d=>rScale(d.pop)*0.3+2).strength(0.3))
-       .force("charge",d3.forceManyBody().strength(-1))
-       .alpha(0.7).restart();
+    circles.transition().duration(900).attr("r", d=>rScale(d.pop)*0.38).attr("opacity",0.35);
+    sim.force("x", d3.forceX(W/2).strength(0.1))
+       .force("y", d3.forceY(H/2).strength(0.1))
+       .force("collide", d3.forceCollide(d=>rScale(d.pop)*0.38+3).strength(0.4))
+       .force("charge", d3.forceManyBody().strength(-2))
+       .alpha(0.8).restart();
   }
 
-  // Phase 7: title reveal — circles fade to subtle bg
+  // Phase 7 — Title: scatter softly, fade low
   function phase7(){
     sim.stop();
-    circles.transition().duration(1000)
-      .attr("cx",d=>W*0.15+Math.random()*W*0.7)
-      .attr("cy",d=>H*0.1+Math.random()*H*0.8)
-      .attr("r",d=>rScale(d.pop)*0.18)
-      .attr("opacity",0.12);
+    nodes.forEach(d=>{ d.tx = W*0.12+Math.random()*W*0.76; d.ty = H*0.08+Math.random()*H*0.84; });
+    circles.transition().duration(1100).ease(d3.easeCubicInOut)
+      .attr("cx", d=>d.tx).attr("cy", d=>d.ty)
+      .attr("r",  d=>rScale(d.pop)*0.22).attr("opacity", 0.13);
     labels.transition().duration(400).attr("opacity",0);
   }
 
   // ── Text sequence ──
-  const lines=document.querySelectorAll(".cin-line");
-  const titleLayer=document.getElementById("cin-title-layer");
-  const cue=document.getElementById("cin-cue");
-  const brand=document.getElementById("cin-brand");
-  const intro=document.getElementById("cin-intro");
+  const lines      = document.querySelectorAll(".cin-line");
+  const titleLayer = document.getElementById("cin-title-layer");
+  const cue        = document.getElementById("cin-cue");
+  const brand      = document.getElementById("cin-brand");
+  const intro      = document.getElementById("cin-intro");
 
-  const timeline=[
-    {el:lines[0],inD:700,hold:1800,outD:500,vizFn:phase1},
-    {el:lines[1],inD:700,hold:1800,outD:500,vizFn:phase2},
-    {el:lines[2],inD:800,hold:2400,outD:600,vizFn:phase3},
-    {el:lines[3],inD:800,hold:2400,outD:600,vizFn:phase4},
-    {el:lines[4],inD:900,hold:2600,outD:700,vizFn:phase5},
-    {el:lines[5],inD:800,hold:1800,outD:600,vizFn:phase6},
+  // Timings: inD=fade-in, hold=read time, outD=fade-out (all ms)
+  const timeline = [
+    {el:lines[0], inD:700, hold:2400, outD:500, vizFn:phase1},
+    {el:lines[1], inD:700, hold:2400, outD:500, vizFn:phase2},
+    {el:lines[2], inD:800, hold:3000, outD:600, vizFn:phase3},
+    {el:lines[3], inD:800, hold:3000, outD:600, vizFn:phase4},
+    {el:lines[4], inD:900, hold:3200, outD:700, vizFn:phase5},
+    {el:lines[5], inD:800, hold:2600, outD:600, vizFn:phase6},
   ];
 
-  // Show brand first
-  setTimeout(()=>{brand.style.opacity="1";brand.style.transition="opacity 1s ease";},200);
+  // Brand fade-in
+  setTimeout(()=>{ brand.style.opacity="1"; brand.style.transition="opacity 1s ease"; }, 200);
+  // Start float
+  setTimeout(phase0, 400);
 
-  // Start circles floating
-  setTimeout(phase0,400);
+  let t = 1300;
+  const timers = [];
 
-  let t=1200;
-  const timers=[];
-  timeline.forEach((step,i)=>{
-    // Fade in text (pure opacity, no movement)
+  timeline.forEach(step => {
     timers.push(setTimeout(()=>{
-      step.el.style.transform="translateX(-50%)";
-      step.el.style.opacity="1";
-      step.el.style.transition=`opacity ${step.inD}ms ease`;
+      step.el.style.opacity = "1";
+      step.el.style.transition = `opacity ${step.inD}ms ease`;
       step.vizFn();
-    },t));
-    const fadeOutAt=t+step.inD+step.hold;
+    }, t));
+    const outAt = t + step.inD + step.hold;
     timers.push(setTimeout(()=>{
-      step.el.style.opacity="0";
-      step.el.style.transition=`opacity ${step.outD}ms ease`;
-    },fadeOutAt));
-    t=fadeOutAt+step.outD+250;
+      step.el.style.opacity = "0";
+      step.el.style.transition = `opacity ${step.outD}ms ease`;
+    }, outAt));
+    t = outAt + step.outD + 300;
   });
 
   // Title reveal
   timers.push(setTimeout(()=>{
     phase7();
-    titleLayer.style.opacity="1";
-    titleLayer.style.transform="scale(1)";
-    titleLayer.style.transition="opacity 1.2s ease, transform 1.2s cubic-bezier(0.16,1,0.3,1)";
-  },t+300));
+    titleLayer.style.opacity = "1";
+    titleLayer.style.transition = "opacity 1.3s ease";
+  }, t + 300));
 
   timers.push(setTimeout(()=>{
-    cue.style.opacity="1";
-    cue.style.transition="opacity .8s ease";
-  },t+1600));
+    cue.style.opacity = "1";
+    cue.style.transition = "opacity .9s ease";
+  }, t + 1800));
 
-  // Skip on click/scroll/touch
-  let skipped=false;
+  // Skip
+  let skipped = false;
   function skip(){
-    if(skipped)return;skipped=true;
+    if(skipped) return; skipped=true;
     timers.forEach(clearTimeout);
-    lines.forEach(l=>{l.style.opacity="0";l.style.transition="opacity .2s"});
+    lines.forEach(l=>{ l.style.opacity="0"; l.style.transition="opacity .2s"; });
     svg.selectAll(".cin-life-label,.cin-curve").remove();
     phase7();
     setTimeout(()=>{
-      titleLayer.style.opacity="1";titleLayer.style.transform="scale(1)";
-      titleLayer.style.transition="opacity .5s ease, transform .5s ease";
-      cue.style.opacity="1";cue.style.transition="opacity .4s ease";
-    },400);
+      titleLayer.style.opacity="1"; titleLayer.style.transition="opacity .6s ease";
+      cue.style.opacity="1";       cue.style.transition="opacity .5s ease";
+    }, 500);
   }
-  intro.addEventListener("click",skip);
-  intro.addEventListener("wheel",skip);
-  intro.addEventListener("touchstart",skip,{passive:true});
+  intro.addEventListener("click", skip);
+  intro.addEventListener("wheel", skip);
+  intro.addEventListener("touchstart", skip, {passive:true});
 });
 })();
 </script>
